@@ -1,181 +1,126 @@
-﻿//Atributos do sistema
+//Atributos do sistema
 using System;
 using System.Runtime.InteropServices;
-//Classe Principal
-class Font {
-    //Funções
-    public static void Separador() {
+
+//Classes
+//Classe Loja
+class Loja
+{
+    public static int[] itens;
+    public static int[] valores;
+    //Função para criar loja
+    public static int Negocios()
+    {
+        //Variaveis
+        int espada = 20, adaga = 10, armadura = 100, peitocouro = 25, peitoferro = 50;
+        itens = new int[] { espada, adaga, armadura, peitocouro, peitoferro };
+        int espadav = 20, adagav = 5, peitocv = 5, peitofv = 15, armadurav = 50;
+        valores = new int[] { espadav, adagav, peitocv, peitofv, armadurav };
+
+        Console.WriteLine("ITENS DISPONÍVEIS");
+        Principal.Separador();
+        Console.WriteLine("Espada: " + itens[0] + " moedas| Dano: " + valores[0]);
+        Console.WriteLine("Adaga: " + itens[1] + " moedas| Dano: " + valores[1]);
+        Console.WriteLine("Armadura: " + itens[2] + " moedas| Defesa: " + valores[4]);
+        Console.WriteLine("Peitoral de Couro: " + itens[3] + " moedas| Defesa: " + valores[2]);
+        Console.WriteLine("Peitoral de Ferro: " + itens[4] + " moedas| Defesa: " + valores[3]);
+        Principal.Separador();
+        /*
+        Length é uma propriedade em C# que pode ser usada para obter o número total de elementos em um array,
+        string ou coleção que implementa a interface ICollection1.
+        */
+        return 0;
+    }
+};
+//Classe Game
+class Game
+{
+    //Função para o inicio do game
+    public static int Starting()
+    {
+        Console.WriteLine("Jogo Iniciado");
+        return 0;
+    }
+};
+//Classe Player
+class Player
+{
+    //Dados do player
+    public static int[] atributos;
+    public static int dadosplayer(string[] args)
+    {
+        int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 0;
+        atributos = new int[] { vida, defesa, dano, stamina, moeda };
+
+        Principal.Separador();
+        Console.WriteLine("DADOS DO PERSONAGEM");
+        Principal.Separador();
+        Console.WriteLine("Vida: " + atributos[0]);
+        Console.WriteLine("Defesa: " + atributos[1]);
+        Console.WriteLine("Dano: " + atributos[2]);
+        Console.WriteLine("Stamina: " + atributos[3]);
+        Console.WriteLine("Doblons: " + atributos[4]);
+        Principal.Separador();
+        return 0;
+    }
+};
+//Classe Personagem
+class Personagem
+{
+    //Função para criar personagens
+    public static string Persons(string[] args)
+    {
+        string carta1 = "Vaelin Al Sorna";
+        return carta1;
+    }
+    //Dados do Vaelin
+    public static int[] atributos;
+    public static int VaelinAlSorna(string[] args)
+    {
+        int vida = 150, defesa = 70, dano = 75, stamina = 250;
+        atributos = new int[] { vida, defesa, dano, stamina };
+
+        Principal.Separador();
+        Console.WriteLine("DADOS DE " + Personagem.Persons(args));
+        Principal.Separador();
+        Console.WriteLine("Vida: " + atributos[0]);
+        Console.WriteLine("Defesa: " + atributos[1]);
+        Console.WriteLine("Dano: " + atributos[2]);
+        Console.WriteLine("Stamina: " + atributos[3]);
+        Principal.Separador();
+        return 0;
+    }
+};
+//Classe principal
+class Principal
+{
+    //Função para criar uma linha separadora
+    public static void Separador()
+    {
         Console.WriteLine("------------------------------------------------------");
     }
-    public static int Jogadado() {
+    //Função para gerar um valor aleatorio
+    public static int Jogadado()
+    {
         int dado;
         Random rdm = new Random();
         dado = rdm.Next(100);
         Console.WriteLine("[DADO LANCADO] -> " + dado);
         return dado;
     }
-    //Função Principal
-    public static void Main(string[] args) {
-        //Variaveis - Player
-        string player;
-        int hp = 50, dan = 3, gold = 4, hpfin = 100, danfin;
-        string orc = "Orc";
-        int orchp = 15, orcdan = 10, orcgold = 7;
-        string oclin = "Goblin";
-        int goblinhp = 6, goblindan = 5, goblingold = 2;
-        int espada = 5, adaga = 3, valoresp = 7, valoradag = 4;
-        string acaoplayer, acao, compra, start;
-        //Player - Nome
-        Console.Write("Nome: ");
-        player = Console.ReadLine();
-        Console.WriteLine("Olá " + player);
-        Separador();
-        /* Inicio Do Jogo*/
-        Console.Write("[1] - Loja\n[2] - Game\n->");
-        acao = Console.ReadLine();
-        //LOJA
-        if (acao == "Loja")
-        {
-            Console.Write("[S] - Espada: 10 moedas\n[A] - Adaga: 4 moedas\n->");
-            compra = Console.ReadLine();
-            if (compra == "S")
-            {
-                if (gold >= 10)
-                {
-                    danfin = dan + espada;
-                    gold = -10;
-                }
-                else
-                {
-                    Console.WriteLine("Ouro Insuficiente!");
-                }
-            }
-            else
-            {
-                if (gold >= 4)
-                {
-                    gold = -4;
-                    danfin = dan + adaga;
-                }
-                else
-                {
-                    Console.WriteLine("Ouro Insuficiente!");
-                }
-            }
-        }
-        Console.Write("Digite S para comecar ou continuar o jogo: ");
-        start = Console.ReadLine();
-        while (start == "S") {
-            //GAME
-            if (start == "S"){
-                /*->Dado */
-                int dado;
-                dado = Jogadado();
-                Separador();
-                while (hpfin > 0){
-                    if (dado < 50){
-                        while ((hpfin > 0) || (orchp > 0))
-                        {
-                            //ATAQUE DO ORC
-                            Console.WriteLine("Azar!\nUm Orc apareceu e irá ataca-lo!\nEsteja Preparado!");
-                            hp = hp - orcdan;
-                            Console.WriteLine("Voce ficou com: " + hp + " de vida!");
-                            Separador();
-                            //ACAO DO PLAYER
-                            Console.Write("Jogar dado novamente?\n[1]-'S'\n[2]-'N'\n->");
-                            acaoplayer = Console.ReadLine();
-                            Console.WriteLine("Opcao selecionada: " + acaoplayer);
-                            Separador();
-                            if (acaoplayer == "S")
-                            {
-                                if (hp >= 0) {
-                                    dado = Jogadado();
-                                    Separador();
-                                    if (dado < 50){
-                                        Console.WriteLine("Orc ataca novamente!");
-                                        hp = hp - orcdan;
-                                        Console.WriteLine("Agora voce ficou com " + hp + " de vida!");
-                                        Separador();
-                                    }
-                                    else {
-                                        Console.WriteLine("Sorte, voce atacará ");
-                                        orchp = orchp - dan;
-                                        Console.WriteLine("Orc agora está com " + orchp + " de vida!");
-                                        Separador();
-                                    }
-                                }
-                                hpfin = hp;
-                                orchp = orchp;
+    //Metodo para mostrar atributos
+    public static void AmostraAtributos()
+    {
 
-                                if (hpfin <= 0) {
-                                    Console.WriteLine("Voce perdeu!");
-                                    Separador();
-                                } else { if (orchp <= 0) {
-                                        Console.WriteLine("Voce Ganhou!");
-                                        Separador();
-                                    } 
-                                }
-                            }
-                            else {
-                                if (acaoplayer == "nao") {
-                                    Console.WriteLine("Jogo Finalizado" + player + " Desistiu e perdeu!");
-                                    Separador();
-                                }
-                            }
-                        }
-                    }
-                    else{
-                        Console.WriteLine("Atencao!\nUm Goblin apareceu e irá ataca-lo!\nEsteja Preparado!");
-                        hp = hp - goblindan;
-                        Console.WriteLine("Voce ficou com: " + hp + " de vida!");
-                        Separador();
-                        while ((hpfin > 0) || (goblinhp > 0)) {
-                            //ACAO DO PLAYER
-                            Console.Write("Jogar dado novamente?\n[S]-sim\n[N]-nao\n->");
-                            acaoplayer = Console.ReadLine();
-                            Console.WriteLine("Opcao selecionada: " + acaoplayer);
-                            Separador();
-                            if (acaoplayer == "S"){
-                                dado = Jogadado();
-                                Separador();
-                                if (hp >= 0){
-                                    if (dado < 50){
-                                        Console.WriteLine("Goblin ataca novamente!");
-                                        hp = hp - goblindan;
-                                        Console.WriteLine("Agora voce ficou com " + hp + " de vida!");
-                                        Separador();
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Sorte, voce atacará ");
-                                        goblinhp = goblinhp - dan;
-                                        Console.WriteLine("Goblin agora está com " + goblinhp + " de vida!");
-                                        Separador();
-                                    }
-                                }
-                                hpfin = hp;
-                                goblinhp = goblinhp;
-                            }
-                        }
-                        if (hpfin <= 0)
-                        {
-                            Console.WriteLine("Voce perdeu!");
-                            Separador();
-                        }
-                        else
-                        {
-                            if (goblinhp <= 0)
-                            {
-                                Console.WriteLine("Voce Ganhou!");
-                                Separador();
-                            }
-                        }
-                        hpfin = hpfin - hp;
-                    }
-                }
-            }
-            Console.Write("Continuar o jogo ? digite start para sim: ");
-            start = Console.ReadLine();
-        }
+    }
+    //Função principal
+    public static void Main(string[] args)
+    {
+        Console.WriteLine("Hello World");
+        Player.dadosplayer(args);
+        Separador();
+        Loja.Negocios();
+        Separador();
+        Personagem.VaelinAlSorna(args);
     }
 };
