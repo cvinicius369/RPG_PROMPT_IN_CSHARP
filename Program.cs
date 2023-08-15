@@ -1,7 +1,62 @@
 //------------------------------------------------------------------------------| Atributos do sistema
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
+//------------------------------------------------------------------------------| Caixas de dialogos
+class Dialogo
+{
+    public static void poem1()
+    {
+        Console.WriteLine(" A sombra do corvo cobre meu coração, Cessa o jorro de minhas lagrimas");
+        Console.WriteLine("                                  - Poema Seordah, autor desconhecido.");
+        Principal.Separador();
+    }
+    public static void presents1()
+    {
+        string nome;
+        Console.ReadKey();
+        string texto1 = "- Do que você se recorda? - Voz misteriosa\n", texto2 = "- Ruas...Uma gangue de garotos...um caolho...\n";
+        string texto3 = "- Você tem um nome? \n", texto4 = "- Meu nome...\n->";
+        foreach (char c in texto1)
+        {
+            Console.Write(c);
+            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+        foreach (char c in texto2)
+        {
+            Console.Write(c);
+            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+        foreach (char c in texto3)
+        {
+            Console.Write(c);
+            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+        foreach (char c in texto4)
+        {
+            Console.Write(c);
+            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
+        }
+        nome = Console.ReadLine();
+        if ((nome != "") || (nome != null))
+        {
+            string textonome = $"Meu nome é {nome}";
+            foreach (char c in textonome)
+            {
+                Console.Write(c);
+                Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
+            }
+            Console.ReadKey();
+        } else
+        {
+            Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^");
+        }
+        Principal.Separador();
+    }
+}
 //------------------------------------------------------------------------------| Classe Loja
 class Loja
 {
@@ -31,22 +86,31 @@ class Loja
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
-    //Função para o inicio do game
+    //Funções para o inicio do game
     public static int Starting()
     {
+        Player player = new Player(); // Crie uma instância de Player
+        Player.dadosplayer(); // Chame o método DadosPlayer da instância
         Console.WriteLine("Jogo Iniciado");
+        Dialogo.poem1();
         return 0;
     }
 };
+
 //------------------------------------------------------------------------------| Classe Player
 class Player
 {
     //Dados do player
-    public static int[] atributos;
-    public static int dadosplayer(string[] args)
+    public static int[] atributos { get; set; }
+    public static string[] cartas { get; set; }
+    public static void dadosplayer()
     {
+        Personagem personagem = new Personagem();
         int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
-        atributos = new int[] { vida, defesa, dano, stamina, moeda };
+        atributos = new int[] { vida, defesa, dano, stamina, moeda};
+        string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS();
+        cartas = new string[] { carta0, carta1 };
+
         //int action;
 
         Principal.Separador();
@@ -57,26 +121,28 @@ class Player
         Console.WriteLine("Dano: " + atributos[2]);
         Console.WriteLine("Stamina: " + atributos[3]);
         Console.WriteLine("Doblons: " + atributos[4]);
+        Console.WriteLine("Carta: " + cartas[1]);
         Principal.Separador();
 
         Console.WriteLine("Digite 1 para compras");
         string action = Console.ReadLine();
         if (action == "1")
         {
-            Compras.comprasplay(args);
-        } else
-        {
-            Console.WriteLine("Nao entendi sua solicitação");
+            Compras.comprasplay();
         }
-        return 0;
+        else
+        {
+            Console.WriteLine("Nao entendi sua solicitação...Jogo iniciando");
+        }
     }
 };
-//------------------------------------------------------------------------------| Classe Hereditária: player-Compras
+//------------------------------------------------------------------------------| Classe player-Compras
 class Compras : Player
 {
-    public static void comprasplay(string[] args)
+    public static void comprasplay()
     {
         Loja.Negocios();
+        Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro");
         Console.Write("Produto: ");
 
         if (int.TryParse(Console.ReadLine(), out int compra))
@@ -88,7 +154,21 @@ class Compras : Player
                     atributos[4] -= 20; // Subtrai as moedas gastas
                     atributos[2] += 20; // Aumenta o dano
 
-                    Console.WriteLine("Você gastou 20 Doblons e aumentou seu dano para " + atributos[2]);
+                    Console.WriteLine("Você comprou uma Espada, gastou 20 Doblons e aumentou seu dano para " + atributos[2]);
+                }
+                else
+                {
+                    Console.WriteLine("Doblons Insuficientes");
+                }
+            }
+            else if (compra == 2)
+            {
+                if (atributos[4] >= 5)
+                {
+                    atributos[4] -= 5; //Subtrai os doblons
+                    atributos[2] += 10; //Aumenta o dano
+
+                    Console.WriteLine("Você comprou uma Espada, gastou 5 Doblons e aumentou seu dano para " + atributos[2]);
                 }
                 else
                 {
@@ -110,7 +190,7 @@ class Compras : Player
 class Personagem
 {
     //Função para criar personagens
-    public static string Persons(string[] args)
+    public static string PersonsVAS()
     {
         string carta1 = "Vaelin Al Sorna";
         return carta1;
@@ -123,7 +203,7 @@ class Personagem
         atributos = new int[] { vida, defesa, dano, stamina };
 
         Principal.Separador();
-        Console.WriteLine("DADOS DE " + Personagem.Persons(args));
+        Console.WriteLine("DADOS DE " + Personagem.PersonsVAS());
         Principal.Separador();
         Console.WriteLine("Vida: " + atributos[0]);
         Console.WriteLine("Defesa: " + atributos[1]);
@@ -158,11 +238,15 @@ class Principal
     //Função principal
     public static void Main(string[] args)
     {
+        Dialogo.poem1();
+        Dialogo.presents1();
+        /*
         Console.WriteLine("Hello World");
         Separador();
         Loja.Negocios();
         Separador();
         Personagem.VaelinAlSorna(args);
-        Player.dadosplayer(args);
+        Player.dadosplayer(args);*/
+        Game.Starting();
     }
 };
