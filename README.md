@@ -29,8 +29,3 @@ Este projeto é uma homenagem à trilogia "A Sombra do Corvo" de Anthony Ryan, e
 
 ## Aviso Legal
 Este jogo é um projeto de fãs e não tem afiliação oficial com Anthony Ryan ou seus editores. Todos os direitos autorais e marcas registradas pertencem aos seus respectivos proprietários.
-
-<div align="center">
-  <img src="https://example.com/screenshots/screenshot1.png" alt="Screenshot do Jogo 1" width="400" />
-  <img src="https://example.com/screenshots/screenshot2.png" alt="Screenshot do Jogo 2" width="400" />
-</div>
