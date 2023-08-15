@@ -1,9 +1,8 @@
-//Atributos do sistema
+//------------------------------------------------------------------------------| Atributos do sistema
 using System;
 using System.Runtime.InteropServices;
 
-//Classes
-//Classe Loja
+//------------------------------------------------------------------------------| Classe Loja
 class Loja
 {
     public static int[] itens;
@@ -19,20 +18,17 @@ class Loja
 
         Console.WriteLine("ITENS DISPONÍVEIS");
         Principal.Separador();
-        Console.WriteLine("Espada: " + itens[0] + " moedas| Dano: " + valores[0]);
-        Console.WriteLine("Adaga: " + itens[1] + " moedas| Dano: " + valores[1]);
-        Console.WriteLine("Armadura: " + itens[2] + " moedas| Defesa: " + valores[4]);
-        Console.WriteLine("Peitoral de Couro: " + itens[3] + " moedas| Defesa: " + valores[2]);
-        Console.WriteLine("Peitoral de Ferro: " + itens[4] + " moedas| Defesa: " + valores[3]);
+        Console.WriteLine("1 - Espada: " + itens[0] + " moedas| Dano: " + valores[0]);
+        Console.WriteLine("2 - Adaga: " + itens[1] + " moedas| Dano: " + valores[1]);
+        Console.WriteLine("3 - Armadura: " + itens[2] + " moedas| Defesa: " + valores[4]);
+        Console.WriteLine("4 - Peitoral de Couro: " + itens[3] + " moedas| Defesa: " + valores[2]);
+        Console.WriteLine("5 - Peitoral de Ferro: " + itens[4] + " moedas| Defesa: " + valores[3]);
         Principal.Separador();
-        /*
-        Length é uma propriedade em C# que pode ser usada para obter o número total de elementos em um array,
-        string ou coleção que implementa a interface ICollection1.
-        */
-        return 0;
+
+        return itens.Length;
     }
 };
-//Classe Game
+//------------------------------------------------------------------------------| Classe Game
 class Game
 {
     //Função para o inicio do game
@@ -42,15 +38,16 @@ class Game
         return 0;
     }
 };
-//Classe Player
+//------------------------------------------------------------------------------| Classe Player
 class Player
 {
     //Dados do player
     public static int[] atributos;
     public static int dadosplayer(string[] args)
     {
-        int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 0;
+        int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
         atributos = new int[] { vida, defesa, dano, stamina, moeda };
+        //int action;
 
         Principal.Separador();
         Console.WriteLine("DADOS DO PERSONAGEM");
@@ -61,10 +58,55 @@ class Player
         Console.WriteLine("Stamina: " + atributos[3]);
         Console.WriteLine("Doblons: " + atributos[4]);
         Principal.Separador();
+
+        Console.WriteLine("Digite 1 para compras");
+        string action = Console.ReadLine();
+        if (action == "1")
+        {
+            Compras.comprasplay(args);
+        } else
+        {
+            Console.WriteLine("Nao entendi sua solicitação");
+        }
         return 0;
     }
 };
-//Classe Personagem
+//------------------------------------------------------------------------------| Classe Hereditária: player-Compras
+class Compras : Player
+{
+    public static void comprasplay(string[] args)
+    {
+        Loja.Negocios();
+        Console.Write("Produto: ");
+
+        if (int.TryParse(Console.ReadLine(), out int compra))
+        {
+            if (compra == 1)
+            {
+                if (atributos[4] >= 20) // Verifica se há moedas suficientes
+                {
+                    atributos[4] -= 20; // Subtrai as moedas gastas
+                    atributos[2] += 20; // Aumenta o dano
+
+                    Console.WriteLine("Você gastou 20 Doblons e aumentou seu dano para " + atributos[2]);
+                }
+                else
+                {
+                    Console.WriteLine("Doblons Insuficientes");
+                }
+            }
+            else
+            {
+                Console.WriteLine("EM DESENVOLVIMENTO");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Entrada inválida. Por favor, insira um número válido.");
+        }
+    }
+};
+//------------------------------------------------------------------------------| Classe Personagem
 class Personagem
 {
     //Função para criar personagens
@@ -91,7 +133,7 @@ class Personagem
         return 0;
     }
 };
-//Classe principal
+//------------------------------------------------------------------------------| Classe principal
 class Principal
 {
     //Função para criar uma linha separadora
@@ -117,10 +159,10 @@ class Principal
     public static void Main(string[] args)
     {
         Console.WriteLine("Hello World");
-        Player.dadosplayer(args);
         Separador();
         Loja.Negocios();
         Separador();
         Personagem.VaelinAlSorna(args);
+        Player.dadosplayer(args);
     }
 };
