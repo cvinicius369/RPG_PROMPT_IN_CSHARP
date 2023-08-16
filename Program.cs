@@ -56,6 +56,30 @@ class Dialogo
         }
         Principal.Separador();
     }
+    public static void presents2()
+    {
+        string texto = "- Voce foi encontrado na rua, inconsciente devido a uma surra que a gangue do caolho lhe deu, Frentis te trouxe para cá, a casa da Sexta Ordem!";
+        foreach (char c in texto)
+        {
+            Console.Write(c);
+            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+        string texto2 = "- Mestre Sollis ordena que você vá até ele se apresentar!";
+        string texto3 = "Chegando ao local mestre Sollis não disse nada além de uma ordem para que voce levantasse a espada de madeira e o atacasse.";
+        foreach (char c in texto2)
+        {
+            Console.Write(c);
+            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+        foreach (char c in texto3)
+        {
+            Console.Write(c);
+            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+    }
 }
 //------------------------------------------------------------------------------| Classe Loja
 class Loja
@@ -108,8 +132,8 @@ class Player
         Personagem personagem = new Personagem();
         int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
         atributos = new int[] { vida, defesa, dano, stamina, moeda};
-        string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS();
-        cartas = new string[] { carta0, carta1 };
+        string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
+        cartas = new string[] { carta0, carta1, carta2};
 
         //int action;
 
@@ -195,22 +219,34 @@ class Personagem
         string carta1 = "Vaelin Al Sorna";
         return carta1;
     }
+    public static string PersonsMSo()
+    {
+        string carta2 = "Mestre Sollis";
+        return carta2;
+    }
     //Dados do Vaelin
-    public static int[] atributos;
+    public static int[] atributosVaelin;
+    public static int[] atributosMSo;
     public static int VaelinAlSorna(string[] args)
     {
         int vida = 150, defesa = 70, dano = 75, stamina = 250;
-        atributos = new int[] { vida, defesa, dano, stamina };
+        atributosVaelin = new int[] { vida, defesa, dano, stamina };
 
         Principal.Separador();
         Console.WriteLine("DADOS DE " + Personagem.PersonsVAS());
         Principal.Separador();
-        Console.WriteLine("Vida: " + atributos[0]);
-        Console.WriteLine("Defesa: " + atributos[1]);
-        Console.WriteLine("Dano: " + atributos[2]);
-        Console.WriteLine("Stamina: " + atributos[3]);
+        Console.WriteLine("Vida: " + atributosVaelin[0]);
+        Console.WriteLine("Defesa: " + atributosVaelin[1]);
+        Console.WriteLine("Dano: " + atributosVaelin[2]);
+        Console.WriteLine("Stamina: " + atributosVaelin[3]);
         Principal.Separador();
         return 0;
+    }
+    //Dados do Mestre Sollis
+    public static void MestreSollis()
+    {
+        int vida = 200, defesa = 80, dano = 85, stamina = 250;
+        atributosMSo = new int[] { vida, defesa, dano, stamina };
     }
 };
 //------------------------------------------------------------------------------| Classe principal
@@ -219,7 +255,7 @@ class Principal
     //Função para criar uma linha separadora
     public static void Separador()
     {
-        Console.WriteLine("------------------------------------------------------");
+        Console.WriteLine("-------------------------------------------------------------------------------");
     }
     //Função para gerar um valor aleatorio
     public static int Jogadado()
@@ -240,13 +276,6 @@ class Principal
     {
         Dialogo.poem1();
         Dialogo.presents1();
-        /*
-        Console.WriteLine("Hello World");
-        Separador();
-        Loja.Negocios();
-        Separador();
-        Personagem.VaelinAlSorna(args);
-        Player.dadosplayer(args);*/
-        Game.Starting();
+        Dialogo.presents2();
     }
 };
