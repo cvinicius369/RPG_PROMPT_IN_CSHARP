@@ -1,10 +1,12 @@
 //------------------------------------------------------------------------------| Atributos do sistema
 using System;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 //------------------------------------------------------------------------------| Caixas de dialogos
 class Dialogo
 {
+    public static string nome;
     public static void poem1()
     {
         Console.WriteLine(" A sombra do corvo cobre meu coração, Cessa o jorro de minhas lagrimas");
@@ -13,7 +15,6 @@ class Dialogo
     }
     public static void presents1()
     {
-        string nome;
         Console.ReadKey();
         string texto1 = "- Do que você se recorda? - Voz misteriosa\n", texto2 = "- Ruas...Uma gangue de garotos...um caolho...\n";
         string texto3 = "- Você tem um nome? \n", texto4 = "- Meu nome...\n->";
@@ -90,10 +91,10 @@ class Loja
     public static int Negocios()
     {
         //Variaveis
-        int espada = 20, adaga = 10, armadura = 100, peitocouro = 25, peitoferro = 50;
-        itens = new int[] { espada, adaga, armadura, peitocouro, peitoferro };
-        int espadav = 20, adagav = 5, peitocv = 5, peitofv = 15, armadurav = 50;
-        valores = new int[] { espadav, adagav, peitocv, peitofv, armadurav };
+        int espada = 20, adaga = 10, armadura = 100, peitocouro = 25, peitoferro = 50, florrubra = 25;
+        itens = new int[] { espada, adaga, armadura, peitocouro, peitoferro, florrubra };
+        int espadav = 20, adagav = 5, peitocv = 5, peitofv = 15, armadurav = 50, florrubrav = 5;
+        valores = new int[] { espadav, adagav, peitocv, peitofv, armadurav, florrubrav };
 
         Console.WriteLine("ITENS DISPONÍVEIS");
         Principal.Separador();
@@ -102,6 +103,7 @@ class Loja
         Console.WriteLine("3 - Armadura: " + itens[2] + " moedas| Defesa: " + valores[4]);
         Console.WriteLine("4 - Peitoral de Couro: " + itens[3] + " moedas| Defesa: " + valores[2]);
         Console.WriteLine("5 - Peitoral de Ferro: " + itens[4] + " moedas| Defesa: " + valores[3]);
+        Console.WriteLine("6 - Flor Rubra: " + itens[5] + " moedas| Regeneração: +" + valores[5]);
         Principal.Separador();
 
         return itens.Length;
@@ -110,14 +112,45 @@ class Loja
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
+    public static string[] cartas { get; set; }//Transferi os dados da classe Personagem.Persons para que
+                                                //Fosse possivel utilizar os dados delas.
     //Funções para o inicio do game
     public static int Starting()
     {
-        Player player = new Player(); // Crie uma instância de Player
-        Player.dadosplayer(); // Chame o método DadosPlayer da instância
+        Player player = new Player(); // Cria uma instância de Player
         Console.WriteLine("Jogo Iniciado");
         Dialogo.poem1();
+        Dialogo.presents1();
+        Dialogo.presents2();
+        Player.dadosplayer();
+        Battle();
         return 0;
+    }
+    public static void Battle()
+    {
+        Player player = new Player();
+        Principal principal = new Principal();
+        Personagem personagem = new Personagem();
+        Dialogo dialogo = new Dialogo();
+        int dado = Principal.Jogadado();
+        string nome = Dialogo.nome;
+        int vidaplayer = Player.vida, defesaplayer = Player.defesa, danoplayer = Player.dano;
+        int vidasollis = Personagem.vidaSollis, defesasollis = Personagem.defesaSollis, danosollis = Personagem.danoSollis;
+        string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
+        cartas = new string[] { carta0, carta1, carta2 };
+
+        if (dado > 50 )
+        {
+            Console.WriteLine("SORTE: Você ataca primneiro!");
+            vidasollis -= danoplayer; 
+            Console.WriteLine("Oponente: " + carta2 + " ficou com: " + vidasollis + " De vida após o ataque de: " + nome);
+        }
+        else
+        {
+            Console.WriteLine("Inimigo começa primeiro!");
+            vidaplayer -= danosollis;
+            Console.WriteLine(nome + " ficou com: " + vidaplayer + " De vida após o ataque de: " + carta2);
+        }
     }
 };
 
@@ -126,6 +159,7 @@ class Player
 {
     //Dados do player
     public static int[] atributos { get; set; }
+    public static int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
     public static string[] cartas { get; set; }
     public static void dadosplayer()
     {
@@ -134,11 +168,12 @@ class Player
         atributos = new int[] { vida, defesa, dano, stamina, moeda};
         string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
         cartas = new string[] { carta0, carta1, carta2};
+        Dialogo dialogo = new Dialogo();
 
         //int action;
 
         Principal.Separador();
-        Console.WriteLine("DADOS DO PERSONAGEM");
+        Console.WriteLine("DADOS DE " + Dialogo.nome);
         Principal.Separador();
         Console.WriteLine("Vida: " + atributos[0]);
         Console.WriteLine("Defesa: " + atributos[1]);
@@ -166,7 +201,7 @@ class Compras : Player
     public static void comprasplay()
     {
         Loja.Negocios();
-        Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro");
+        Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro\n6. Flor Rubra");
         Console.Write("Produto: ");
 
         if (int.TryParse(Console.ReadLine(), out int compra))
@@ -225,8 +260,11 @@ class Personagem
         return carta2;
     }
     //Dados do Vaelin
-    public static int[] atributosVaelin;
-    public static int[] atributosMSo;
+    public static int[] atributosVaelin { get; set; }
+    public static int vidaVaelin = 150, defesaVaelin = 70, danoVaelin = 75, staminaVaelin = 250; 
+    public static int[] atributosMSo  { get; set; }
+    public static int vidaSollis = 200, defesaSollis = 80, danoSollis = 85, staminaSollis = 250;
+    //Repeti essas linhas de codigo para que fosse possível usa-las em outras classes
     public static int VaelinAlSorna(string[] args)
     {
         int vida = 150, defesa = 70, dano = 75, stamina = 250;
@@ -243,10 +281,11 @@ class Personagem
         return 0;
     }
     //Dados do Mestre Sollis
-    public static void MestreSollis()
+    public static int MestreSollis()
     {
         int vida = 200, defesa = 80, dano = 85, stamina = 250;
         atributosMSo = new int[] { vida, defesa, dano, stamina };
+        return 0;
     }
 };
 //------------------------------------------------------------------------------| Classe principal
@@ -274,8 +313,15 @@ class Principal
     //Função principal
     public static void Main(string[] args)
     {
-        Dialogo.poem1();
-        Dialogo.presents1();
-        Dialogo.presents2();
+        string iniciogame;
+        Console.WriteLine("        A    S O M B R A    D O    C O R V O          ");
+        Separador();
+        Console.WriteLine("Digite 1 para iniciar o game: ");
+        iniciogame = Console.ReadLine();
+
+        if (iniciogame == "1")
+        {
+            Game.Starting();
+        }
     }
 };
