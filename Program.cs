@@ -139,17 +139,31 @@ class Game
         string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
         cartas = new string[] { carta0, carta1, carta2 };
 
-        if (dado > 50 )
+        while (vidaplayer > 0 && vidasollis > 0)
         {
-            Console.WriteLine("SORTE: Você ataca primneiro!");
-            vidasollis -= danoplayer; 
-            Console.WriteLine("Oponente: " + carta2 + " ficou com: " + vidasollis + " De vida após o ataque de: " + nome);
+            int dado1 = Principal.Jogadado();
+            if (dado1 > 50)
+            {
+                Console.WriteLine("SORTE: Você ataca primneiro!");
+                vidasollis -= danoplayer;
+                Console.WriteLine("Oponente: " + carta2 + " ficou com: " + vidasollis + " De vida após o ataque de: " + nome);
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("Inimigo começa primeiro!");
+                vidaplayer -= danosollis;
+                Console.WriteLine(nome + " ficou com: " + vidaplayer + " De vida após o ataque de: " + carta2);
+                Console.ReadKey();
+            }
         }
-        else
+        if (vidaplayer <= 0)
         {
-            Console.WriteLine("Inimigo começa primeiro!");
-            vidaplayer -= danosollis;
-            Console.WriteLine(nome + " ficou com: " + vidaplayer + " De vida após o ataque de: " + carta2);
+            Console.WriteLine("Você perdeu! O oponente venceu.");
+        }
+        else if (vidasollis <= 0)
+        {
+            Console.WriteLine("Parabéns! Você venceu o oponente.");
         }
     }
 };
