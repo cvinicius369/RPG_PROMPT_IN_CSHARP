@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using static System.Net.Mime.MediaTypeNames;
 //------------------------------------------------------------------------------| Caixas de dialogos
 class Dialogo
 {
@@ -51,7 +52,8 @@ class Dialogo
                 Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
             }
             Console.ReadKey();
-        } else
+        }
+        else
         {
             Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^");
         }
@@ -82,7 +84,33 @@ class Dialogo
         Console.ReadKey();
         Principal.Separador();
     }
-}
+};
+class Dialogo2 : Dialogo
+{
+    public static void Presents3()
+    {
+        string texto4 = "- Mestre Sollis te massacrou - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n";
+        string texto5 = "O rapaz entregou um frasco de flor rubra e um traje de couro\n";
+        foreach (char c in texto4)
+        {
+            Console.Write(c);
+            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+        Principal.Separador();
+        foreach (char c in texto5)
+        {
+            Console.Write(c);
+            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+        }
+        Console.ReadKey();
+        Principal.Separador();
+    }
+};
+/*
+    //Nas classes acima são feitos os dialogos que criam a historia do game
+    //Alem de que o player pode interagir com os personagens
+*/
 //------------------------------------------------------------------------------| Classe Loja
 class Loja
 {
@@ -110,14 +138,18 @@ class Loja
         return itens.Length;
     }
 };
+/*
+    //Na classe loja o player tem acesso aos itens disponíveis e seus respectiveis valores
+    //Essa classe até o momento só possui essa função, mas será adicionadas novas funções nela
+*/
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
     public static int vidaplayer = Player.vida, defesaplayer = Player.defesa, danoplayer = Player.dano;
     public static int vidasollis = Personagem.vidaSollis, defesasollis = Personagem.defesaSollis, danosollis = Personagem.danoSollis;
     public static string[] cartas { get; set; }//Transferi os dados da classe Personagem.Persons para que
-                                                //Fosse possivel utilizar os dados delas.
-    //Funções para o inicio do game
+                                               //Fosse possivel utilizar os dados delas.
+                                               //Funções para o inicio do game
     public static int Starting()
     {
         Player player = new Player(); // Cria uma instância de Player
@@ -128,6 +160,10 @@ class Game
         Dialogo.presents2();
         Player.dadosplayer();
         BattleSollis1();
+        Dialogo2.presents2();
+        vidaplayer += 25;
+        defesaplayer += 25;
+        Console.WriteLine("PARABENS - Você ganhou 25 de Hp e 25 de Defesa");
         return 0;
     }
     public static void BattleSollis1()
@@ -148,7 +184,7 @@ class Game
             if (dado1 > 50)
             {
                 Console.WriteLine("SORTE: Você ataca primneiro!");
-                vidasollis -= danoplayer;
+                vidasollis -= danoplayer - defesasollis;
                 Console.WriteLine($"Oponente: {carta2} ficou com: {vidasollis} de vida após o ataque de: {nome} que teve: {danoplayer} de dano");
                 Console.ReadKey();
                 Principal.Separador();
@@ -156,7 +192,7 @@ class Game
             else
             {
                 Console.WriteLine("Inimigo começa primeiro!");
-                vidaplayer -= danosollis;
+                vidaplayer -= danosollis - defesaplayer;
                 Console.WriteLine($"{nome} ficou com: {vidaplayer} De vida após o ataque de: {carta2} que teve: {danosollis} de dano");
                 Console.ReadKey();
                 Principal.Separador();
@@ -181,6 +217,12 @@ class Game
         }
     }
 };
+/*
+    //Na classe game é onde a batalha e demais funcionalidades do game começam
+    //Toda a historia do game vai ser montada aqui
+    //Essa classe ainda terá alguns ajustes para que não seja necessário repetição de códigos e nem declarar 
+        variaveis para a mesma função que as variaveis de outras classes
+*/
 
 //------------------------------------------------------------------------------| Classe Player
 class Player
@@ -193,9 +235,9 @@ class Player
     {
         Personagem personagem = new Personagem();
         int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
-        atributos = new int[] { vida, defesa, dano, stamina, moeda};
+        atributos = new int[] { vida, defesa, dano, stamina, moeda };
         string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
-        cartas = new string[] { carta0, carta1, carta2};
+        cartas = new string[] { carta0, carta1, carta2 };
         Dialogo dialogo = new Dialogo();
 
         //int action;
@@ -285,7 +327,8 @@ class Compras : Player
                 {
                     Console.WriteLine("Doblons Insuficientes");
                 }
-            } else if (compra == 4)
+            }
+            else if (compra == 4)
             {
                 if (moeda >= 5)
                 {
@@ -299,7 +342,8 @@ class Compras : Player
                 {
                     Console.WriteLine("Doblons Insuficientes");
                 }
-            } else if (compra == 5)
+            }
+            else if (compra == 5)
             {
                 if (moeda >= 10)
                 {
@@ -313,7 +357,8 @@ class Compras : Player
                 {
                     Console.WriteLine("Doblons Insuficientes");
                 }
-            } else if (compra == 6)
+            }
+            else if (compra == 6)
             {
                 if (moeda >= 5)
                 {
@@ -336,6 +381,10 @@ class Compras : Player
         Principal.Separador();
     }
 };
+/*
+    //Classe Compras : Player é hereditária e é focada somente para as compras que o usuário fizer durante o game
+    //A mesma ainda está em desenvolvimento para que não seja necessário a repetição de codigos.
+*/
 //------------------------------------------------------------------------------| Classe Personagem
 class Personagem
 {
@@ -352,9 +401,9 @@ class Personagem
     }
     //Dados do Vaelin
     public static int[] atributosVaelin { get; set; }
-    public static int vidaVaelin = 150, defesaVaelin = 70, danoVaelin = 75, staminaVaelin = 250; 
-    public static int[] atributosMSo  { get; set; }
-    public static int vidaSollis = 200, defesaSollis = 80, danoSollis = 85, staminaSollis = 250;
+    public static int vidaVaelin = 150, defesaVaelin = 70, danoVaelin = 75, staminaVaelin = 250;
+    public static int[] atributosMSo { get; set; }
+    public static int vidaSollis = 200, defesaSollis = 10, danoSollis = 85, staminaSollis = 250;
     //Repeti essas linhas de codigo para que fosse possível usa-las em outras classes
     public static int VaelinAlSorna(string[] args)
     {
@@ -379,6 +428,10 @@ class Personagem
         return 0;
     }
 };
+/*
+    //Classe personagem, é utilizada para criar e manipular os personagens da historia do jogo
+    //Também terá melhorias
+*/
 //------------------------------------------------------------------------------| Classe principal
 class Principal
 {
@@ -409,10 +462,16 @@ class Principal
         Separador();
         Console.Write("Digite 1 para iniciar o game: ");
         iniciogame = Console.ReadLine();
-        
+
         if (iniciogame == "1")
         {
             Game.Starting();
         }
+        Console.ReadKey();
     }
 };
+/*
+    //Classe principal, onde será feito o Menu, e toda a apresentação do game
+    //A partir dela o usuario decide se inicia o game ou se analisa os atributos antes do inicio do game
+    //Ainda está em desenvolvimento.
+*/
