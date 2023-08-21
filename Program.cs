@@ -8,103 +8,90 @@ using static System.Net.Mime.MediaTypeNames;
 class Dialogo
 {
     public static string nome;
+
     public static void poem1()
     {
         Console.WriteLine("              A sombra do corvo cobre meu coração, Cessa o jorro de minhas lagrimas");
         Console.WriteLine("                                 - Poema Seordah, autor desconhecido.");
         Principal.Separador();
     }
+
     public static void presents1()
     {
         Console.ReadKey();
-        string texto1 = "- Do que você se recorda? - Voz misteriosa\n", texto2 = "- Ruas...Uma gangue de garotos...um caolho...\n";
-        string texto3 = "- Você tem um nome? \n", texto4 = "- Meu nome...\nDigite seu nome: ";
-        foreach (char c in texto1)
+        string[] textos = new string[]
         {
-            Console.Write(c);
-            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
-        }
-        Console.ReadKey();
-        foreach (char c in texto2)
+            "- Do que você se recorda? - Voz misteriosa\n",
+            "- Ruas...Uma gangue de garotos...um caolho...\n",
+            "- Você tem um nome? \n",
+            "- Meu nome...\n"
+        };
+
+        foreach (string texto in textos)
         {
-            Console.Write(c);
-            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
+            ImprimirComAtraso(texto, 50);
         }
-        Console.ReadKey();
-        foreach (char c in texto3)
-        {
-            Console.Write(c);
-            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
-        }
-        Console.ReadKey();
-        foreach (char c in texto4)
-        {
-            Console.Write(c);
-            Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
-        }
+        Console.Write("Digite seu nome: ");
         nome = Console.ReadLine();
-        if (nome != "" || nome != null)
+
+        if (!string.IsNullOrEmpty(nome))
         {
-            string textonome = $"Meu nome é {nome}";
-            foreach (char c in textonome)
-            {
-                Console.Write(c);
-                Thread.Sleep(50); // Atraso de 50 milissegundos entre cada caractere
-            }
+            string textonome = $"Meu nome é {nome}\n";
+            ImprimirComAtraso(textonome, 50);
             Console.ReadKey();
         }
         else
         {
             Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^");
         }
+
         Principal.Separador();
+        string[] textos2 = new string[]
+        {
+           "- Voce foi encontrado na rua, inconsciente devido a uma surra que a gangue do caolho lhe deu, Frentis te trouxe para cá, a casa da Sexta Ordem!\n",
+           "- Além disso, Mestre Sollis deseja que você vá até ele para se apresentar.\n",
+           "Chegando ao local mestre Sollis não disse nada além de uma ordem para que voce levantasse a espada de madeira e o atacasse.\n"
+        };
+        foreach (string texto in textos2)
+        {
+            ImprimirComAtraso(texto, 50);
+        }
     }
-    public static void presents2()
+
+    private static void ImprimirComAtraso(string texto, int atraso)
     {
-        string texto = "- Voce foi encontrado na rua, inconsciente devido a uma surra que a gangue do caolho lhe deu, Frentis te trouxe para cá, a casa da Sexta Ordem!\n";
         foreach (char c in texto)
         {
             Console.Write(c);
-            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+            Thread.Sleep(atraso); // Atraso entre cada caractere
         }
         Console.ReadKey();
-        string texto2 = "- Mestre Sollis ordena que você vá até ele se apresentar!\n";
-        string texto3 = "Chegando ao local mestre Sollis não disse nada além de uma ordem para que voce levantasse a espada de madeira e o atacasse.\n";
-        foreach (char c in texto2)
-        {
-            Console.Write(c);
-            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
-        }
-        Console.ReadKey();
-        foreach (char c in texto3)
-        {
-            Console.Write(c);
-            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
-        }
-        Console.ReadKey();
-        Principal.Separador();
     }
-};
+}
 class Dialogo2 : Dialogo
 {
     public static void Presents3()
     {
-        string texto4 = "- Mestre Sollis te massacrou - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n";
-        string texto5 = "O rapaz entregou um frasco de flor rubra e um traje de couro\n";
-        foreach (char c in texto4)
+        string[] textos3 = new string[] 
         {
-            Console.Write(c);
-            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+            "- Mestre Sollis te massacrou - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n",
+            "O rapaz entregou um frasco de flor rubra e um traje de couro\n"
+        };
+        foreach (string texto in textos3)
+        {
+            ImprimirComAtraso(texto, 50);
         }
         Console.ReadKey();
         Principal.Separador();
-        foreach (char c in texto5)
+    }
+    private static void ImprimirComAtraso(string texto, int atraso)
+    {
+        foreach (char c in texto)
         {
             Console.Write(c);
-            Thread.Sleep(40); // Atraso de 40 milissegundos entre cada caractere
+            Thread.Sleep(atraso); // Atraso entre cada caractere
         }
         Console.ReadKey();
-        Principal.Separador();
     }
 };
 /*
@@ -145,7 +132,9 @@ class Loja
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
+    //Player
     public static int vidaplayer = Player.vida, defesaplayer = Player.defesa, danoplayer = Player.dano;
+    public static int staminaplayer = Player.stamina, doblonsplayer = Player.moeda;
     public static int vidasollis = Personagem.vidaSollis, defesasollis = Personagem.defesaSollis, danosollis = Personagem.danoSollis;
     public static string[] cartas { get; set; }//Transferi os dados da classe Personagem.Persons para que
                                                //Fosse possivel utilizar os dados delas.
@@ -157,13 +146,22 @@ class Game
         Principal.Separador();
         Dialogo.poem1();
         Dialogo.presents1();
-        Dialogo.presents2();
         Player.dadosplayer();
         BattleSollis1();
-        Dialogo2.presents2();
+        Dialogo2.Presents3();
         vidaplayer += 25;
         defesaplayer += 25;
         Console.WriteLine("PARABENS - Você ganhou 25 de Hp e 25 de Defesa");
+        Console.WriteLine($"Novos dados de {Dialogo.nome}");
+        Principal.Separador();
+        Console.WriteLine($"Vida: {vidaplayer}" );
+        Console.WriteLine($"Defesa: {defesaplayer}");
+        Console.WriteLine($"Dano: {danoplayer}");
+        Console.WriteLine($"Stamina: {staminaplayer}");
+        Console.WriteLine($"Doblons: {doblonsplayer}");
+        Console.WriteLine($"Carta: " + cartas[0]);
+        Principal.Separador();
+
         return 0;
     }
     public static void BattleSollis1()
