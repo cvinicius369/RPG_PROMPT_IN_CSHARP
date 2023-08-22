@@ -7,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 //------------------------------------------------------------------------------| Caixas de dialogos
 class Dialogo
 {
-    public static string nome;
+    public static string? nome;
 
     public static void poem1()
     {
@@ -101,8 +101,8 @@ class Dialogo2 : Dialogo
 //------------------------------------------------------------------------------| Classe Loja
 class Loja
 {
-    public static int[] itens;
-    public static int[] valores;
+    public static int[]? itens;
+    public static int[]? valores;
     //Função para criar loja
     public static int Negocios()
     {
@@ -114,12 +114,12 @@ class Loja
 
         Console.WriteLine("ITENS DISPONÍVEIS");
         Principal.Separador();
-        Console.WriteLine("1 - Espada: "             + valores[0] + " moedas| Dano: "          + itens[0]);
-        Console.WriteLine("2 - Adaga: "              + valores[1] + " moedas| Dano: "          + itens[1]);
-        Console.WriteLine("3 - Armadura: "           + valores[4] + " moedas| Defesa: "        + itens[2]);
-        Console.WriteLine("4 - Peitoral de Couro: "  + valores[2] + " moedas| Defesa: "        + itens[3]);
-        Console.WriteLine("5 - Peitoral de Ferro: "  + valores[3] + " moedas| Defesa: "        + itens[4]);
-        Console.WriteLine("6 - Flor Rubra: "         + valores[5] + " moedas| Regeneração: +"  + itens[5]);
+        Console.WriteLine("1 - Espada: "            + valores[0] + " moedas| Dano: "         + itens[0]);
+        Console.WriteLine("2 - Adaga: "             + valores[1] + " moedas| Dano: "         + itens[1]);
+        Console.WriteLine("3 - Armadura: "          + valores[4] + " moedas| Defesa: "       + itens[2]);
+        Console.WriteLine("4 - Peitoral de Couro: " + valores[2] + " moedas| Defesa: "       + itens[3]);
+        Console.WriteLine("5 - Peitoral de Ferro: " + valores[3] + " moedas| Defesa: "       + itens[4]);
+        Console.WriteLine("6 - Flor Rubra: "        + valores[5] + " moedas| Regeneração: +" + itens[5]);
         Principal.Separador();
 
         return itens.Length;
@@ -136,10 +136,9 @@ class Game
     public static int vidaplayer = Player.vida, defesaplayer = Player.defesa, danoplayer = Player.dano;
     public static int staminaplayer = Player.stamina, doblonsplayer = Player.moeda;
     public static int vidasollis = Personagem.vidaSollis, defesasollis = Personagem.defesaSollis, danosollis = Personagem.danoSollis;
-    public static string[] cartas { get; set; }
-    //Transferi os dados da classe Personagem.Persons para que
-    //Fosse possivel utilizar os dados delas.
-    //Funções para o inicio do game
+    public static string[]? cartas { get; set; }//Transferi os dados da classe Personagem.Persons para que
+                                               //Fosse possivel utilizar os dados delas.
+                                               //Funções para o inicio do game
     public static int Starting()
     {
         Player player = new Player(); // Cria uma instância de Player
@@ -150,8 +149,11 @@ class Game
         Player.dadosplayer();
         BattleSollis1();
         Dialogo2.Presents3();
-        vidaplayer += 25;
-        defesaplayer += 25;
+        //Organizando os dados do player
+        vidaplayer     = 125;
+        danoplayer     = 5;
+        defesaplayer   = 25;
+        doblonsplayer  = 25;
         Console.WriteLine("PARABENS - Você ganhou 25 de Hp e 25 de Defesa");
         Console.WriteLine($"Novos dados de {Dialogo.nome}");
         Principal.Separador();
@@ -170,16 +172,16 @@ class Game
         Player player = new Player();
         Principal principal = new Principal();
         Personagem personagem = new Personagem();
-        Dialogo dialogo = new Dialogo();
+        Dialogo? dialogo = new Dialogo();
         int dado = Principal.Jogadado();
-        string nome = Dialogo.nome;
+        string? nome = Dialogo.nome;
         string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
         cartas = new string[] { carta0, carta1, carta2 };
 
         while (vidaplayer > 0 && vidasollis > 0)
         {
             int dado1 = Principal.Jogadado();
-            string option1;
+            string? option1;
             if (dado1 > 50)
             {
                 Console.WriteLine("SORTE: Você ataca primneiro!");
@@ -227,9 +229,9 @@ class Game
 class Player
 {
     //Dados do player
-    public static int[] atributos { get; set; }
+    public static int[]? atributos { get; set; }
+    public static string[]? cartas { get; set; }
     public static int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
-    public static string[] cartas { get; set; }
     public static void dadosplayer()
     {
         Personagem personagem = new Personagem();
@@ -239,21 +241,19 @@ class Player
         cartas = new string[] { carta0, carta1, carta2 };
         Dialogo dialogo = new Dialogo();
 
-        //int action;
-
         Principal.Separador();
-        Console.WriteLine("DADOS DE "   + Dialogo.nome);
+        Console.WriteLine("DADOS DE " + Dialogo.nome);
         Principal.Separador();
-        Console.WriteLine("Vida: "      + atributos[0]);
-        Console.WriteLine("Defesa: "    + atributos[1]);
-        Console.WriteLine("Dano: "      + atributos[2]);
-        Console.WriteLine("Stamina: "   + atributos[3]);
-        Console.WriteLine("Doblons: "   + atributos[4]);
-        Console.WriteLine("Carta: "     + cartas[1]);
+        Console.WriteLine("Vida: "    + atributos[0]);
+        Console.WriteLine("Defesa: "  + atributos[1]);
+        Console.WriteLine("Dano: "    + atributos[2]);
+        Console.WriteLine("Stamina: " + atributos[3]);
+        Console.WriteLine("Doblons: " + atributos[4]);
+        Console.WriteLine("Carta: "   + cartas[1]);
         Principal.Separador();
 
         Console.WriteLine("Digite 1 para compras");
-        string action = Console.ReadLine();
+        string? action = Console.ReadLine();
         if (action == "1")
         {
             Compras.comprasplay();
@@ -399,9 +399,9 @@ class Personagem
         return carta2;
     }
     //Dados do Vaelin
-    public static int[] atributosVaelin { get; set; }
+    public static int[]? atributosVaelin { get; set; }
+    public static int[]? atributosMSo { get; set; }
     public static int vidaVaelin = 150, defesaVaelin = 70, danoVaelin = 75, staminaVaelin = 250;
-    public static int[] atributosMSo { get; set; }
     public static int vidaSollis = 200, defesaSollis = 10, danoSollis = 85, staminaSollis = 250;
     //Repeti essas linhas de codigo para que fosse possível usa-las em outras classes
     public static int VaelinAlSorna(string[] args)
@@ -410,12 +410,12 @@ class Personagem
         atributosVaelin = new int[] { vida, defesa, dano, stamina };
 
         Principal.Separador();
-        Console.WriteLine("DADOS DE " + Personagem.PersonsVAS());
+        Console.WriteLine("DADOS DE "  + Personagem.PersonsVAS());
         Principal.Separador();
-        Console.WriteLine("Vida: " + atributosVaelin[0]);
-        Console.WriteLine("Defesa: " + atributosVaelin[1]);
-        Console.WriteLine("Dano: " + atributosVaelin[2]);
-        Console.WriteLine("Stamina: " + atributosVaelin[3]);
+        Console.WriteLine("Vida: "     + atributosVaelin[0]);
+        Console.WriteLine("Defesa: "   + atributosVaelin[1]);
+        Console.WriteLine("Dano: "     + atributosVaelin[2]);
+        Console.WriteLine("Stamina: "  + atributosVaelin[3]);
         Principal.Separador();
         return 0;
     }
@@ -456,7 +456,7 @@ class Principal
     //Função principal
     public static void Main(string[] args)
     {
-        string iniciogame;
+        string? iniciogame;
         Console.WriteLine("                          A    S O M B R A    D O    C O R V O                   ");
         Separador();
         Console.Write("Digite 1 para iniciar o game: ");
