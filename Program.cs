@@ -108,18 +108,18 @@ class Loja
     {
         //Variaveis
         int espada = 20, adaga = 10, armadura = 100, peitocouro = 25, peitoferro = 50, florrubra = 25;
-        itens = new int[] { espada, adaga, armadura, peitocouro, peitoferro, florrubra };
         int espadav = 10, adagav = 3, peitocv = 5, peitofv = 10, armadurav = 25, florrubrav = 5;
+        itens = new int[] { espada, adaga, armadura, peitocouro, peitoferro, florrubra };
         valores = new int[] { espadav, adagav, peitocv, peitofv, armadurav, florrubrav };
 
         Console.WriteLine("ITENS DISPONÍVEIS");
         Principal.Separador();
-        Console.WriteLine("1 - Espada: " + valores[0] + " moedas| Dano: " + itens[0]);
-        Console.WriteLine("2 - Adaga: " + valores[1] + " moedas| Dano: " + itens[1]);
-        Console.WriteLine("3 - Armadura: " + valores[4] + " moedas| Defesa: " + itens[2]);
-        Console.WriteLine("4 - Peitoral de Couro: " + valores[2] + " moedas| Defesa: " + itens[3]);
-        Console.WriteLine("5 - Peitoral de Ferro: " + valores[3] + " moedas| Defesa: " + itens[4]);
-        Console.WriteLine("6 - Flor Rubra: " + valores[5] + " moedas| Regeneração: +" + itens[5]);
+        Console.WriteLine("1 - Espada: "             + valores[0] + " moedas| Dano: "          + itens[0]);
+        Console.WriteLine("2 - Adaga: "              + valores[1] + " moedas| Dano: "          + itens[1]);
+        Console.WriteLine("3 - Armadura: "           + valores[4] + " moedas| Defesa: "        + itens[2]);
+        Console.WriteLine("4 - Peitoral de Couro: "  + valores[2] + " moedas| Defesa: "        + itens[3]);
+        Console.WriteLine("5 - Peitoral de Ferro: "  + valores[3] + " moedas| Defesa: "        + itens[4]);
+        Console.WriteLine("6 - Flor Rubra: "         + valores[5] + " moedas| Regeneração: +"  + itens[5]);
         Principal.Separador();
 
         return itens.Length;
@@ -136,9 +136,10 @@ class Game
     public static int vidaplayer = Player.vida, defesaplayer = Player.defesa, danoplayer = Player.dano;
     public static int staminaplayer = Player.stamina, doblonsplayer = Player.moeda;
     public static int vidasollis = Personagem.vidaSollis, defesasollis = Personagem.defesaSollis, danosollis = Personagem.danoSollis;
-    public static string[] cartas { get; set; }//Transferi os dados da classe Personagem.Persons para que
-                                               //Fosse possivel utilizar os dados delas.
-                                               //Funções para o inicio do game
+    public static string[] cartas { get; set; }
+    //Transferi os dados da classe Personagem.Persons para que
+    //Fosse possivel utilizar os dados delas.
+    //Funções para o inicio do game
     public static int Starting()
     {
         Player player = new Player(); // Cria uma instância de Player
@@ -241,14 +242,14 @@ class Player
         //int action;
 
         Principal.Separador();
-        Console.WriteLine("DADOS DE " + Dialogo.nome);
+        Console.WriteLine("DADOS DE "   + Dialogo.nome);
         Principal.Separador();
-        Console.WriteLine("Vida: " + atributos[0]);
-        Console.WriteLine("Defesa: " + atributos[1]);
-        Console.WriteLine("Dano: " + atributos[2]);
-        Console.WriteLine("Stamina: " + atributos[3]);
-        Console.WriteLine("Doblons: " + atributos[4]);
-        Console.WriteLine("Carta: " + cartas[1]);
+        Console.WriteLine("Vida: "      + atributos[0]);
+        Console.WriteLine("Defesa: "    + atributos[1]);
+        Console.WriteLine("Dano: "      + atributos[2]);
+        Console.WriteLine("Stamina: "   + atributos[3]);
+        Console.WriteLine("Doblons: "   + atributos[4]);
+        Console.WriteLine("Carta: "     + cartas[1]);
         Principal.Separador();
 
         Console.WriteLine("Digite 1 para compras");
@@ -285,9 +286,9 @@ class Compras : Player
             {
                 if (moeda >= 10) // Verifica se há moedas suficientes
                 {
-                    moeda -= 10; // Subtrai as moedas gastas
-                    atributos[2] += 20; // Aumenta o dano
-                    Game.danoplayer += 20;
+                    moeda            -= 10; // Subtrai as moedas gastas
+                    atributos[2]     += 20; // Aumenta o dano
+                    Game.danoplayer  += 20;
 
                     Console.WriteLine("Você comprou uma Espada, gastou 20 Doblons e aumentou seu dano para " + atributos[2]);
                 }
@@ -300,9 +301,9 @@ class Compras : Player
             {
                 if (moeda >= 3)
                 {
-                    moeda -= 3; //Subtrai os doblons
-                    dano += 10; //Aumenta o dano
-                    Game.danoplayer += 10;
+                    moeda            -= 3; //Subtrai os doblons
+                    dano             += 10; //Aumenta o dano
+                    Game.danoplayer  += 10;
 
                     Console.WriteLine("Você comprou uma Adaga, gastou 5 Doblons e aumentou seu dano para " + dano);
                 }
@@ -315,9 +316,9 @@ class Compras : Player
             {
                 if (moeda >= 25)
                 {
-                    moeda -= 25; //Subtrai os doblons
-                    defesa += 100; //Aumenta a defesa
-                    Game.defesaplayer += 100;
+                    moeda              -= 25; //Subtrai os doblons
+                    defesa             += 100; //Aumenta a defesa
+                    Game.defesaplayer  += 100;
 
                     Console.WriteLine("Você comprou um set de Armadura, gastou 25 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -330,9 +331,9 @@ class Compras : Player
             {
                 if (moeda >= 5)
                 {
-                    moeda -= 5; //Subtrai os doblons
-                    defesa += 25; //Aumenta a defesa
-                    Game.danoplayer += 25;
+                    moeda            -= 5; //Subtrai os doblons
+                    defesa           += 25; //Aumenta a defesa
+                    Game.danoplayer  += 25;
 
                     Console.WriteLine("Você comprou um peitoral de couro, gastou 5 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -345,9 +346,9 @@ class Compras : Player
             {
                 if (moeda >= 10)
                 {
-                    moeda -= 10; //Subtrai os doblons
-                    defesa += 50; //Aumenta a defesa
-                    Game.danoplayer += 50;
+                    moeda            -= 10; //Subtrai os doblons
+                    defesa           += 50; //Aumenta a defesa
+                    Game.danoplayer  += 50;
 
                     Console.WriteLine("Você comprou um peitoral de ferro, gastou 10 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -360,9 +361,9 @@ class Compras : Player
             {
                 if (moeda >= 5)
                 {
-                    moeda -= 5; //Subtrai os doblons
-                    vida += 25; //Aumenta a vida
-                    Game.vidaplayer += 25;
+                    moeda            -= 5; //Subtrai os doblons
+                    vida             += 25; //Aumenta a vida
+                    Game.vidaplayer  += 25;
 
                     Console.WriteLine("Você comprou uma flor rubra, gastou 5 Doblons e aumentou sua vida para " + vida);
                 }
