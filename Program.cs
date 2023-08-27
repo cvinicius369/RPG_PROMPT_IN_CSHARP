@@ -1,3 +1,7 @@
+//By: Caio Vinicius
+//Project: RPG in C# (C-Sharp)
+//Name Game: A Sombra do Corvo
+//E-mail: vinicius182102@gmail.com
 //------------------------------------------------------------------------------| Atributos do sistema
 using System;
 using System.Globalization;
