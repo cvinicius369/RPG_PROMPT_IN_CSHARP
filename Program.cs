@@ -78,7 +78,7 @@ class Dialogo2 : Dialogo
     {
         string[] textos3 = new string[] 
         {
-            "- Mestre Sollis te massacrou - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n",
+            "- Mestre Sollis te massacrou! - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n",
             "O rapaz entregou um frasco de flor rubra e um traje de couro\n"
         };
         foreach (string texto in textos3)
@@ -140,9 +140,10 @@ class Game
     public static int vidaplayer = Player.vida, defesaplayer = Player.defesa, danoplayer = Player.dano;
     public static int staminaplayer = Player.stamina, doblonsplayer = Player.moeda;
     public static int vidasollis = Personagem.vidaSollis, defesasollis = Personagem.defesaSollis, danosollis = Personagem.danoSollis;
-    public static string[]? cartas { get; set; }//Transferi os dados da classe Personagem.Persons para que
-                                               //Fosse possivel utilizar os dados delas.
-                                               //Funções para o inicio do game
+    public static string[]? cartas { get; set; }
+    //Transferi os dados da classe Personagem.Persons para que
+    //Fosse possivel utilizar os dados delas.
+    //Funções para o inicio do game
     public static int Starting()
     {
         Player player = new Player(); // Cria uma instância de Player
@@ -461,7 +462,7 @@ class Principal
     public static void Main(string[] args)
     {
         string? iniciogame;
-        Console.WriteLine("                          A    S O M B R A    D O    C O R V O                   ");
+        Console.WriteLine("                              A    S O M B R A    D O    C O R V O");
         Separador();
         Console.Write("Digite 1 para iniciar o game: ");
         iniciogame = Console.ReadLine();
