@@ -464,14 +464,19 @@ class Principal
         string? iniciogame;
         Console.WriteLine("                              A    S O M B R A    D O    C O R V O");
         Separador();
+
+        inicio1: //Bloco criado para que quando o usuário informar uma tecla não esperada ele tente novamente
+
         Console.Write("Digite 1 para iniciar o game: ");
         iniciogame = Console.ReadLine();
 
         if (iniciogame == "1")
         {
             Game.Starting();
+        } else {
+            Console.WriteLine("Tecla não esperada!");
+            goto inicio1;
         }
-        Console.ReadKey();
     }
 };
 /*
