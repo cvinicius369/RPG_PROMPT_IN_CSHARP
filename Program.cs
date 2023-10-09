@@ -116,7 +116,8 @@ class Game
 
         Console.Write("Digite seu nome: ");
         string nomeplayer = Console.ReadLine();
-        jogador.ObterDados(nomeplayer);
+        jogador.name = nomeplayer;
+        jogador.AlteraNomePlayer(nomeplayer);
 
         Console.WriteLine("Bem Vindo " + jogador.getName() + "\nPara apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
         Principal.Separador();
@@ -169,12 +170,12 @@ class Game
     {
         //Instanciacao e atribuição de Player
         Player player = new Player();
-        string nome = player.getName();
+        string nome = player.name;
         int vidaplayer = player.AlteraVida(100), danoplayer = player.AlteraDano(5), defesaplayer = player.AlteraDefesa(0), doblonsplayer = player.AlteraDoblons(20);
         
         //Instanciacao e atribuição de Sollis
         Personagens sollis = new Personagens();
-        string nomesollis = sollis.getNomeSollis();
+        string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
         int vidasollis = sollis.AlteraVidaSollis(200), defesasollis = sollis.AlteraDefesaSollis(10), danosollis = sollis.AlteraDanoSollis(80), doblonssollis = sollis.AlteraDoblonsSollis(10);
 
         int dado = Principal.Jogadado();
@@ -224,8 +225,11 @@ class Game
 class Player
 {
     //Abaixo são os atributos do player
-    private string name;
-    private int doblons, defesa, atack, heath;
+    public string name { get; set; }
+    private int doblons { get; set; }
+    private int defesa { get; set;}
+    private int atack { get; set;}
+    private int heath { get; set;}
 
     //Abaixo estão os metodos para que sejam retornados os valores contidos nos atributos
     public void ObterDados(string nome)
@@ -277,6 +281,11 @@ class Player
     public int AlteraDefesa(int def) {
         this.defesa = def;
         return this.defesa;
+    }
+    public string AlteraNomePlayer(string nmp)
+    {
+        this.name = nmp;
+        return this.name;
     }
 }
 
@@ -425,43 +434,48 @@ class Personagens
     }
     public string getNomeSollis()
     {
-        return sollis;
+        return this.sollis;
     }
     public int getVidaSollis()
     {
-        return vidasollis;
+        return this.vidasollis;
     }
     public int getDoblonsSollis()
     {
-        return doblonssollis;
+        return this.doblonssollis;
     }
     public int getDefesaSollis()
     {
-        return defesasollis;
+        return this.defesasollis;
     }
     public int getDanoSollis()
     {
-        return danosollis;
+        return this.danosollis;
     }
     public int AlteraDanoSollis(int dnsol)
     {
-        danosollis = dnsol;
-        return danosollis;
+        this.danosollis = dnsol;
+        return this.danosollis;
     }
     public int AlteraVidaSollis(int vd)
     {
-        vidasollis = vd;
-        return vidasollis;
+        this.vidasollis = vd;
+        return this.vidasollis;
     }
     public int AlteraDefesaSollis(int defes)
     {
-        defesasollis = defes;
-        return defesasollis;
+        this.defesasollis = defes;
+        return this.defesasollis;
     }
     public int AlteraDoblonsSollis(int dob)
     {
-        doblonssollis = dob;
-        return doblonssollis;
+        this.doblonssollis = dob;
+        return this.doblonssollis;
+    }
+    public string AlteraNomeSollis(string nm)
+    {
+        this.sollis = nm;
+        return this.sollis;
     }
 }
 //------------------------------------------------------------------------------| Classe Loja
