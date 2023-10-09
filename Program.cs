@@ -4,15 +4,18 @@
 //E-mail: vinicius182102@gmail.com
 //------------------------------------------------------------------------------| Atributos do sistema
 using System;
+using System.Collections.Specialized;
+using System.ComponentModel.Design;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using static System.Net.Mime.MediaTypeNames;
-//------------------------------------------------------------------------------| Caixas de dialogos
+//------------------------------------------------------------------------------| Classe Dialogo
 class Dialogo
 {
     public static string? nome;
-
     public static void poem1()
     {
         Console.WriteLine("              A sombra do corvo cobre meu coração, Cessa o jorro de minhas lagrimas");
@@ -76,7 +79,7 @@ class Dialogo2 : Dialogo
 {
     public static void Presents3()
     {
-        string[] textos3 = new string[] 
+        string[] textos3 = new string[]
         {
             "- Mestre Sollis te massacrou! - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n",
             "O rapaz entregou um frasco de flor rubra e um traje de couro\n"
@@ -102,94 +105,79 @@ class Dialogo2 : Dialogo
     //Nas classes acima são feitos os dialogos que criam a historia do game
     //Alem de que o player pode interagir com os personagens
 */
-//------------------------------------------------------------------------------| Classe Loja
-class Loja
-{
-    public static int[]? itens;
-    public static int[]? valores;
-    //Função para criar loja
-    public static int Negocios()
-    {
-        //Variaveis
-        int espada = 20, adaga = 10, armadura = 100, peitocouro = 25, peitoferro = 50, florrubra = 25;
-        int espadav = 10, adagav = 3, peitocv = 5, peitofv = 10, armadurav = 25, florrubrav = 5;
-        itens = new int[] { espada, adaga, armadura, peitocouro, peitoferro, florrubra };
-        valores = new int[] { espadav, adagav, peitocv, peitofv, armadurav, florrubrav };
-
-        Console.WriteLine("ITENS DISPONÍVEIS");
-        Principal.Separador();
-        Console.WriteLine("1 - Espada: "            + valores[0] + " moedas| Dano: "         + itens[0]);
-        Console.WriteLine("2 - Adaga: "             + valores[1] + " moedas| Dano: "         + itens[1]);
-        Console.WriteLine("3 - Armadura: "          + valores[4] + " moedas| Defesa: "       + itens[2]);
-        Console.WriteLine("4 - Peitoral de Couro: " + valores[2] + " moedas| Defesa: "       + itens[3]);
-        Console.WriteLine("5 - Peitoral de Ferro: " + valores[3] + " moedas| Defesa: "       + itens[4]);
-        Console.WriteLine("6 - Flor Rubra: "        + valores[5] + " moedas| Regeneração: +" + itens[5]);
-        Principal.Separador();
-
-        return itens.Length;
-    }
-};
-/*
-    //Na classe loja o player tem acesso aos itens disponíveis e seus respectiveis valores
-    //Essa classe até o momento só possui essa função, mas será adicionadas novas funções nela
-*/
 //------------------------------------------------------------------------------| Classe Game
-
 class Game
 {
-    //Player
-    public static int vidaplayer = Player.vida, defesaplayer = Player.defesa, danoplayer = Player.dano;
-    public static int doblonsplayer = Player.moeda;
-
-    //Sollis
-    public static int vidasollis = Personagem.vidaSollis, defesasollis = Personagem.defesaSollis, danosollis = Personagem.danoSollis;
-
-    //Cartas
-    public static string[]? cartas { get; set; }
-
-    //Transferi os dados da classe Personagem.Persons para que fosse possivel utilizar os dados delas.
-
-    //Funções para o inicio do game
-    public static int Starting()
+    public static void Starting()
     {
-        //Instancias
-        Player player = new Player();
-        Principal principal = new Principal();
-        Personagem personagem = new Personagem();
-        Dialogo? dialogo = new Dialogo();
+        Player jogador = new Player();
 
-        //Utilização das classes e metodos
         Console.WriteLine("Jogo Iniciado");
+
+        Console.Write("Digite seu nome: ");
+        string nomeplayer = Console.ReadLine();
+        jogador.ObterDados(nomeplayer);
+
+        Console.WriteLine("Bem Vindo " + jogador.getName() + "\nPara apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
         Principal.Separador();
+        menu:
+        string action = Console.ReadLine();
+
+        if (action == "1") {
+            Console.WriteLine("Nome: "   +  jogador.getName());
+            Console.WriteLine("Vida: "   +  jogador.getHeath());
+            Console.WriteLine("Dano: "   +  jogador.getAtack());
+            Console.WriteLine("Defesa: " +  jogador.getDefesa());
+            Console.WriteLine("Doblons: " + jogador.getDoblons());
+            Principal.Separador();
+            Console.ReadKey();
+            Inicio();
+        } else { if  (action == "2") {
+                Inicio();
+            } else { if (action == "3")
+                {
+                    Console.WriteLine("Saindo . . .");
+                } else {
+                    Console.WriteLine("Comando não esperado!");
+                    goto menu;
+                }
+            }
+        }
+    }
+    public static void Inicio()
+    {
         Dialogo.poem1();
         Dialogo.presents1();
-        Player.dadosplayer();
-        BattleSollis1();
-        Dialogo2.Presents3();
-
-        //Reorganizando os dados do player
-        vidaplayer = 125;
-        danoplayer = 5;
-        defesaplayer = 25;
-        doblonsplayer = 25;
-        Console.WriteLine("PARABENS - Você ganhou 25 de Hp e 25 de Defesa");
-        Console.WriteLine($"Novos dados de {Dialogo.nome}");
-        Principal.Separador();
-        Console.WriteLine($"Vida: {vidaplayer}");
-        Console.WriteLine($"Defesa: {defesaplayer}");
-        Console.WriteLine($"Dano: {danoplayer}");
-        Console.WriteLine($"Doblons: {doblonsplayer}");
-        Console.WriteLine($"Carta: " + cartas[0]);
+        Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
+        string newaction = Console.ReadLine();
         Principal.Separador();
 
-        return 0;
+        if (newaction == "1")
+        {
+            Compras.comprasplay();
+            BattleSollis1();
+        } else { if (newaction == "2")
+            {
+                BattleSollis1();
+            } else
+            {
+                Console.WriteLine("Acao Invalida!");
+            }
+        }
     }
     public static void BattleSollis1()
     {
+        //Instanciacao e atribuição de Player
+        Player player = new Player();
+        string nome = player.getName();
+        int vidaplayer = player.AlteraVida(100), danoplayer = player.AlteraDano(5), defesaplayer = player.AlteraDefesa(0), doblonsplayer = player.AlteraDoblons(20);
+        
+        //Instanciacao e atribuição de Sollis
+        Personagens sollis = new Personagens();
+        string nomesollis = sollis.getNomeSollis();
+        int vidasollis = sollis.AlteraVidaSollis(200), defesasollis = sollis.AlteraDefesaSollis(10), danosollis = sollis.AlteraDanoSollis(80), doblonssollis = sollis.AlteraDoblonsSollis(10);
+
         int dado = Principal.Jogadado();
-        string? nome = Dialogo.nome;
-        string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
-        cartas = new string[] { carta0, carta1, carta2 };
 
         while (vidaplayer > 0 && vidasollis > 0)
         {
@@ -199,7 +187,7 @@ class Game
             {
                 Console.WriteLine("SORTE: Você ataca primneiro!");
                 vidasollis -= danoplayer - defesasollis;
-                Console.WriteLine($"Oponente: {carta2} ficou com: {vidasollis} de vida após o ataque de: {nome} que teve: {danoplayer} de dano");
+                Console.WriteLine($"Oponente: {nomesollis} ficou com: {vidasollis} de vida após o ataque de: {nome} que teve: {danoplayer} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
@@ -207,7 +195,7 @@ class Game
             {
                 Console.WriteLine("Inimigo começa primeiro!");
                 vidaplayer -= danosollis - defesaplayer;
-                Console.WriteLine($"{nome} ficou com: {vidaplayer} De vida após o ataque de: {carta2} que teve: {danosollis} de dano");
+                Console.WriteLine($"{nome} ficou com: {vidaplayer} De vida após o ataque de: {nomesollis} que teve: {danosollis} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
@@ -230,62 +218,74 @@ class Game
             Console.WriteLine("Parabéns! Você venceu o oponente.");
         }
     }
-};
-/*
-    //Na classe game é onde a batalha e demais funcionalidades do game começam
-    //Toda a historia do game vai ser montada aqui
-    //Essa classe ainda terá alguns ajustes para que não seja necessário repetição de códigos e nem declarar 
-        variaveis para a mesma função que as variaveis de outras classes
-*/
 
+}
 //------------------------------------------------------------------------------| Classe Player
 class Player
 {
-    //Dados do player
-    public static int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
-    public static void dadosplayer()
+    //Abaixo são os atributos do player
+    private string name;
+    private int doblons, defesa, atack, heath;
+
+    //Abaixo estão os metodos para que sejam retornados os valores contidos nos atributos
+    public void ObterDados(string nome)
     {
-        Personagem personagem = new Personagem();
-        int vida = 100, defesa = 0, dano = 5, stamina = 50, moeda = 20;
-        Dialogo dialogo = new Dialogo();
-        string carta0 = "Nenhuma", carta1 = Personagem.PersonsVAS(), carta2 = Personagem.PersonsMSo();
-        string[] cartas = new string[] { carta0, carta1, carta2 };
-
-        Principal.Separador();
-        Console.WriteLine("DADOS DE " + Dialogo.nome);
-        Principal.Separador();
-        Console.WriteLine("Vida: " + vida);
-        Console.WriteLine("Defesa: " + defesa);
-        Console.WriteLine("Dano: " + dano);
-        Console.WriteLine("Stamina: " + stamina);
-        Console.WriteLine("Doblons: " + moeda);
-        Console.WriteLine("Carta: " + cartas[1]);
-        Principal.Separador();
-
-        Console.WriteLine("Digite 1 para compras");
-        string? action = Console.ReadLine();
-        if (action == "1")
-        {
-            Compras.comprasplay();
-        }
-        else
-        {
-            Console.WriteLine("Nao entendi sua solicitação...Jogo iniciando");
-        }
-        Principal.Separador();
+        this.name = nome;
+        this.doblons = 20;
+        this.defesa = 0;
+        this.atack = 5;
+        this.heath = 100;
     }
-};
-/*
-    //Na classe e função acima, foram atribuidos valores ao player, todos os atributos
-    //Ao final da função dadosplayer() o player digitando 1 será direcionado para a classe 
-        compras : player, onde ele poderá fazer compras para sua melhoria pessoal
- */
-//------------------------------------------------------------------------------| Classe player-Compras
+    public string getName()
+    {
+        return this.name;
+    }
+    public int getDoblons()
+    {
+        return this.doblons;
+    }
+    public int getDefesa()
+    {
+        return this.defesa; 
+    }
+    public int getAtack()
+    {
+        return this.atack;
+    }
+    public int getHeath()
+    {
+        return this.heath;
+    }
+
+    //Daqui para baixo são metodos para alterar os valores, defini como int e dei return para que os valores sejam salvos
+    //caso contrario retornarei para void e retirarei os returns
+    public int AlteraDoblons(int dob)
+    {
+        this.doblons = dob;
+        return this.doblons;
+    }
+    public int AlteraVida(int hp)
+    {
+        this.heath = hp;
+        return this.heath;
+    }
+    public int AlteraDano(int dn)
+    {
+        this.atack = dn;
+        return this.atack;
+    }
+    public int AlteraDefesa(int def) {
+        this.defesa = def;
+        return this.defesa;
+    }
+}
+
 class Compras : Player
 {
     public static void comprasplay()
     {
-        Game game = new Game();
+        Player player = new Player();
+        int doblons = 20, vida = 100, dano = 5, defesa = 0;
         Loja.Negocios();
         Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro\n6. Flor Rubra");
         Console.Write("Produto: ");
@@ -294,11 +294,13 @@ class Compras : Player
         {
             if (compra == 1)
             {
-                if (moeda >= 10) // Verifica se há moedas suficientes
+                if (doblons >= 10) // Verifica se há moedas suficientes
                 {
-                    moeda -= 10; // Subtrai as moedas gastas
+                    doblons -= 10; // Subtrai as moedas gastas
                     dano += 20; // Aumenta o dano
-                    Game.danoplayer += 20;
+                    //Atualiza os valores
+                    player.AlteraDoblons(doblons);
+                    player.AlteraDano(dano);
 
                     Console.WriteLine("Você comprou uma Espada, gastou 20 Doblons e aumentou seu dano para " + dano);
                 }
@@ -309,11 +311,13 @@ class Compras : Player
             }
             else if (compra == 2)
             {
-                if (moeda >= 3)
+                if (doblons >= 3)
                 {
-                    moeda -= 3; //Subtrai os doblons
+                    doblons -= 3; //Subtrai os doblons
                     dano += 10; //Aumenta o dano
-                    Game.danoplayer += 10;
+                    //Atualiza os valores
+                    player.AlteraDoblons(doblons);
+                    player.AlteraDano(dano);
 
                     Console.WriteLine("Você comprou uma Adaga, gastou 5 Doblons e aumentou seu dano para " + dano);
                 }
@@ -324,11 +328,13 @@ class Compras : Player
             }
             else if (compra == 3)
             {
-                if (moeda >= 25)
+                if (doblons >= 25)
                 {
-                    moeda -= 25; //Subtrai os doblons
+                    doblons -= 25; //Subtrai os doblons
                     defesa += 100; //Aumenta a defesa
-                    Game.defesaplayer += 100;
+                    //Atualiza os valores
+                    player.AlteraDoblons(doblons);
+                    player.AlteraDefesa(defesa);
 
                     Console.WriteLine("Você comprou um set de Armadura, gastou 25 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -339,11 +345,13 @@ class Compras : Player
             }
             else if (compra == 4)
             {
-                if (moeda >= 5)
+                if (doblons >= 5)
                 {
-                    moeda -= 5; //Subtrai os doblons
+                    doblons -= 5; //Subtrai os doblons
                     defesa += 25; //Aumenta a defesa
-                    Game.danoplayer += 25;
+                    //Atualiza os valores
+                    player.AlteraDoblons(doblons);
+                    player.AlteraDefesa(defesa);
 
                     Console.WriteLine("Você comprou um peitoral de couro, gastou 5 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -354,11 +362,13 @@ class Compras : Player
             }
             else if (compra == 5)
             {
-                if (moeda >= 10)
+                if (doblons >= 10)
                 {
-                    moeda -= 10; //Subtrai os doblons
+                    doblons -= 10; //Subtrai os doblons
                     defesa += 50; //Aumenta a defesa
-                    Game.danoplayer += 50;
+                    //Atualiza os valores
+                    player.AlteraDoblons(doblons);
+                    player.AlteraDefesa(defesa);
 
                     Console.WriteLine("Você comprou um peitoral de ferro, gastou 10 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -369,11 +379,13 @@ class Compras : Player
             }
             else if (compra == 6)
             {
-                if (moeda >= 5)
+                if (doblons >= 5)
                 {
-                    moeda -= 5; //Subtrai os doblons
+                    doblons -= 5; //Subtrai os doblons
                     vida += 25; //Aumenta a vida
-                    Game.vidaplayer += 25;
+                    //Atualiza os valores
+                    player.AlteraDoblons(doblons);
+                    player.AlteraDefesa(vida);
 
                     Console.WriteLine("Você comprou uma flor rubra, gastou 5 Doblons e aumentou sua vida para " + vida);
                 }
@@ -394,53 +406,88 @@ class Compras : Player
     //Classe Compras : Player é hereditária e é focada somente para as compras que o usuário fizer durante o game
     //A mesma ainda está em desenvolvimento para que não seja necessário a repetição de codigos.
 */
-//------------------------------------------------------------------------------| Classe Personagem
-class Personagem
+//------------------------------------------------------------------------------| Classe de Personangens
+/*
+    Nessa classe será criada os atributos dos personagens que farão parte da jornada do player
+    Mestre Sollis será o primeiro a entrar em combate com o personagem.
+*/
+class Personagens
 {
-    //Função para criar personagens
-    public static string PersonsVAS()
+    private string sollis;
+    private int doblonssollis, danosollis, vidasollis, defesasollis;
+    public void ObterDadosPersons()
     {
-        string carta1 = "Vaelin Al Sorna";
-        return carta1;
+        this.sollis = "Mestre Sollis";
+        this.defesasollis = 10;
+        this.doblonssollis = 10;
+        this.vidasollis = 200;
+        this.danosollis = 80;
     }
-    public static string PersonsMSo()
+    public string getNomeSollis()
     {
-        string carta2 = "Mestre Sollis";
-        return carta2;
+        return sollis;
     }
-    //Dados do Vaelin
-    public static int[]? atributosVaelin { get; set; }
-    public static int[]? atributosMSo { get; set; }
-    public static int vidaVaelin = 150, defesaVaelin = 70, danoVaelin = 75, staminaVaelin = 250;
-    public static int vidaSollis = 200, defesaSollis = 10, danoSollis = 85, staminaSollis = 250;
-    //Repeti essas linhas de codigo para que fosse possível usa-las em outras classes
-    public static int VaelinAlSorna(string[] args)
+    public int getVidaSollis()
     {
-        int vida = 150, defesa = 70, dano = 75, stamina = 250;
-        atributosVaelin = new int[] { vida, defesa, dano, stamina };
+        return vidasollis;
+    }
+    public int getDoblonsSollis()
+    {
+        return doblonssollis;
+    }
+    public int getDefesaSollis()
+    {
+        return defesasollis;
+    }
+    public int getDanoSollis()
+    {
+        return danosollis;
+    }
+    public int AlteraDanoSollis(int dnsol)
+    {
+        danosollis = dnsol;
+        return danosollis;
+    }
+    public int AlteraVidaSollis(int vd)
+    {
+        vidasollis = vd;
+        return vidasollis;
+    }
+    public int AlteraDefesaSollis(int defes)
+    {
+        defesasollis = defes;
+        return defesasollis;
+    }
+    public int AlteraDoblonsSollis(int dob)
+    {
+        doblonssollis = dob;
+        return doblonssollis;
+    }
+}
+//------------------------------------------------------------------------------| Classe Loja
+class Loja
+{
+    public static void Negocios()
+    {
+        string[] item1 = { "Espada", "Dano: 20", "Doblons: -10" };
+        string[] item2 = { "Adaga", "Dano: 10", "Doblons: -3" };
+        string[] item3 = { "Set de Armadura",   "Defessa: 100", "Doblons: -25" };
+        string[] item4 = { "Peitoral de Couro", "Defesa: 25", "Doblons: -5" };
+        string[] item5 = { "Peitoral de Ferro", "Defesa: 50", "Doblons: -10" };
+        string[] item6 = { "Flor Rubra", "Vida: +25", "Doblons: -5" };
+
+        Console.WriteLine("Abaixo está a tabela dos itens disponíveis: ");
+
+        Console.WriteLine(item1[0], item1[1], item1[2]);
+        Console.WriteLine(item2[0], item2[1], item2[2]);
+        Console.WriteLine(item3[0], item3[1], item3[2]);
+        Console.WriteLine(item4[0], item4[1], item4[2]);
+        Console.WriteLine(item5[0], item5[1], item5[2]);
+        Console.WriteLine(item6[0], item6[1], item6[2]);
 
         Principal.Separador();
-        Console.WriteLine("DADOS DE "  + Personagem.PersonsVAS());
-        Principal.Separador();
-        Console.WriteLine("Vida: "     + atributosVaelin[0]);
-        Console.WriteLine("Defesa: "   + atributosVaelin[1]);
-        Console.WriteLine("Dano: "     + atributosVaelin[2]);
-        Console.WriteLine("Stamina: "  + atributosVaelin[3]);
-        Principal.Separador();
-        return 0;
     }
-    //Dados do Mestre Sollis
-    public static int MestreSollis()
-    {
-        int vida = 200, defesa = 80, dano = 85, stamina = 250;
-        atributosMSo = new int[] { vida, defesa, dano, stamina };
-        return 0;
-    }
-};
-/*
-    //Classe personagem, é utilizada para criar e manipular os personagens da historia do jogo
-    //Também terá melhorias
-*/
+}
 //------------------------------------------------------------------------------| Classe principal
 class Principal
 {
@@ -473,7 +520,9 @@ class Principal
         if (iniciogame == "1")
         {
             Game.Starting();
-        } else {
+        }
+        else
+        {
             Console.WriteLine("Tecla não esperada!");
             goto inicio1;
         }
