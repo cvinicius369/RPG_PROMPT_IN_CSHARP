@@ -108,44 +108,48 @@ class Dialogo2 : Dialogo
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
-    public static void Starting()
+    public static void Starting(Player jogador)
     {
-        Player jogador = new Player();
 
         Console.WriteLine("Jogo Iniciado");
 
-        Console.Write("Digite seu nome: ");
-        string nomeplayer = Console.ReadLine();
-        jogador.name = nomeplayer;
-        jogador.AlteraNomePlayer(nomeplayer);
-
         Console.WriteLine("Bem Vindo " + jogador.getName() + "\nPara apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
         Principal.Separador();
-        menu:
+    menu:
         string action = Console.ReadLine();
 
-        if (action == "1") {
-            Console.WriteLine("Nome: "   +  jogador.getName());
-            Console.WriteLine("Vida: "   +  jogador.getHeath());
-            Console.WriteLine("Dano: "   +  jogador.getAtack());
-            Console.WriteLine("Defesa: " +  jogador.getDefesa());
+        if (action == "1")
+        {
+            Console.WriteLine("Nome: " + jogador.getName());
+            Console.WriteLine("Vida: " + jogador.getHeath());
+            Console.WriteLine("Dano: " + jogador.getAtack());
+            Console.WriteLine("Defesa: " + jogador.getDefesa());
             Console.WriteLine("Doblons: " + jogador.getDoblons());
             Principal.Separador();
             Console.ReadKey();
-            Inicio();
-        } else { if  (action == "2") {
-                Inicio();
-            } else { if (action == "3")
+            Inicio(jogador);
+        }
+        else
+        {
+            if (action == "2")
+            {
+                Inicio(jogador);
+            }
+            else
+            {
+                if (action == "3")
                 {
                     Console.WriteLine("Saindo . . .");
-                } else {
+                }
+                else
+                {
                     Console.WriteLine("Comando não esperado!");
                     goto menu;
                 }
             }
         }
     }
-    public static void Inicio()
+    public static void Inicio(Player jogador)
     {
         Dialogo.poem1();
         Dialogo.presents1();
@@ -155,24 +159,27 @@ class Game
 
         if (newaction == "1")
         {
-            Compras.comprasplay();
-            BattleSollis1();
-        } else { if (newaction == "2")
+            Compras.comprasplay(jogador);
+            BattleSollis1(jogador);
+        }
+        else
+        {
+            if (newaction == "2")
             {
-                BattleSollis1();
-            } else
+                BattleSollis1(jogador);
+            }
+            else
             {
                 Console.WriteLine("Acao Invalida!");
             }
         }
     }
-    public static void BattleSollis1()
+    public static void BattleSollis1(Player jogador)
     {
         //Instanciacao e atribuição de Player
-        Player player = new Player();
-        string nome = player.name;
-        int vidaplayer = player.AlteraVida(100), danoplayer = player.AlteraDano(5), defesaplayer = player.AlteraDefesa(0), doblonsplayer = player.AlteraDoblons(20);
-        
+        string nome = jogador.getName();
+        int vidaplayer = jogador.getHeath(), danoplayer = jogador.getAtack(), defesaplayer = jogador.getDefesa(), doblonsplayer = jogador.getDoblons();
+
         //Instanciacao e atribuição de Sollis
         Personagens sollis = new Personagens();
         string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
@@ -187,16 +194,17 @@ class Game
             if (dado1 > 50)
             {
                 Console.WriteLine("SORTE: Você ataca primneiro!");
-                vidasollis -= danoplayer - defesasollis;
-                Console.WriteLine($"Oponente: {nomesollis} ficou com: {vidasollis} de vida após o ataque de: {nome} que teve: {danoplayer} de dano");
+                vidasollis -= jogador.getAtack() - defesasollis;
+                Console.WriteLine($"Oponente: {nomesollis} ficou com: {vidasollis} de vida após o ataque de: {nome} que teve: {jogador.getAtack()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
             else
             {
                 Console.WriteLine("Inimigo começa primeiro!");
-                vidaplayer -= danosollis - defesaplayer;
-                Console.WriteLine($"{nome} ficou com: {vidaplayer} De vida após o ataque de: {nomesollis} que teve: {danosollis} de dano");
+                vidaplayer -= danosollis - jogador.getDefesa();
+                jogador.AlteraVida(vidaplayer);
+                Console.WriteLine($"{nome} ficou com: {jogador.getHeath()} De vida após o ataque de: {nomesollis} que teve: {danosollis} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
@@ -207,10 +215,10 @@ class Game
             {
                 Principal.Separador();
                 Loja.Negocios();
-                Compras.comprasplay();
+                Compras.comprasplay(jogador);
             }
         }
-        if (vidaplayer <= 0)
+        if (jogador.getHeath() <= 0)
         {
             Console.WriteLine("Você perdeu! O oponente venceu.");
         }
@@ -225,11 +233,11 @@ class Game
 class Player
 {
     //Abaixo são os atributos do player
-    public string name { get; set; }
+    private string name { get; set; }
     private int doblons { get; set; }
-    private int defesa { get; set;}
-    private int atack { get; set;}
-    private int heath { get; set;}
+    private int defesa { get; set; }
+    private int atack { get; set; }
+    private int heath { get; set; }
 
     //Abaixo estão os metodos para que sejam retornados os valores contidos nos atributos
     public void ObterDados(string nome)
@@ -250,7 +258,7 @@ class Player
     }
     public int getDefesa()
     {
-        return this.defesa; 
+        return this.defesa;
     }
     public int getAtack()
     {
@@ -278,7 +286,8 @@ class Player
         this.atack = dn;
         return this.atack;
     }
-    public int AlteraDefesa(int def) {
+    public int AlteraDefesa(int def)
+    {
         this.defesa = def;
         return this.defesa;
     }
@@ -291,10 +300,9 @@ class Player
 
 class Compras : Player
 {
-    public static void comprasplay()
+    public static void comprasplay(Player jogador)
     {
-        Player player = new Player();
-        int doblons = 20, vida = 100, dano = 5, defesa = 0;
+        int doblons, vida, dano, defesa;
         Loja.Negocios();
         Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro\n6. Flor Rubra");
         Console.Write("Produto: ");
@@ -303,13 +311,13 @@ class Compras : Player
         {
             if (compra == 1)
             {
-                if (doblons >= 10) // Verifica se há moedas suficientes
+                if (jogador.getDoblons() >= 10) // Verifica se há moedas suficientes
                 {
-                    doblons -= 10; // Subtrai as moedas gastas
-                    dano += 20; // Aumenta o dano
+                    doblons = -10; // Subtrai as moedas gastas
+                    dano = +20; // Aumenta o dano
                     //Atualiza os valores
-                    player.AlteraDoblons(doblons);
-                    player.AlteraDano(dano);
+                    jogador.AlteraDoblons(doblons);
+                    jogador.AlteraDano(dano);
 
                     Console.WriteLine("Você comprou uma Espada, gastou 20 Doblons e aumentou seu dano para " + dano);
                 }
@@ -320,13 +328,13 @@ class Compras : Player
             }
             else if (compra == 2)
             {
-                if (doblons >= 3)
+                if (jogador.getDoblons() >= 3)
                 {
-                    doblons -= 3; //Subtrai os doblons
-                    dano += 10; //Aumenta o dano
+                    doblons = -3; //Subtrai os doblons
+                    dano = +10; //Aumenta o dano
                     //Atualiza os valores
-                    player.AlteraDoblons(doblons);
-                    player.AlteraDano(dano);
+                    jogador.AlteraDoblons(doblons);
+                    jogador.AlteraDano(dano);
 
                     Console.WriteLine("Você comprou uma Adaga, gastou 5 Doblons e aumentou seu dano para " + dano);
                 }
@@ -337,13 +345,13 @@ class Compras : Player
             }
             else if (compra == 3)
             {
-                if (doblons >= 25)
+                if (jogador.getDoblons() >= 25)
                 {
-                    doblons -= 25; //Subtrai os doblons
-                    defesa += 100; //Aumenta a defesa
+                    doblons = -25; //Subtrai os doblons
+                    defesa = +100; //Aumenta a defesa
                     //Atualiza os valores
-                    player.AlteraDoblons(doblons);
-                    player.AlteraDefesa(defesa);
+                    jogador.AlteraDoblons(doblons);
+                    jogador.AlteraDefesa(defesa);
 
                     Console.WriteLine("Você comprou um set de Armadura, gastou 25 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -354,13 +362,13 @@ class Compras : Player
             }
             else if (compra == 4)
             {
-                if (doblons >= 5)
+                if (jogador.getDoblons() >= 5)
                 {
-                    doblons -= 5; //Subtrai os doblons
-                    defesa += 25; //Aumenta a defesa
+                    doblons = -5; //Subtrai os doblons
+                    defesa = +25; //Aumenta a defesa
                     //Atualiza os valores
-                    player.AlteraDoblons(doblons);
-                    player.AlteraDefesa(defesa);
+                    jogador.AlteraDoblons(doblons);
+                    jogador.AlteraDefesa(defesa);
 
                     Console.WriteLine("Você comprou um peitoral de couro, gastou 5 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -371,13 +379,13 @@ class Compras : Player
             }
             else if (compra == 5)
             {
-                if (doblons >= 10)
+                if (jogador.getDoblons() >= 10)
                 {
-                    doblons -= 10; //Subtrai os doblons
-                    defesa += 50; //Aumenta a defesa
+                    doblons = -10; //Subtrai os doblons
+                    defesa = +50; //Aumenta a defesa
                     //Atualiza os valores
-                    player.AlteraDoblons(doblons);
-                    player.AlteraDefesa(defesa);
+                    jogador.AlteraDoblons(doblons);
+                    jogador.AlteraDefesa(defesa);
 
                     Console.WriteLine("Você comprou um peitoral de ferro, gastou 10 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -388,13 +396,13 @@ class Compras : Player
             }
             else if (compra == 6)
             {
-                if (doblons >= 5)
+                if (jogador.getDoblons() >= 5)
                 {
-                    doblons -= 5; //Subtrai os doblons
-                    vida += 25; //Aumenta a vida
+                    doblons = -5; //Subtrai os doblons
+                    vida = +25; //Aumenta a vida
                     //Atualiza os valores
-                    player.AlteraDoblons(doblons);
-                    player.AlteraDefesa(vida);
+                    jogador.AlteraDoblons(doblons);
+                    jogador.AlteraDefesa(vida);
 
                     Console.WriteLine("Você comprou uma flor rubra, gastou 5 Doblons e aumentou sua vida para " + vida);
                 }
@@ -485,7 +493,7 @@ class Loja
     {
         string[] item1 = { "Espada", "Dano: 20", "Doblons: -10" };
         string[] item2 = { "Adaga", "Dano: 10", "Doblons: -3" };
-        string[] item3 = { "Set de Armadura",   "Defessa: 100", "Doblons: -25" };
+        string[] item3 = { "Set de Armadura", "Defessa: 100", "Doblons: -25" };
         string[] item4 = { "Peitoral de Couro", "Defesa: 25", "Doblons: -5" };
         string[] item5 = { "Peitoral de Ferro", "Defesa: 50", "Doblons: -10" };
         string[] item6 = { "Flor Rubra", "Vida: +25", "Doblons: -5" };
@@ -526,14 +534,19 @@ class Principal
         Console.WriteLine("                              A    S O M B R A    D O    C O R V O");
         Separador();
 
-        inicio1: //Bloco criado para que quando o usuário informar uma tecla não esperada ele tente novamente
+    inicio1: //Bloco criado para que quando o usuário informar uma tecla não esperada ele tente novamente
+
+        Player jogador = new Player();
+        Console.Write("Digite seu nome: ");
+        string nomeplayer = Console.ReadLine();
+        jogador.ObterDados(nomeplayer);
 
         Console.Write("Digite 1 para iniciar o game: ");
         iniciogame = Console.ReadLine();
 
         if (iniciogame == "1")
         {
-            Game.Starting();
+            Game.Starting(jogador);
         }
         else
         {
