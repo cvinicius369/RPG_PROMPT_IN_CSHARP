@@ -108,7 +108,7 @@ class Dialogo2 : Dialogo
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
-    public static void Starting(Player jogador)
+    public static void Starting(Player jogador)//Método recebendo os atributos
     {
 
         Console.WriteLine("Jogo Iniciado");
@@ -127,13 +127,13 @@ class Game
             Console.WriteLine("Doblons: " + jogador.getDoblons());
             Principal.Separador();
             Console.ReadKey();
-            Inicio(jogador);
+            Inicio(jogador);//lançando os atributos para a função Inicio()
         }
         else
         {
             if (action == "2")
             {
-                Inicio(jogador);
+                Inicio(jogador);//lançando os atributos para a função Inicio()
             }
             else
             {
@@ -149,14 +149,18 @@ class Game
             }
         }
     }
-    public static void Inicio(Player jogador)
+    public static void Inicio(Player jogador)//Função inicio recebendo os atributos
     {
         Dialogo.poem1();
         Dialogo.presents1();
+
+        menubattle1:
+        
         Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
         string newaction = Console.ReadLine();
         Principal.Separador();
 
+        //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
         if (newaction == "1")
         {
             Compras.comprasplay(jogador);
@@ -171,6 +175,7 @@ class Game
             else
             {
                 Console.WriteLine("Acao Invalida!");
+                goto menubattle1;
             }
         }
     }
@@ -182,28 +187,28 @@ class Game
 
         //Instanciacao e atribuição de Sollis
         Personagens sollis = new Personagens();
+        sollis.ObterDadosSollis();
         string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
-        int vidasollis = sollis.AlteraVidaSollis(200), defesasollis = sollis.AlteraDefesaSollis(10), danosollis = sollis.AlteraDanoSollis(80), doblonssollis = sollis.AlteraDoblonsSollis(10);
+        int vidas =  sollis.getVidaSollis(), defesasollis = sollis.getDefesaSollis(), danosollis = sollis.getDanoSollis(), doblonssollis = sollis.getDoblonsSollis();
 
         int dado = Principal.Jogadado();
 
-        while (vidaplayer > 0 && vidasollis > 0)
+        while (jogador.getHeath() > 0 && sollis.getVidaSollis() > 0)
         {
             int dado1 = Principal.Jogadado();
             string? option1;
             if (dado1 > 50)
             {
                 Console.WriteLine("SORTE: Você ataca primneiro!");
-                vidasollis -= jogador.getAtack() - defesasollis;
-                Console.WriteLine($"Oponente: {nomesollis} ficou com: {vidasollis} de vida após o ataque de: {nome} que teve: {jogador.getAtack()} de dano");
+                vidas = sollis.getVidaSollis() - (jogador.getAtack() - sollis.getDefesaSollis());
+                Console.WriteLine($"Oponente: {nomesollis} ficou com: {sollis.getVidaSollis()} de vida após o ataque de: {nome} que teve: {jogador.getAtack()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
             else
             {
                 Console.WriteLine("Inimigo começa primeiro!");
-                vidaplayer -= danosollis - jogador.getDefesa();
-                jogador.AlteraVida(vidaplayer);
+                jogador.AlteraVida(jogador.getHeath() - danosollis);
                 Console.WriteLine($"{nome} ficou com: {jogador.getHeath()} De vida após o ataque de: {nomesollis} que teve: {danosollis} de dano");
                 Console.ReadKey();
                 Principal.Separador();
@@ -222,7 +227,7 @@ class Game
         {
             Console.WriteLine("Você perdeu! O oponente venceu.");
         }
-        else if (vidasollis <= 0)
+        else if (sollis.getVidaSollis() <= 0)
         {
             Console.WriteLine("Parabéns! Você venceu o oponente.");
         }
@@ -302,7 +307,7 @@ class Compras : Player
 {
     public static void comprasplay(Player jogador)
     {
-        int doblons, vida, dano, defesa;
+        int doblons, vida, dano, defesa, balanco;
         Loja.Negocios();
         Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro\n6. Flor Rubra");
         Console.Write("Produto: ");
@@ -313,8 +318,8 @@ class Compras : Player
             {
                 if (jogador.getDoblons() >= 10) // Verifica se há moedas suficientes
                 {
-                    doblons = -10; // Subtrai as moedas gastas
-                    dano = +20; // Aumenta o dano
+                    doblons = jogador.getDoblons() - 10; // Subtrai as moedas gastas
+                    dano = jogador.getAtack() + 20; // Aumenta o dano
                     //Atualiza os valores
                     jogador.AlteraDoblons(doblons);
                     jogador.AlteraDano(dano);
@@ -330,8 +335,8 @@ class Compras : Player
             {
                 if (jogador.getDoblons() >= 3)
                 {
-                    doblons = -3; //Subtrai os doblons
-                    dano = +10; //Aumenta o dano
+                    doblons = jogador.getDoblons() - 3; //Subtrai os doblons
+                    dano = jogador.getAtack() + 10; //Aumenta o dano
                     //Atualiza os valores
                     jogador.AlteraDoblons(doblons);
                     jogador.AlteraDano(dano);
@@ -347,8 +352,8 @@ class Compras : Player
             {
                 if (jogador.getDoblons() >= 25)
                 {
-                    doblons = -25; //Subtrai os doblons
-                    defesa = +100; //Aumenta a defesa
+                    doblons = jogador.getDoblons() - 25; //Subtrai os doblons
+                    defesa = jogador.getDefesa() + 100; //Aumenta a defesa
                     //Atualiza os valores
                     jogador.AlteraDoblons(doblons);
                     jogador.AlteraDefesa(defesa);
@@ -364,8 +369,8 @@ class Compras : Player
             {
                 if (jogador.getDoblons() >= 5)
                 {
-                    doblons = -5; //Subtrai os doblons
-                    defesa = +25; //Aumenta a defesa
+                    doblons = jogador.getDoblons() - 5; //Subtrai os doblons
+                    defesa = jogador.getDefesa() + 25; //Aumenta a defesa
                     //Atualiza os valores
                     jogador.AlteraDoblons(doblons);
                     jogador.AlteraDefesa(defesa);
@@ -381,8 +386,8 @@ class Compras : Player
             {
                 if (jogador.getDoblons() >= 10)
                 {
-                    doblons = -10; //Subtrai os doblons
-                    defesa = +50; //Aumenta a defesa
+                    doblons = jogador.getDoblons() - 10; //Subtrai os doblons
+                    defesa = jogador.getDefesa() + 50; //Aumenta a defesa
                     //Atualiza os valores
                     jogador.AlteraDoblons(doblons);
                     jogador.AlteraDefesa(defesa);
@@ -398,8 +403,8 @@ class Compras : Player
             {
                 if (jogador.getDoblons() >= 5)
                 {
-                    doblons = -5; //Subtrai os doblons
-                    vida = +25; //Aumenta a vida
+                    doblons = jogador.getDoblons() - 5; //Subtrai os doblons
+                    vida = jogador.getHeath() + 25; //Aumenta a vida
                     //Atualiza os valores
                     jogador.AlteraDoblons(doblons);
                     jogador.AlteraDefesa(vida);
@@ -432,7 +437,7 @@ class Personagens
 {
     private string sollis;
     private int doblonssollis, danosollis, vidasollis, defesasollis;
-    public void ObterDadosPersons()
+    public void ObterDadosSollis()
     {
         this.sollis = "Mestre Sollis";
         this.defesasollis = 10;
@@ -491,11 +496,11 @@ class Loja
 {
     public static void Negocios()
     {
-        string[] item1 = { "Espada", "Dano: 20", "Doblons: -10" };
-        string[] item2 = { "Adaga", "Dano: 10", "Doblons: -3" };
-        string[] item3 = { "Set de Armadura", "Defessa: 100", "Doblons: -25" };
-        string[] item4 = { "Peitoral de Couro", "Defesa: 25", "Doblons: -5" };
-        string[] item5 = { "Peitoral de Ferro", "Defesa: 50", "Doblons: -10" };
+        string[] item1 = { "Espada", "Dano: +20", "Doblons: -10" };
+        string[] item2 = { "Adaga", "Dano: +10", "Doblons: -3" };
+        string[] item3 = { "Set de Armadura", "Defessa: +100", "Doblons: -25" };
+        string[] item4 = { "Peitoral de Couro", "Defesa: +25", "Doblons: -5" };
+        string[] item5 = { "Peitoral de Ferro", "Defesa: +50", "Doblons: -10" };
         string[] item6 = { "Flor Rubra", "Vida: +25", "Doblons: -5" };
 
         Console.WriteLine("Abaixo está a tabela dos itens disponíveis: ");
@@ -536,6 +541,7 @@ class Principal
 
     inicio1: //Bloco criado para que quando o usuário informar uma tecla não esperada ele tente novamente
 
+        //Criacao do objeto jogador para que os atributos sejam reutilizados nas classes futuras
         Player jogador = new Player();
         Console.Write("Digite seu nome: ");
         string nomeplayer = Console.ReadLine();
@@ -546,7 +552,7 @@ class Principal
 
         if (iniciogame == "1")
         {
-            Game.Starting(jogador);
+            Game.Starting(jogador);//lançando os dados do player para a classe Game.Starting
         }
         else
         {
