@@ -3,15 +3,6 @@
 //Name Game: A Sombra do Corvo
 //E-mail: vinicius182102@gmail.com
 //------------------------------------------------------------------------------| Atributos do sistema
-using System;
-using System.Collections.Specialized;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
-using static System.Net.Mime.MediaTypeNames;
 //------------------------------------------------------------------------------| Classe Dialogo
 class Dialogo
 {
@@ -115,7 +106,7 @@ class Game
 
         Console.WriteLine("Bem Vindo " + jogador.getName() + "\nPara apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
         Principal.Separador();
-    menu:
+
         string action = Console.ReadLine();
 
         if (action == "1")
@@ -138,13 +129,14 @@ class Game
             else
             {
                 if (action == "3")
-                {
+                { 
                     Console.WriteLine("Saindo . . .");
                 }
                 else
                 {
                     Console.WriteLine("Comando não esperado!");
-                    goto menu;
+                    Console.ReadKey();
+                    Starting(jogador);
                 }
             }
         }
@@ -226,11 +218,23 @@ class Game
         if (jogador.getHeath() <= 0)
         {
             Console.WriteLine("Você perdeu! O oponente venceu.");
+            Fase_1(jogador);
         }
         else if (sollis.getVidaSollis() <= 0)
         {
             Console.WriteLine("Parabéns! Você venceu o oponente.");
+            Fase_1(jogador);
         }
+    }
+    public static void Fase_1(Player jogador) {
+        // Aqui será a primeira fase onde o player irá realmente jogar uma batalha e se vencer poderá ir para a proxima fase
+        // Se perder, voltará para o inicio.
+        // Esse bloco de código será o último neste namespace, as proximas fases serão em outro namespace
+
+        Dialogo2.Presents3();
+        jogador.AlteraDefesa(jogador.getDefesa() + 25);
+        jogador.AlteraVida(jogador.getHeath() + 25);
+        Console.WriteLine("Parabens! Voce ganhou +25 de vida e +25 de defesa!");
     }
 
 }
@@ -539,8 +543,6 @@ class Principal
         Console.WriteLine("                              A    S O M B R A    D O    C O R V O");
         Separador();
 
-    inicio1: //Bloco criado para que quando o usuário informar uma tecla não esperada ele tente novamente
-
         //Criacao do objeto jogador para que os atributos sejam reutilizados nas classes futuras
         Player jogador = new Player();
         Console.Write("Digite seu nome: ");
@@ -557,7 +559,9 @@ class Principal
         else
         {
             Console.WriteLine("Tecla não esperada!");
-            goto inicio1;
+            Console.ReadKey();
+            Console.Clear();
+            Main(args);
         }
     }
 };
