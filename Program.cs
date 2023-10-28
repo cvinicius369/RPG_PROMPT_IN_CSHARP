@@ -145,8 +145,6 @@ class Game
     {
         Dialogo.poem1();
         Dialogo.presents1();
-
-        menubattle1:
         
         Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
         string newaction = Console.ReadLine();
@@ -167,7 +165,9 @@ class Game
             else
             {
                 Console.WriteLine("Acao Invalida!");
-                goto menubattle1;
+                Console.ReadKey();
+                Console.Clear();
+                Inicio(jogador);
             }
         }
     }
