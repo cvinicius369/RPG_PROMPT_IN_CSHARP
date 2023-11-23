@@ -6,6 +6,8 @@
 //------------------------------------------------------------------------------| Classe Dialogo
 class Dialogo
 {
+    //A classe dialogo foi feita exclusivamente para criar os primeiros dialogos ente o player e os personagens, cada função é uma fala diferente de um personagem diferente
+    //O jogo começa com a primeira função da classe, poem1() que eh onde será impresso o poema do inicio do livro
     public static string? nome;
     public static void poem1()
     {
@@ -55,7 +57,8 @@ class Dialogo
             ImprimirComAtraso(texto, 50);
         }
     }
-
+    //A função ImprimirComAtraso() serve para que o texto seja impresso com atraso dando a impressão que o personagem está falando realmente com o player, ao invés de algo robótico
+    //Essa impressão com artaso ocorre a partir da estrutura de repetição foreach() que pegará a fala do personagem e imprimir um caractere por vez
     private static void ImprimirComAtraso(string texto, int atraso)
     {
         foreach (char c in texto)
@@ -496,8 +499,9 @@ class Personagens
     }
 }
 //------------------------------------------------------------------------------| Classe Loja
+//Estou pensando sériamente em excluir essa classe e implementar essa tabela em uma classe já existente, uma vez que a função dela é apenas mostrar os valores dos itens
 class Loja
-{
+{ 
     public static void Negocios()
     {
         string[] item1 = { "Espada", "Dano: +20", "Doblons: -10" };
@@ -552,6 +556,10 @@ class Principal
         Console.Write("Digite 1 para iniciar o game: ");
         iniciogame = Console.ReadLine();
 
+        //A estrutura condicional abaixo irá validar o dado que o usuário informou e se estiver correto o código irá para a classe game() onde o jogo de fato se inicia
+        //Caso nao seja um dado válido, o usuário será informado, e após clicar em qualquer tecla (função ReadKey()), a tela será limpa através da função (Clear())
+        //Em seguida a função Main() irá repetir, fazendo o usuário voltar ao inicio
+
         if (iniciogame == "1")
         {
             Game.Starting(jogador);//lançando os dados do player para a classe Game.Starting
@@ -565,8 +573,3 @@ class Principal
         }
     }
 };
-/*
-    //Classe principal, onde será feito o Menu, e toda a apresentação do game
-    //A partir dela o usuario decide se inicia o game ou se analisa os atributos antes do inicio do game
-    //Ainda está em desenvolvimento.
-*/
