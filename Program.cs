@@ -1,9 +1,14 @@
-//By: Caio Vinicius
-//Project: RPG in C# (C-Sharp)
-//Name Game: A Sombra do Corvo
-//E-mail: vinicius182102@gmail.com
-//------------------------------------------------------------------------------| Atributos do sistema
-//------------------------------------------------------------------------------| Classe Dialogo
+/*By:         Caio Vinicius
+* Project:    RPG in C# (C-Sharp)
+* Name Game:  A Sombra do Corvo
+*E-mail:      vinicius182102@gmail.com
+*/
+//---| Abaixo são as bibliotecas e outras importações para que o jogo funcione corretamente.
+using System;
+/*
+*---| A Classe Dialogo abaixo será responsável pelo dialogo no jogo, onde em alguns casos como conversas entre os personagens
+*     os caracteres serão impressos um por um dando a impressão de dialogo real.
+*/
 class Dialogo
 {
     //A classe dialogo foi feita exclusivamente para criar os primeiros dialogos ente o player e os personagens, cada função é uma fala diferente de um personagem diferente
@@ -57,7 +62,7 @@ class Dialogo
             ImprimirComAtraso(texto, 50);
         }
     }
-    //A função ImprimirComAtraso() serve para que o texto seja impresso com atraso dando a impressão que o personagem está falando realmente com o player, ao invés de algo robótico
+    //ImprimirComAtraso() serve para que o texto seja impresso com atraso dando a impressão que o personagem está falando realmente com o player, ao invés de algo robótico
     //Essa impressão com artaso ocorre a partir da estrutura de repetição foreach() que pegará a fala do personagem e imprimir um caractere por vez
     private static void ImprimirComAtraso(string texto, int atraso)
     {
@@ -95,10 +100,6 @@ class Dialogo2 : Dialogo
         Console.ReadKey();
     }
 };
-/*
-    //Nas classes acima são feitos os dialogos que criam a historia do game
-    //Alem de que o player pode interagir com os personagens
-*/
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
