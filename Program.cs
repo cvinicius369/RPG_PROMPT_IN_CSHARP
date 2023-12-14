@@ -264,10 +264,10 @@ class Player
     //Daqui para baixo são metodos para alterar os valores, defini como int e dei return para que os valores sejam salvos
     //caso contrario retornarei para void e retirarei os returns
     public int AlteraDoblons(int dob)          {this.doblons = dob; return this.doblons;}
-    public int AlteraVida(int hp)              {this.heath = hp; return this.heath;}
-    public int AlteraDano(int dn)              {this.atack = dn; return this.atack;}
-    public int AlteraDefesa(int def)           {this.defesa = def; return this.defesa;}
-    public string AlteraNomePlayer(string nmp) {this.name = nmp; return this.name;}
+    public int AlteraVida(int hp)              {this.heath = hp; return this.heath;     }
+    public int AlteraDano(int dn)              {this.atack = dn; return this.atack;     }
+    public int AlteraDefesa(int def)           {this.defesa = def; return this.defesa;  }
+    public string AlteraNomePlayer(string nmp) {this.name = nmp; return this.name;      }
 }
 
 class Compras : Player
