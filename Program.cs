@@ -32,10 +32,7 @@ class Dialogo
             "- Meu nome...\n"
         };
 
-        foreach (string texto in textos)
-        {
-            ImprimirComAtraso(texto, 50);
-        }
+        foreach (string texto in textos) { ImprimirComAtraso(texto, 50); }
         Console.Write("Digite seu nome: ");
         nome = Console.ReadLine();
 
@@ -45,10 +42,7 @@ class Dialogo
             ImprimirComAtraso(textonome, 50);
             Console.ReadKey();
         }
-        else
-        {
-            Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^");
-        }
+        else { Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^"); }
 
         Principal.Separador();
         string[] textos2 = new string[]
@@ -62,7 +56,7 @@ class Dialogo
             ImprimirComAtraso(texto, 50);
         }
     }
-    //ImprimirComAtraso() serve para que o texto seja impresso com atraso dando a impressão que o personagem está falando realmente com o player, ao invés de algo robótico
+    //A função ImprimirComAtraso() serve para que o texto seja impresso com atraso dando a impressão que o personagem está falando realmente com o player, ao invés de algo robótico
     //Essa impressão com artaso ocorre a partir da estrutura de repetição foreach() que pegará a fala do personagem e imprimir um caractere por vez
     private static void ImprimirComAtraso(string texto, int atraso)
     {
@@ -100,6 +94,10 @@ class Dialogo2 : Dialogo
         Console.ReadKey();
     }
 };
+/*
+    //Nas classes acima são feitos os dialogos que criam a historia do game
+    //Alem de que o player pode interagir com os personagens
+*/
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
@@ -115,10 +113,10 @@ class Game
 
         if (action == "1")
         {
-            Console.WriteLine("Nome: "    + jogador.getName());
-            Console.WriteLine("Vida: "    + jogador.getHeath());
-            Console.WriteLine("Dano: "    + jogador.getAtack());
-            Console.WriteLine("Defesa: "  + jogador.getDefesa());
+            Console.WriteLine("Nome: " + jogador.getName());
+            Console.WriteLine("Vida: " + jogador.getHeath());
+            Console.WriteLine("Dano: " + jogador.getAtack());
+            Console.WriteLine("Defesa: " + jogador.getDefesa());
             Console.WriteLine("Doblons: " + jogador.getDoblons());
             Principal.Separador();
             Console.ReadKey();
@@ -132,10 +130,7 @@ class Game
             }
             else
             {
-                if (action == "3")
-                { 
-                    Console.WriteLine("Saindo . . .");
-                }
+                if (action == "3") { Console.WriteLine("Saindo . . ."); }
                 else
                 {
                     Console.WriteLine("Comando não esperado!");
@@ -162,10 +157,7 @@ class Game
         }
         else
         {
-            if (newaction == "2")
-            {
-                BattleSollis1(jogador);
-            }
+            if (newaction == "2") { BattleSollis1(jogador); }
             else
             {
                 Console.WriteLine("Acao Invalida!");
@@ -237,8 +229,10 @@ class Game
 
         Dialogo2.Presents3();
         jogador.AlteraDefesa(jogador.getDefesa() + 25);
-        jogador.AlteraVida(jogador.getHeath()    + 25);
+        jogador.AlteraVida(jogador.getHeath() + 25);
         Console.WriteLine("Parabens! Voce ganhou +25 de vida e +25 de defesa!");
+
+        BattleF1.Battle1(jogador);
     }
 
 }
@@ -253,21 +247,27 @@ class Player
     private int heath   { get; set; }
 
     //Abaixo estão os metodos para que sejam retornados os valores contidos nos atributos
-    public void ObterDados(string nome) 
-    {this.name = nome; this.doblons = 20; this.defesa = 0; this.atack = 5; this.heath = 100;}
-    public string getName() { return this.name;   }
-    public int getDoblons() { return this.doblons;}
-    public int getDefesa()  { return this.defesa; }
-    public int getAtack()   { return this.atack;  }
-    public int getHeath()   { return this.heath;  }
+    public void ObterDados(string nome)
+    {
+        this.name    = nome;
+        this.doblons = 20;
+        this.defesa  = 0;
+        this.atack   = 5;
+        this.heath   = 100;
+    }
+    public string getName() { return this.name;    }
+    public int getDoblons() { return this.doblons; }
+    public int getDefesa()  { return this.defesa;  }
+    public int getAtack()   { return this.atack;   }
+    public int getHeath()   { return this.heath;   }
 
     //Daqui para baixo são metodos para alterar os valores, defini como int e dei return para que os valores sejam salvos
     //caso contrario retornarei para void e retirarei os returns
-    public int AlteraDoblons(int dob)          {this.doblons = dob; return this.doblons;}
-    public int AlteraVida(int hp)              {this.heath = hp; return this.heath;     }
-    public int AlteraDano(int dn)              {this.atack = dn; return this.atack;     }
-    public int AlteraDefesa(int def)           {this.defesa = def; return this.defesa;  }
-    public string AlteraNomePlayer(string nmp) {this.name = nmp; return this.name;      }
+    public int AlteraDoblons(int dob)          { this.doblons = dob; return this.doblons; }
+    public int AlteraVida(int hp)              { this.heath = hp; return this.heath;      }
+    public int AlteraDano(int dn)              { this.atack = dn; return this.atack;      }
+    public int AlteraDefesa(int def)           { this.defesa = def; return this.defesa;   }
+    public string AlteraNomePlayer(string nmp) { this.name = nmp; return this.name;       }
 }
 
 class Compras : Player
@@ -293,10 +293,7 @@ class Compras : Player
 
                     Console.WriteLine("Você comprou uma Espada, gastou 20 Doblons e aumentou seu dano para " + dano);
                 }
-                else
-                {
-                    Console.WriteLine("Doblons Insuficientes");
-                }
+                else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 2)
             {
@@ -310,10 +307,7 @@ class Compras : Player
 
                     Console.WriteLine("Você comprou uma Adaga, gastou 5 Doblons e aumentou seu dano para " + dano);
                 }
-                else
-                {
-                    Console.WriteLine("Doblons Insuficientes");
-                }
+                else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 3)
             {
@@ -327,10 +321,7 @@ class Compras : Player
 
                     Console.WriteLine("Você comprou um set de Armadura, gastou 25 Doblons e aumentou sua defesa para " + defesa);
                 }
-                else
-                {
-                    Console.WriteLine("Doblons Insuficientes");
-                }
+                else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 4)
             {
@@ -344,10 +335,7 @@ class Compras : Player
 
                     Console.WriteLine("Você comprou um peitoral de couro, gastou 5 Doblons e aumentou sua defesa para " + defesa);
                 }
-                else
-                {
-                    Console.WriteLine("Doblons Insuficientes");
-                }
+                else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 5)
             {
@@ -361,10 +349,7 @@ class Compras : Player
 
                     Console.WriteLine("Você comprou um peitoral de ferro, gastou 10 Doblons e aumentou sua defesa para " + defesa);
                 }
-                else
-                {
-                    Console.WriteLine("Doblons Insuficientes");
-                }
+                else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 6)
             {
@@ -378,13 +363,10 @@ class Compras : Player
 
                     Console.WriteLine("Você comprou uma flor rubra, gastou 5 Doblons e aumentou sua vida para " + vida);
                 }
-                else {Console.WriteLine("Doblons Insuficientes");}
+                else { Console.WriteLine("Doblons Insuficientes"); }
             }
         }
-        else
-        {
-            Console.WriteLine("Entrada inválida. Por favor, insira um número válido.");
-        }
+        else { Console.WriteLine("Entrada inválida. Por favor, insira um número válido."); }
         Principal.Separador();
     }
 };
@@ -404,22 +386,21 @@ class Personagens
     public void ObterDadosSollis()
     {
         this.sollis        = "Mestre Sollis";
-        this.vidasollis    = 200;
-        this.danosollis    = 80;
         this.defesasollis  = 10;
         this.doblonssollis = 10;
+        this.vidasollis    = 200;
+        this.danosollis    = 80;
     }
-    public string getNomeSollis() {return this.sollis;        }
-    public int getVidaSollis()    {return this.vidasollis;    }
-    public int getDoblonsSollis() {return this.doblonssollis; }
-    public int getDefesaSollis()  {return this.defesasollis;  }
-    public int getDanoSollis()    {return this.danosollis;    }
-    
-    public int AlteraDanoSollis(int dnsol)   { this.danosollis = dnsol; return this.danosollis;    }
-    public int AlteraVidaSollis(int vd)      { this.vidasollis = vd; return this.vidasollis;       }
-    public int AlteraDefesaSollis(int defes) { this.defesasollis = defes; return this.defesasollis;}
-    public int AlteraDoblonsSollis(int dob)  { this.doblonssollis = dob; return this.doblonssollis;}
-    public string AlteraNomeSollis(string nm){ this.sollis = nm; return this.sollis;               }
+    public string getNomeSollis() { return this.sollis;        }
+    public int getVidaSollis()    { return this.vidasollis;    }
+    public int getDoblonsSollis() { return this.doblonssollis; }
+    public int getDefesaSollis()  { return this.defesasollis;  }
+    public int getDanoSollis()    { return this.danosollis;    }
+    public int AlteraDanoSollis(int dnsol)    { this.danosollis = dnsol; return this.danosollis;     }
+    public int AlteraVidaSollis(int vd)       { this.vidasollis = vd; return this.vidasollis;        }
+    public int AlteraDefesaSollis(int defes)  { this.defesasollis = defes; return this.defesasollis; }
+    public int AlteraDoblonsSollis(int dob)   { this.doblonssollis = dob; return this.doblonssollis; }
+    public string AlteraNomeSollis(string nm) { this.sollis = nm; return this.sollis;                }
 }
 //------------------------------------------------------------------------------| Classe Loja
 //Estou pensando sériamente em excluir essa classe e implementar essa tabela em uma classe já existente, uma vez que a função dela é apenas mostrar os valores dos itens
