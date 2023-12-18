@@ -232,7 +232,7 @@ class Game
         jogador.AlteraVida(jogador.getHeath() + 25);
         Console.WriteLine("Parabens! Voce ganhou +25 de vida e +25 de defesa!");
 
-        BattleF1.Battle1(jogador);
+        Battles.Battle_F1.Battle1(jogador); //Abrindo o namespace, em seguida a classe e só então a função
     }
 
 }
