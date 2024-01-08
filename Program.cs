@@ -228,9 +228,11 @@ class Game
         // Esse bloco de código será o último neste namespace, as proximas fases serão em outro namespace
 
         Dialogo2.Presents3();
-        jogador.AlteraDefesa(jogador.getDefesa() + 25);
-        jogador.AlteraVida(jogador.getHeath() + 25);
-        Console.WriteLine("Parabens! Voce ganhou +25 de vida e +25 de defesa!");
+        
+        jogador.AlteraDefesa(jogador.getDefesa() - jogador.getDefesa() + 125);
+        jogador.AlteraVida(jogador.getHeath() - jogador.getHeath() + 25);
+        jogador.AlteraDoblons(jogador.getDoblons() + 50);
+        Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa e 50 doblons!");
 
         Battles.Battle_F1.Battle1(jogador); //Abrindo o namespace, em seguida a classe e só então a função
     }
