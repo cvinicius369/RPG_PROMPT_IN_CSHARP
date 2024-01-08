@@ -196,8 +196,8 @@ class Game
             else
             {
                 Console.WriteLine("Inimigo começa primeiro!");
-                jogador.AlteraVida(jogador.getHeath() - danosollis);
-                Console.WriteLine($"{nome} ficou com: {jogador.getHeath()} De vida após o ataque de: {nomesollis} que teve: {danosollis} de dano");
+                jogador.AlteraVida(jogador.getHeath() - sollis.getDanoSollis());
+                Console.WriteLine($"{nome} ficou com: {jogador.getHeath()} De vida após o ataque de: {nomesollis} que teve: {sollis.getDanoSollis()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
@@ -229,8 +229,8 @@ class Game
 
         Dialogo2.Presents3();
         
-        jogador.AlteraDefesa(jogador.getDefesa() - jogador.getDefesa() + 125);
-        jogador.AlteraVida(jogador.getHeath() - jogador.getHeath() + 25);
+        jogador.AlteraDefesa(jogador.getDefesa() - jogador.getDefesa() + 25);
+        jogador.AlteraVida(jogador.getHeath() - jogador.getHeath() + 125);
         jogador.AlteraDoblons(jogador.getDoblons() + 50);
         Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa e 50 doblons!");
 
@@ -360,8 +360,8 @@ class Compras : Player
                     doblons = jogador.getDoblons() - 5; //Subtrai os doblons
                     vida = jogador.getHeath() + 25; //Aumenta a vida
                     //Atualiza os valores
-                    jogador.AlteraDoblons(doblons);
-                    jogador.AlteraDefesa(vida);
+                    jogador.AlteraDoblons(jogador.getDoblons() -  5);
+                    jogador.AlteraDefesa(jogador.getDefesa()   + 25);
 
                     Console.WriteLine("Você comprou uma flor rubra, gastou 5 Doblons e aumentou sua vida para " + vida);
                 }
