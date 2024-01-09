@@ -290,10 +290,10 @@ class Compras : Player
                     doblons = jogador.getDoblons() - 10; // Subtrai as moedas gastas
                     dano = jogador.getAtack() + 20; // Aumenta o dano
                     //Atualiza os valores
-                    jogador.AlteraDoblons(doblons);
-                    jogador.AlteraDano(dano);
+                    jogador.AlteraDoblons(jogador.getDoblons() - 10);
+                    jogador.AlteraDano(jogador.getAtack() + 20);
 
-                    Console.WriteLine("Você comprou uma Espada, gastou 20 Doblons e aumentou seu dano para " + dano);
+                    Console.WriteLine($"Você comprou uma Espada, gastou {doblons} Doblons e aumentou seu dano para {dano}");
                 }
                 else { Console.WriteLine("Doblons Insuficientes"); }
             }
@@ -304,10 +304,10 @@ class Compras : Player
                     doblons = jogador.getDoblons() - 3; //Subtrai os doblons
                     dano = jogador.getAtack() + 10; //Aumenta o dano
                     //Atualiza os valores
-                    jogador.AlteraDoblons(doblons);
-                    jogador.AlteraDano(dano);
+                    jogador.AlteraDoblons(jogador.getDoblons() - 3);
+                    jogador.AlteraDano(jogador.getAtack() + 10);
 
-                    Console.WriteLine("Você comprou uma Adaga, gastou 5 Doblons e aumentou seu dano para " + dano);
+                    Console.WriteLine($"Você comprou uma Adaga, gastou {doblons} Doblons e aumentou seu dano para {dano}");
                 }
                 else { Console.WriteLine("Doblons Insuficientes"); }
             }
@@ -318,8 +318,8 @@ class Compras : Player
                     doblons = jogador.getDoblons() - 25; //Subtrai os doblons
                     defesa = jogador.getDefesa() + 100; //Aumenta a defesa
                     //Atualiza os valores
-                    jogador.AlteraDoblons(doblons);
-                    jogador.AlteraDefesa(defesa);
+                    jogador.AlteraDoblons(jogador.getDoblons() - 25);
+                    jogador.AlteraDefesa(jogador.getDefesa() + 100);
 
                     Console.WriteLine("Você comprou um set de Armadura, gastou 25 Doblons e aumentou sua defesa para " + defesa);
                 }
@@ -332,10 +332,10 @@ class Compras : Player
                     doblons = jogador.getDoblons() - 5; //Subtrai os doblons
                     defesa = jogador.getDefesa() + 25; //Aumenta a defesa
                     //Atualiza os valores
-                    jogador.AlteraDoblons(doblons);
-                    jogador.AlteraDefesa(defesa);
+                    jogador.AlteraDoblons(jogador.getDoblons() - 5);
+                    jogador.AlteraDefesa(jogador.getDefesa() + 25);
 
-                    Console.WriteLine("Você comprou um peitoral de couro, gastou 5 Doblons e aumentou sua defesa para " + defesa);
+                    Console.WriteLine($"Você comprou um peitoral de couro, gastou {doblons} Doblons e aumentou sua defesa para {defesa}");
                 }
                 else { Console.WriteLine("Doblons Insuficientes"); }
             }
@@ -346,10 +346,10 @@ class Compras : Player
                     doblons = jogador.getDoblons() - 10; //Subtrai os doblons
                     defesa = jogador.getDefesa() + 50; //Aumenta a defesa
                     //Atualiza os valores
-                    jogador.AlteraDoblons(doblons);
-                    jogador.AlteraDefesa(defesa);
+                    jogador.AlteraDoblons(jogador.getDoblons() - 10);
+                    jogador.AlteraDefesa(jogador.getDefesa() + 50);
 
-                    Console.WriteLine("Você comprou um peitoral de ferro, gastou 10 Doblons e aumentou sua defesa para " + defesa);
+                    Console.WriteLine($"Você comprou um peitoral de ferro, gastou {doblons} Doblons e aumentou sua defesa para {defesa}");
                 }
                 else { Console.WriteLine("Doblons Insuficientes"); }
             }
@@ -363,7 +363,7 @@ class Compras : Player
                     jogador.AlteraDoblons(jogador.getDoblons() -  5);
                     jogador.AlteraDefesa(jogador.getDefesa()   + 25);
 
-                    Console.WriteLine("Você comprou uma flor rubra, gastou 5 Doblons e aumentou sua vida para " + vida);
+                    Console.WriteLine($"Você comprou uma flor rubra, gastou {doblons} Doblons e aumentou sua vida para {vida}");
                 }
                 else { Console.WriteLine("Doblons Insuficientes"); }
             }
