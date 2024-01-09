@@ -188,7 +188,6 @@ class Game
             if (dado1 > 50)
             {
                 Console.WriteLine("SORTE: Você ataca primneiro!");
-                vidas = sollis.getVidaSollis() - (jogador.getAtack() - sollis.getDefesaSollis());
                 Console.WriteLine($"Oponente: {nomesollis} ficou com: {sollis.getVidaSollis()} de vida após o ataque de: {nome} que teve: {jogador.getAtack()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
