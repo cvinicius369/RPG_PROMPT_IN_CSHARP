@@ -101,7 +101,7 @@ class Dialogo2 : Dialogo
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
-    public static void Starting(Player jogador)//Método recebendo os atributos
+    public static void Starting(Player jogador, Personagens sollis)//Método recebendo os atributos
     {
 
         Console.WriteLine("Jogo Iniciado");
@@ -120,13 +120,13 @@ class Game
             Console.WriteLine("Doblons: " + jogador.getDoblons());
             Principal.Separador();
             Console.ReadKey();
-            Inicio(jogador);//lançando os atributos para a função Inicio()
+            Inicio(jogador, sollis);//lançando os atributos para a função Inicio()
         }
         else
         {
             if (action == "2")
             {
-                Inicio(jogador);//lançando os atributos para a função Inicio()
+                Inicio(jogador, sollis);//lançando os atributos para a função Inicio()
             }
             else
             {
@@ -135,16 +135,16 @@ class Game
                 {
                     Console.WriteLine("Comando não esperado!");
                     Console.ReadKey();
-                    Starting(jogador);
+                    Starting(jogador, sollis);
                 }
             }
         }
     }
-    public static void Inicio(Player jogador)//Função inicio recebendo os atributos
+    public static void Inicio(Player jogador, Personagens sollis)//Função inicio recebendo os atributos
     {
         Dialogo.poem1();
         Dialogo.presents1();
-        
+
         Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
         string newaction = Console.ReadLine();
         Principal.Separador();
@@ -153,31 +153,28 @@ class Game
         if (newaction == "1")
         {
             Compras.comprasplay(jogador);
-            BattleSollis1(jogador);
+            BattleSollis1(jogador, sollis);
         }
         else
         {
-            if (newaction == "2") { BattleSollis1(jogador); }
+            if (newaction == "2") { BattleSollis1(jogador, sollis); }
             else
             {
                 Console.WriteLine("Acao Invalida!");
                 Console.ReadKey();
                 Console.Clear();
-                Inicio(jogador);
+                Inicio(jogador, sollis);
             }
         }
     }
-    public static void BattleSollis1(Player jogador)
+    public static void BattleSollis1(Player jogador, Personagens sollis)
     {
         //Instanciacao e atribuição de Player
         string nome = jogador.getName();
-        int vidaplayer = jogador.getHeath(), danoplayer = jogador.getAtack(), defesaplayer = jogador.getDefesa(), doblonsplayer = jogador.getDoblons();
 
         //Instanciacao e atribuição de Sollis
-        Personagens sollis = new Personagens();
         sollis.ObterDadosSollis();
         string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
-        int vidas =  sollis.getVidaSollis(), defesasollis = sollis.getDefesaSollis(), danosollis = sollis.getDanoSollis(), doblonssollis = sollis.getDoblonsSollis();
 
         int dado = Principal.Jogadado();
 
@@ -187,6 +184,7 @@ class Game
             string? option1;
             if (dado1 > 50)
             {
+                sollis.AlteraVidaSollis(sollis.getVidaSollis() - jogador.getAtack()); //Alterando a vida do oponente usando o dano do usuario
                 Console.WriteLine("SORTE: Você ataca primneiro!");
                 Console.WriteLine($"Oponente: {nomesollis} ficou com: {sollis.getVidaSollis()} de vida após o ataque de: {nome} que teve: {jogador.getAtack()} de dano");
                 Console.ReadKey();
@@ -195,7 +193,7 @@ class Game
             else
             {
                 Console.WriteLine("Inimigo começa primeiro!");
-                jogador.AlteraVida(jogador.getHeath() - sollis.getDanoSollis());
+                jogador.AlteraVida(jogador.getHeath() - sollis.getDanoSollis());  //Alterando a vida do jogador usando o dano do oponente
                 Console.WriteLine($"{nome} ficou com: {jogador.getHeath()} De vida após o ataque de: {nomesollis} que teve: {sollis.getDanoSollis()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
@@ -221,13 +219,14 @@ class Game
             Fase_1(jogador);
         }
     }
-    public static void Fase_1(Player jogador) {
+    public static void Fase_1(Player jogador)
+    {
         // Aqui será a primeira fase onde o player irá realmente jogar uma batalha e se vencer poderá ir para a proxima fase
         // Se perder, voltará para o inicio.
         // Esse bloco de código será o último neste namespace, as proximas fases serão em outro namespace
 
         Dialogo2.Presents3();
-        
+
         jogador.AlteraDefesa(jogador.getDefesa() - jogador.getDefesa() + 25);
         jogador.AlteraVida(jogador.getHeath() - jogador.getHeath() + 125);
         jogador.AlteraDoblons(jogador.getDoblons() + 50);
@@ -243,32 +242,32 @@ class Player
     //Abaixo são os atributos do player
     private string name { get; set; }
     private int doblons { get; set; }
-    private int defesa  { get; set; }
-    private int atack   { get; set; }
-    private int heath   { get; set; }
+    private int defesa { get; set; }
+    private int atack { get; set; }
+    private int heath { get; set; }
 
     //Abaixo estão os metodos para que sejam retornados os valores contidos nos atributos
     public void ObterDados(string nome)
     {
-        this.name    = nome;
+        this.name = nome;
         this.doblons = 20;
-        this.defesa  = 0;
-        this.atack   = 5;
-        this.heath   = 100;
+        this.defesa = 0;
+        this.atack = 5;
+        this.heath = 100;
     }
-    public string getName() { return this.name;    }
+    public string getName() { return this.name; }
     public int getDoblons() { return this.doblons; }
-    public int getDefesa()  { return this.defesa;  }
-    public int getAtack()   { return this.atack;   }
-    public int getHeath()   { return this.heath;   }
+    public int getDefesa() { return this.defesa; }
+    public int getAtack() { return this.atack; }
+    public int getHeath() { return this.heath; }
 
     //Daqui para baixo são metodos para alterar os valores, defini como int e dei return para que os valores sejam salvos
     //caso contrario retornarei para void e retirarei os returns
-    public int AlteraDoblons(int dob)          { this.doblons = dob; return this.doblons; }
-    public int AlteraVida(int hp)              { this.heath = hp; return this.heath;      }
-    public int AlteraDano(int dn)              { this.atack = dn; return this.atack;      }
-    public int AlteraDefesa(int def)           { this.defesa = def; return this.defesa;   }
-    public string AlteraNomePlayer(string nmp) { this.name = nmp; return this.name;       }
+    public int AlteraDoblons(int dob) { this.doblons = dob; return this.doblons; }
+    public int AlteraVida(int hp) { this.heath = hp; return this.heath; }
+    public int AlteraDano(int dn) { this.atack = dn; return this.atack; }
+    public int AlteraDefesa(int def) { this.defesa = def; return this.defesa; }
+    public string AlteraNomePlayer(string nmp) { this.name = nmp; return this.name; }
 }
 
 class Compras : Player
@@ -359,8 +358,8 @@ class Compras : Player
                     doblons = jogador.getDoblons() - 5; //Subtrai os doblons
                     vida = jogador.getHeath() + 25; //Aumenta a vida
                     //Atualiza os valores
-                    jogador.AlteraDoblons(jogador.getDoblons() -  5);
-                    jogador.AlteraDefesa(jogador.getDefesa()   + 25);
+                    jogador.AlteraDoblons(jogador.getDoblons() - 5);
+                    jogador.AlteraVida(jogador.getHeath() + 25);
 
                     Console.WriteLine($"Você comprou uma flor rubra, gastou {doblons} Doblons e aumentou sua vida para {vida}");
                 }
@@ -386,27 +385,27 @@ class Personagens
     private int doblonssollis, danosollis, vidasollis, defesasollis;
     public void ObterDadosSollis()
     {
-        this.sollis        = "Mestre Sollis";
-        this.defesasollis  = 10;
+        this.sollis = "Mestre Sollis";
+        this.defesasollis = 10;
         this.doblonssollis = 10;
-        this.vidasollis    = 200;
-        this.danosollis    = 80;
+        this.vidasollis = 200;
+        this.danosollis = 80;
     }
-    public string getNomeSollis() { return this.sollis;        }
-    public int getVidaSollis()    { return this.vidasollis;    }
+    public string getNomeSollis() { return this.sollis; }
+    public int getVidaSollis() { return this.vidasollis; }
     public int getDoblonsSollis() { return this.doblonssollis; }
-    public int getDefesaSollis()  { return this.defesasollis;  }
-    public int getDanoSollis()    { return this.danosollis;    }
-    public int AlteraDanoSollis(int dnsol)    { this.danosollis = dnsol; return this.danosollis;     }
-    public int AlteraVidaSollis(int vd)       { this.vidasollis = vd; return this.vidasollis;        }
-    public int AlteraDefesaSollis(int defes)  { this.defesasollis = defes; return this.defesasollis; }
-    public int AlteraDoblonsSollis(int dob)   { this.doblonssollis = dob; return this.doblonssollis; }
-    public string AlteraNomeSollis(string nm) { this.sollis = nm; return this.sollis;                }
+    public int getDefesaSollis() { return this.defesasollis; }
+    public int getDanoSollis() { return this.danosollis; }
+    public int AlteraDanoSollis(int dnsol) { this.danosollis = dnsol; return this.danosollis; }
+    public int AlteraVidaSollis(int vd) { this.vidasollis = vd; return this.vidasollis; }
+    public int AlteraDefesaSollis(int defes) { this.defesasollis = defes; return this.defesasollis; }
+    public int AlteraDoblonsSollis(int dob) { this.doblonssollis = dob; return this.doblonssollis; }
+    public string AlteraNomeSollis(string nm) { this.sollis = nm; return this.sollis; }
 }
 //------------------------------------------------------------------------------| Classe Loja
 //Estou pensando sériamente em excluir essa classe e implementar essa tabela em uma classe já existente, uma vez que a função dela é apenas mostrar os valores dos itens
 class Loja
-{ 
+{
     public static void Negocios()
     {
         string[] item1 = { "Espada", "Dano: +20", "Doblons: -10" };
@@ -454,6 +453,7 @@ class Principal
 
         //Criacao do objeto jogador para que os atributos sejam reutilizados nas classes futuras
         Player jogador = new Player();
+        Personagens sollis = new Personagens();
         Console.Write("Digite seu nome: ");
         string nomeplayer = Console.ReadLine();
         jogador.ObterDados(nomeplayer);
@@ -467,7 +467,7 @@ class Principal
 
         if (iniciogame == "1")
         {
-            Game.Starting(jogador);//lançando os dados do player para a classe Game.Starting
+            Game.Starting(jogador, sollis);//lançando os dados do player para a classe Game.Starting
         }
         else
         {
