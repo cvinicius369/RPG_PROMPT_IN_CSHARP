@@ -95,8 +95,8 @@ class Dialogo2 : Dialogo
     }
 };
 /*
-    //Nas classes acima são feitos os dialogos que criam a historia do game
-    //Alem de que o player pode interagir com os personagens
+    + Nas classes acima são feitos os dialogos que criam a historia do game
+    + Alem de que o player pode interagir com os personagens
 */
 //------------------------------------------------------------------------------| Classe Game
 class Game
@@ -113,20 +113,23 @@ class Game
 
         if (action == "1")
         {
-            Console.WriteLine("Nome: " + jogador.getName());
-            Console.WriteLine("Vida: " + jogador.getHeath());
-            Console.WriteLine("Dano: " + jogador.getAtack());
-            Console.WriteLine("Defesa: " + jogador.getDefesa());
-            Console.WriteLine("Doblons: " + jogador.getDoblons());
+            Console.WriteLine("Nome: "          + jogador.getName());
+            Console.WriteLine("Nivel: "         + jogador.getLevel());
+            Console.WriteLine("Vida: "          + jogador.getHeath());
+            Console.WriteLine("Dano: "          + jogador.getAtack());
+            Console.WriteLine("Defesa: "        + jogador.getDefesa());
+            Console.WriteLine("Doblons: "       + jogador.getDoblons());
+            Console.WriteLine("Energia Vital: " + jogador.getVitalEnergy());
+            Console.WriteLine("Experiencia: "   + jogador.getXP());
             Principal.Separador();
             Console.ReadKey();
-            Inicio(jogador, sollis);//lançando os atributos para a função Inicio()
+            Inicio(jogador, sollis);                                       //lançando os atributos para a função Inicio()
         }
         else
         {
             if (action == "2")
             {
-                Inicio(jogador, sollis);//lançando os atributos para a função Inicio()
+                Inicio(jogador, sollis);                                    //lançando os atributos para a função Inicio()
             }
             else
             {
@@ -140,7 +143,7 @@ class Game
             }
         }
     }
-    public static void Inicio(Player jogador, Personagens sollis)//Função inicio recebendo os atributos
+    public static void Inicio(Player jogador, Personagens sollis)            //Função inicio recebendo os atributos
     {
         Dialogo.poem1();
         Dialogo.presents1();
@@ -149,7 +152,7 @@ class Game
         string newaction = Console.ReadLine();
         Principal.Separador();
 
-        //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
+                                                                              //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
         if (newaction == "1")
         {
             Compras.comprasplay(jogador);
@@ -169,11 +172,8 @@ class Game
     }
     public static void BattleSollis1(Player jogador, Personagens sollis)
     {
-        //Instanciacao e atribuição de Player
-        string nome = jogador.getName();
-
-        //Instanciacao e atribuição de Sollis
-        sollis.ObterDadosSollis();
+        string nome = jogador.getName();                                            //Instanciacao e atribuição de Player
+        sollis.ObterDadosSollis();                                                  //Instanciacao e atribuição de Sollis
         string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
 
         int dado = Principal.Jogadado();
@@ -193,7 +193,7 @@ class Game
             else
             {
                 Console.WriteLine("Inimigo começa primeiro!");
-                jogador.AlteraVida(jogador.getHeath() - sollis.getDanoSollis());  //Alterando a vida do jogador usando o dano do oponente
+                jogador.AlteraVida(jogador.getHeath() - sollis.getDanoSollis());       //Alterando a vida do jogador usando o dano do oponente
                 Console.WriteLine($"{nome} ficou com: {jogador.getHeath()} De vida após o ataque de: {nomesollis} que teve: {sollis.getDanoSollis()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
@@ -204,27 +204,31 @@ class Game
             if (option1 == "1")
             {
                 Principal.Separador();
-                Loja.Negocios();
                 Compras.comprasplay(jogador);
             }
         }
         if (jogador.getHeath() <= 0)
         {
-            Console.WriteLine("Você perdeu! O oponente venceu.");
+            Console.WriteLine("Você perdeu! O oponente venceu.\nGanhaste 25 xp");
+            jogador.AlteraXP(jogador.getXP() + 25);
+            if (jogador.getXP() > 100) { jogador.AlteraLevel(jogador.getLevel() + 1); }
             Fase_1(jogador);
         }
         else if (sollis.getVidaSollis() <= 0)
         {
-            Console.WriteLine("Parabéns! Você venceu o oponente.");
+            Console.WriteLine("Parabéns! Você venceu o oponente.\nGanhaste 50 xp");
+            jogador.AlteraXP(jogador.getXP() + 50);
+            if (jogador.getXP() > 100) { jogador.AlteraLevel(jogador.getLevel() + 1); }
             Fase_1(jogador);
         }
     }
     public static void Fase_1(Player jogador)
     {
-        // Aqui será a primeira fase onde o player irá realmente jogar uma batalha e se vencer poderá ir para a proxima fase
-        // Se perder, voltará para o inicio.
-        // Esse bloco de código será o último neste namespace, as proximas fases serão em outro namespace
-
+        /* 
+         + Aqui será a primeira fase onde o player irá realmente jogar uma batalha e se vencer poderá ir para a proxima fase
+         + Se perder, voltará para o inicio.
+         + Esse bloco de código será o último neste namespace, as proximas fases serão em outro namespace
+        */
         Dialogo2.Presents3();
 
         jogador.AlteraDefesa(jogador.getDefesa() - jogador.getDefesa() + 25);
@@ -236,8 +240,7 @@ class Game
     }
 
 }
-//------------------------------------------------------------------------------| Classe Player
-class Player
+class Player//-------------------------------------------------------------| Classe Player
 {
     //Abaixo são os atributos do player
     private string name { get; set; }
@@ -245,6 +248,9 @@ class Player
     private int defesa { get; set; }
     private int atack { get; set; }
     private int heath { get; set; }
+    private int energia_vital { get; set; }
+    private int level { get; set; }
+    private int xp { get; set; }
 
     //Abaixo estão os metodos para que sejam retornados os valores contidos nos atributos
     public void ObterDados(string nome)
@@ -254,12 +260,18 @@ class Player
         this.defesa = 0;
         this.atack = 5;
         this.heath = 100;
+        this.energia_vital = 100;
+        this.level = 0;
+        this.xp = 0;
     }
     public string getName() { return this.name; }
     public int getDoblons() { return this.doblons; }
     public int getDefesa() { return this.defesa; }
     public int getAtack() { return this.atack; }
     public int getHeath() { return this.heath; }
+    public int getVitalEnergy() { return this.energia_vital; }
+    public int getLevel() { return this.level; }
+    public int getXP() { return this.xp; }
 
     //Daqui para baixo são metodos para alterar os valores, defini como int e dei return para que os valores sejam salvos
     //caso contrario retornarei para void e retirarei os returns
@@ -267,7 +279,10 @@ class Player
     public int AlteraVida(int hp) { this.heath = hp; return this.heath; }
     public int AlteraDano(int dn) { this.atack = dn; return this.atack; }
     public int AlteraDefesa(int def) { this.defesa = def; return this.defesa; }
+    public int AlteraEnergiaVital(int vital) { this.energia_vital = vital; return this.energia_vital; }
     public string AlteraNomePlayer(string nmp) { this.name = nmp; return this.name; }
+    public int AlteraLevel(int altera) { this.level = altera; return this.level; }
+    public int AlteraXP(int altera) { this.xp = altera; return this.xp; }
 }
 
 class Compras : Player
@@ -275,7 +290,6 @@ class Compras : Player
     public static void comprasplay(Player jogador)
     {
         int doblons, vida, dano, defesa, balanco;
-        Loja.Negocios();
         Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro\n6. Flor Rubra");
         Console.Write("Produto: ");
 
@@ -283,10 +297,10 @@ class Compras : Player
         {
             if (compra == 1)
             {
-                if (jogador.getDoblons() >= 10) // Verifica se há moedas suficientes
+                if (jogador.getDoblons() >= 10)          // Verifica se há moedas suficientes
                 {
                     doblons = jogador.getDoblons() - 10; // Subtrai as moedas gastas
-                    dano = jogador.getAtack() + 20; // Aumenta o dano
+                    dano = jogador.getAtack() + 20;      // Aumenta o dano
                     //Atualiza os valores
                     jogador.AlteraDoblons(jogador.getDoblons() - 10);
                     jogador.AlteraDano(jogador.getAtack() + 20);
@@ -300,7 +314,7 @@ class Compras : Player
                 if (jogador.getDoblons() >= 3)
                 {
                     doblons = jogador.getDoblons() - 3; //Subtrai os doblons
-                    dano = jogador.getAtack() + 10; //Aumenta o dano
+                    dano = jogador.getAtack() + 10;     //Aumenta o dano
                     //Atualiza os valores
                     jogador.AlteraDoblons(jogador.getDoblons() - 3);
                     jogador.AlteraDano(jogador.getAtack() + 10);
@@ -314,7 +328,7 @@ class Compras : Player
                 if (jogador.getDoblons() >= 25)
                 {
                     doblons = jogador.getDoblons() - 25; //Subtrai os doblons
-                    defesa = jogador.getDefesa() + 100; //Aumenta a defesa
+                    defesa = jogador.getDefesa() + 100;  //Aumenta a defesa
                     //Atualiza os valores
                     jogador.AlteraDoblons(jogador.getDoblons() - 25);
                     jogador.AlteraDefesa(jogador.getDefesa() + 100);
@@ -328,7 +342,7 @@ class Compras : Player
                 if (jogador.getDoblons() >= 5)
                 {
                     doblons = jogador.getDoblons() - 5; //Subtrai os doblons
-                    defesa = jogador.getDefesa() + 25; //Aumenta a defesa
+                    defesa = jogador.getDefesa() + 25;  //Aumenta a defesa
                     //Atualiza os valores
                     jogador.AlteraDoblons(jogador.getDoblons() - 5);
                     jogador.AlteraDefesa(jogador.getDefesa() + 25);
@@ -342,7 +356,7 @@ class Compras : Player
                 if (jogador.getDoblons() >= 10)
                 {
                     doblons = jogador.getDoblons() - 10; //Subtrai os doblons
-                    defesa = jogador.getDefesa() + 50; //Aumenta a defesa
+                    defesa = jogador.getDefesa() + 50;   //Aumenta a defesa
                     //Atualiza os valores
                     jogador.AlteraDoblons(jogador.getDoblons() - 10);
                     jogador.AlteraDefesa(jogador.getDefesa() + 50);
@@ -356,7 +370,7 @@ class Compras : Player
                 if (jogador.getDoblons() >= 5)
                 {
                     doblons = jogador.getDoblons() - 5; //Subtrai os doblons
-                    vida = jogador.getHeath() + 25; //Aumenta a vida
+                    vida = jogador.getHeath() + 25;     //Aumenta a vida
                     //Atualiza os valores
                     jogador.AlteraDoblons(jogador.getDoblons() - 5);
                     jogador.AlteraVida(jogador.getHeath() + 25);
@@ -371,18 +385,18 @@ class Compras : Player
     }
 };
 /*
-    //Classe Compras : Player é hereditária e é focada somente para as compras que o usuário fizer durante o game
-    //A mesma ainda está em desenvolvimento para que não seja necessário a repetição de codigos.
+    + Classe Compras : Player é hereditária e é focada somente para as compras que o usuário fizer durante o game
+    + A mesma ainda está em desenvolvimento para que não seja necessário a repetição de codigos.
 */
 //------------------------------------------------------------------------------| Classe de Personangens
 /*
-    Nessa classe será criada os atributos dos personagens que farão parte da jornada do player
-    Mestre Sollis será o primeiro a entrar em combate com o personagem.
+    + Nessa classe será criada os atributos dos personagens que farão parte da jornada do player
+    + Mestre Sollis será o primeiro a entrar em combate com o personagem.
 */
 class Personagens
 {
-    private string sollis;
-    private int doblonssollis, danosollis, vidasollis, defesasollis;
+    private string sollis, vaelin;
+    private int doblonssollis, danosollis, vidasollis, defesasollis, doblonsvaelin, vidavaelin, defesavaelin, danovaelin;
     public void ObterDadosSollis()
     {
         this.sollis = "Mestre Sollis";
@@ -401,31 +415,26 @@ class Personagens
     public int AlteraDefesaSollis(int defes) { this.defesasollis = defes; return this.defesasollis; }
     public int AlteraDoblonsSollis(int dob) { this.doblonssollis = dob; return this.doblonssollis; }
     public string AlteraNomeSollis(string nm) { this.sollis = nm; return this.sollis; }
-}
-//------------------------------------------------------------------------------| Classe Loja
-//Estou pensando sériamente em excluir essa classe e implementar essa tabela em uma classe já existente, uma vez que a função dela é apenas mostrar os valores dos itens
-class Loja
-{
-    public static void Negocios()
+    
+    //---------------------------------------------------------------------------------------------------------------------//
+    public void ObterDadosVaelin()
     {
-        string[] item1 = { "Espada", "Dano: +20", "Doblons: -10" };
-        string[] item2 = { "Adaga", "Dano: +10", "Doblons: -3" };
-        string[] item3 = { "Set de Armadura", "Defessa: +100", "Doblons: -25" };
-        string[] item4 = { "Peitoral de Couro", "Defesa: +25", "Doblons: -5" };
-        string[] item5 = { "Peitoral de Ferro", "Defesa: +50", "Doblons: -10" };
-        string[] item6 = { "Flor Rubra", "Vida: +25", "Doblons: -5" };
-
-        Console.WriteLine("Abaixo está a tabela dos itens disponíveis: ");
-
-        Console.WriteLine(item1[0], item1[1], item1[2]);
-        Console.WriteLine(item2[0], item2[1], item2[2]);
-        Console.WriteLine(item3[0], item3[1], item3[2]);
-        Console.WriteLine(item4[0], item4[1], item4[2]);
-        Console.WriteLine(item5[0], item5[1], item5[2]);
-        Console.WriteLine(item6[0], item6[1], item6[2]);
-
-        Principal.Separador();
+        this.vaelin = "Vaelin Al Sorna";
+        this.vidavaelin = 275;
+        this.danovaelin = 80;
+        this.doblonsvaelin = 100;
+        this.defesavaelin = 100;
     }
+    public string getNomeVaelin() { return this.vaelin; }
+    public int getVidaVaelin() { return this.vidavaelin; }
+    public int getDefesaVaelin() { return this.defesavaelin; }
+    public int getDanoVaelin() { return this.danovaelin; }
+    public int getDoblonsVaelin() { return this.doblonsvaelin; }
+    public int AlteraDanoVaelin(int altera) { this.danovaelin = altera; return this.danovaelin; }
+    public int AlteraVidaVaelin(int altera) { this.vidavaelin = altera; return this.vidavaelin; }
+    public int AlteraDefesaVaelin(int altera) { this.defesavaelin = altera; return this.defesavaelin; }
+    public int AlteraDoblonsVaelin(int altera) { this.doblonsvaelin = altera; return this.doblonsvaelin; }
+    public string AlteraNomeVaelin(string altera) { this.vaelin = altera; return this.vaelin; } 
 }
 //------------------------------------------------------------------------------| Classe principal
 class Principal
