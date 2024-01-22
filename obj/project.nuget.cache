@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "8YZV7oh80FD4xLdXLyGs+t5q8wtw/xktDzQMPsdUKe5uhtiCJdeATwkUXuOAk5d430vk6cp35FL1tPXPPiZqTQ==",
+  "success": true,
+  "projectFilePath": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/RPG2.csproj",
+  "expectedPackageFiles": [
+    "/home/codespace/.nuget/packages/microsoft.netcore.app.ref/6.0.20/microsoft.netcore.app.ref.6.0.20.nupkg.sha512",
+    "/home/codespace/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.20/microsoft.aspnetcore.app.ref.6.0.20.nupkg.sha512",
+    "/home/codespace/.nuget/packages/microsoft.netcore.app.host.linux-x64/6.0.20/microsoft.netcore.app.host.linux-x64.6.0.20.nupkg.sha512"
+  ],
+  "logs": []
+}
