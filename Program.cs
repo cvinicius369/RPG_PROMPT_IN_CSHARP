@@ -41,8 +41,7 @@ class Dialogo
             string textonome = $"Meu nome é {nome}\n";
             ImprimirComAtraso(textonome, 50);
             Console.ReadKey();
-        }
-        else { Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^"); }
+        } else { Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^"); }
 
         Principal.Separador();
         string[] textos2 = new string[]
@@ -51,10 +50,7 @@ class Dialogo
            "- Além disso, Mestre Sollis deseja que você vá até ele para se apresentar.\n",
            "Chegando ao local mestre Sollis não disse nada além de uma ordem para que voce levantasse a espada de madeira e o atacasse.\n"
         };
-        foreach (string texto in textos2)
-        {
-            ImprimirComAtraso(texto, 50);
-        }
+        foreach (string texto in textos2) { ImprimirComAtraso(texto, 50); }
     }
     //A função ImprimirComAtraso() serve para que o texto seja impresso com atraso dando a impressão que o personagem está falando realmente com o player, ao invés de algo robótico
     //Essa impressão com artaso ocorre a partir da estrutura de repetição foreach() que pegará a fala do personagem e imprimir um caractere por vez
@@ -77,10 +73,7 @@ class Dialogo2 : Dialogo
             "- Mestre Sollis te massacrou! - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n",
             "O rapaz entregou um frasco de flor rubra e um traje de couro\n"
         };
-        foreach (string texto in textos3)
-        {
-            ImprimirComAtraso(texto, 50);
-        }
+        foreach (string texto in textos3) { ImprimirComAtraso(texto, 50); }
         Console.ReadKey();
         Principal.Separador();
     }
@@ -113,27 +106,22 @@ class Game
 
         if (action == "1")
         {
-            Console.WriteLine("Nome: "          + jogador.getName());
-            Console.WriteLine("Nivel: "         + jogador.getLevel());
-            Console.WriteLine("Vida: "          + jogador.getHeath());
-            Console.WriteLine("Dano: "          + jogador.getAtack());
-            Console.WriteLine("Defesa: "        + jogador.getDefesa());
-            Console.WriteLine("Doblons: "       + jogador.getDoblons());
+            Console.WriteLine("Nome: " + jogador.getName());
+            Console.WriteLine("Nivel: " + jogador.getLevel());
+            Console.WriteLine("Vida: " + jogador.getHeath());
+            Console.WriteLine("Dano: " + jogador.getAtack());
+            Console.WriteLine("Defesa: " + jogador.getDefesa());
+            Console.WriteLine("Doblons: " + jogador.getDoblons());
             Console.WriteLine("Energia Vital: " + jogador.getVitalEnergy());
-            Console.WriteLine("Experiencia: "   + jogador.getXP());
+            Console.WriteLine("Experiencia: " + jogador.getXP());
             Principal.Separador();
             Console.ReadKey();
             Inicio(jogador, sollis);                                       //lançando os atributos para a função Inicio()
         }
         else
         {
-            if (action == "2")
-            {
-                Inicio(jogador, sollis);                                    //lançando os atributos para a função Inicio()
-            }
-            else
-            {
-                if (action == "3") { Console.WriteLine("Saindo . . ."); }
+            if (action == "2") { Inicio(jogador, sollis); }                //lançando os atributos para a função Inicio()
+            else { if (action == "3") { Console.WriteLine("Saindo . . ."); }
                 else
                 {
                     Console.WriteLine("Comando não esperado!");
@@ -152,15 +140,14 @@ class Game
         string? newaction = Console.ReadLine();
         Principal.Separador();
 
-                                                                              //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
+        //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
         if (newaction == "1")
         {
             Compras.comprasplay(jogador);
             BattleSollis1(jogador, sollis);
         }
         else
-        {
-            if (newaction == "2") { BattleSollis1(jogador, sollis); }
+        { if (newaction == "2") { BattleSollis1(jogador, sollis); }
             else
             {
                 Console.WriteLine("Acao Invalida!");
@@ -173,7 +160,7 @@ class Game
     public static void BattleSollis1(Player jogador, Personagens sollis)
     {
         string? nome = jogador.getName();                                            //Instanciacao e atribuição de Player
-        sollis.ObterDadosSollis();                                                  //Instanciacao e atribuição de Sollis
+        sollis.ObterDadosSollis();                                                   //Instanciacao e atribuição de Sollis
         string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
 
         int dado = Principal.Jogadado();
@@ -202,9 +189,7 @@ class Game
             option1 = Console.ReadLine();
 
             if (option1 == "1")
-            {
-                Principal.Separador();
-                Compras.comprasplay(jogador);
+            { Principal.Separador(); Compras.comprasplay(jogador);
             }
         }
         if (jogador.getHeath() <= 0)
@@ -294,10 +279,8 @@ class Compras : Player
         Console.Write("Produto: ");
 
         if (int.TryParse(Console.ReadLine(), out int compra))
-        {
-            if (compra == 1)
-            {
-                if (jogador.getDoblons() >= 10)          // Verifica se há moedas suficientes
+        { if (compra == 1)
+            { if (jogador.getDoblons() >= 10)          // Verifica se há moedas suficientes
                 {
                     doblons = jogador.getDoblons() - 10; // Subtrai as moedas gastas
                     dano = jogador.getAtack() + 20;      // Aumenta o dano
@@ -306,12 +289,10 @@ class Compras : Player
                     jogador.AlteraDano(jogador.getAtack() + 20);
 
                     Console.WriteLine($"Você comprou uma Espada, gastou {doblons} Doblons e aumentou seu dano para {dano}");
-                }
-                else { Console.WriteLine("Doblons Insuficientes"); }
+                } else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 2)
-            {
-                if (jogador.getDoblons() >= 3)
+            { if (jogador.getDoblons() >= 3)
                 {
                     doblons = jogador.getDoblons() - 3; //Subtrai os doblons
                     dano = jogador.getAtack() + 10;     //Aumenta o dano
@@ -320,12 +301,10 @@ class Compras : Player
                     jogador.AlteraDano(jogador.getAtack() + 10);
 
                     Console.WriteLine($"Você comprou uma Adaga, gastou {doblons} Doblons e aumentou seu dano para {dano}");
-                }
-                else { Console.WriteLine("Doblons Insuficientes"); }
+                } else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 3)
-            {
-                if (jogador.getDoblons() >= 25)
+            { if (jogador.getDoblons() >= 25)
                 {
                     doblons = jogador.getDoblons() - 25; //Subtrai os doblons
                     defesa = jogador.getDefesa() + 100;  //Aumenta a defesa
@@ -334,12 +313,10 @@ class Compras : Player
                     jogador.AlteraDefesa(jogador.getDefesa() + 100);
 
                     Console.WriteLine("Você comprou um set de Armadura, gastou 25 Doblons e aumentou sua defesa para " + defesa);
-                }
-                else { Console.WriteLine("Doblons Insuficientes"); }
+                } else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 4)
-            {
-                if (jogador.getDoblons() >= 5)
+            { if (jogador.getDoblons() >= 5)
                 {
                     doblons = jogador.getDoblons() - 5; //Subtrai os doblons
                     defesa = jogador.getDefesa() + 25;  //Aumenta a defesa
@@ -348,12 +325,10 @@ class Compras : Player
                     jogador.AlteraDefesa(jogador.getDefesa() + 25);
 
                     Console.WriteLine($"Você comprou um peitoral de couro, gastou {doblons} Doblons e aumentou sua defesa para {defesa}");
-                }
-                else { Console.WriteLine("Doblons Insuficientes"); }
+                } else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 5)
-            {
-                if (jogador.getDoblons() >= 10)
+            { if (jogador.getDoblons() >= 10)
                 {
                     doblons = jogador.getDoblons() - 10; //Subtrai os doblons
                     defesa = jogador.getDefesa() + 50;   //Aumenta a defesa
@@ -362,12 +337,10 @@ class Compras : Player
                     jogador.AlteraDefesa(jogador.getDefesa() + 50);
 
                     Console.WriteLine($"Você comprou um peitoral de ferro, gastou {doblons} Doblons e aumentou sua defesa para {defesa}");
-                }
-                else { Console.WriteLine("Doblons Insuficientes"); }
+                } else { Console.WriteLine("Doblons Insuficientes"); }
             }
             else if (compra == 6)
-            {
-                if (jogador.getDoblons() >= 5)
+            { if (jogador.getDoblons() >= 5)
                 {
                     doblons = jogador.getDoblons() - 5; //Subtrai os doblons
                     vida = jogador.getHeath() + 25;     //Aumenta a vida
@@ -376,11 +349,9 @@ class Compras : Player
                     jogador.AlteraVida(jogador.getHeath() + 25);
 
                     Console.WriteLine($"Você comprou uma flor rubra, gastou {doblons} Doblons e aumentou sua vida para {vida}");
-                }
-                else { Console.WriteLine("Doblons Insuficientes"); }
+                } else { Console.WriteLine("Doblons Insuficientes"); }
             }
-        }
-        else { Console.WriteLine("Entrada inválida. Por favor, insira um número válido."); }
+        } else { Console.WriteLine("Entrada inválida. Por favor, insira um número válido."); }
         Principal.Separador();
     }
 };
@@ -415,7 +386,7 @@ class Personagens
     public int AlteraDefesaSollis(int defes) { this.defesasollis = defes; return this.defesasollis; }
     public int AlteraDoblonsSollis(int dob) { this.doblonssollis = dob; return this.doblonssollis; }
     public string AlteraNomeSollis(string nm) { this.sollis = nm; return this.sollis; }
-    
+
     //---------------------------------------------------------------------------------------------------------------------//
     public void ObterDadosVaelin()
     {
@@ -434,7 +405,7 @@ class Personagens
     public int AlteraVidaVaelin(int altera) { this.vidavaelin = altera; return this.vidavaelin; }
     public int AlteraDefesaVaelin(int altera) { this.defesavaelin = altera; return this.defesavaelin; }
     public int AlteraDoblonsVaelin(int altera) { this.doblonsvaelin = altera; return this.doblonsvaelin; }
-    public string AlteraNomeVaelin(string altera) { this.vaelin = altera; return this.vaelin; } 
+    public string AlteraNomeVaelin(string altera) { this.vaelin = altera; return this.vaelin; }
 }
 //------------------------------------------------------------------------------| Classe principal
 class Principal
@@ -466,7 +437,7 @@ class Principal
         Console.Write("Digite seu nome: ");
         string? nomeplayer = Console.ReadLine();
         #pragma warning disable CS8604            // Possível argumento de referência nula.
-        jogador.ObterDados(nomeplayer);           // Is argumentos acima e abaixo são uma solução para um aviso dado pelo Copilot
+        jogador.ObterDados(nomeplayer);           // Os argumentos acima e abaixo são uma solução para um aviso dado pelo Copilot
         #pragma warning restore CS8604            // Possível argumento de referência nula.
 
         Console.Write("Digite 1 para iniciar o game: ");
@@ -477,8 +448,7 @@ class Principal
         //Em seguida a função Main() irá repetir, fazendo o usuário voltar ao inicio
 
         if (iniciogame == "1")
-        {
-            Game.Starting(jogador, sollis);//lançando os dados do player para a classe Game.Starting
+        { Game.Starting(jogador, sollis);//lançando os dados do player para a classe Game.Starting
         }
         else
         {

@@ -59,6 +59,8 @@ namespace Battles
 
             foreach (string texto in texto1) { print.ImprimirTextoComAtraso(texto, 50); }
 
+            tournament1:
+
             Console.WriteLine("[1]-Atacar |[2]-Defender |[3]-Especial |[4]-Loja"); int.TryParse(Console.ReadLine(), out decisao); //Decisoes do jogador
 
             if (decisao == 1)                             //Caso a decisao seja 1 (atacar) ira executar uma determinada ação que irá tirar o dano do oponente
@@ -101,8 +103,9 @@ namespace Battles
             {
                 Principal.Separador();
                 Compras.comprasplay(jogador);
-            }
+            } else { Console.WriteLine("Comando invalido!\nTente novamente."); goto tournament1; }
 
+            foreach (string letra in texto5 ) { print.ImprimirTextoComAtraso(letra, 50); }
 
         }
     }
