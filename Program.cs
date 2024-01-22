@@ -109,7 +109,7 @@ class Game
         Console.WriteLine("Bem Vindo " + jogador.getName() + "\nPara apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
         Principal.Separador();
 
-        string action = Console.ReadLine();
+        string? action = Console.ReadLine();
 
         if (action == "1")
         {
@@ -149,7 +149,7 @@ class Game
         Dialogo.presents1();
 
         Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
-        string newaction = Console.ReadLine();
+        string? newaction = Console.ReadLine();
         Principal.Separador();
 
                                                                               //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
@@ -172,7 +172,7 @@ class Game
     }
     public static void BattleSollis1(Player jogador, Personagens sollis)
     {
-        string nome = jogador.getName();                                            //Instanciacao e atribuição de Player
+        string? nome = jogador.getName();                                            //Instanciacao e atribuição de Player
         sollis.ObterDadosSollis();                                                  //Instanciacao e atribuição de Sollis
         string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
 
@@ -243,7 +243,7 @@ class Game
 class Player//-------------------------------------------------------------| Classe Player
 {
     //Abaixo são os atributos do player
-    private string name { get; set; }
+    private string? name { get; set; }
     private int doblons { get; set; }
     private int defesa { get; set; }
     private int atack { get; set; }
@@ -264,7 +264,7 @@ class Player//-------------------------------------------------------------| Cla
         this.level = 0;
         this.xp = 0;
     }
-    public string getName() { return this.name; }
+    public string? getName() { return this.name; }
     public int getDoblons() { return this.doblons; }
     public int getDefesa() { return this.defesa; }
     public int getAtack() { return this.atack; }
@@ -289,7 +289,7 @@ class Compras : Player
 {
     public static void comprasplay(Player jogador)
     {
-        int doblons, vida, dano, defesa, balanco;
+        int doblons, vida, dano, defesa;
         Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro\n6. Flor Rubra");
         Console.Write("Produto: ");
 
@@ -395,7 +395,7 @@ class Compras : Player
 */
 class Personagens
 {
-    private string sollis, vaelin;
+    private string? sollis, vaelin;
     private int doblonssollis, danosollis, vidasollis, defesasollis, doblonsvaelin, vidavaelin, defesavaelin, danovaelin;
     public void ObterDadosSollis()
     {
@@ -405,7 +405,7 @@ class Personagens
         this.vidasollis = 200;
         this.danosollis = 80;
     }
-    public string getNomeSollis() { return this.sollis; }
+    public string? getNomeSollis() { return this.sollis; }
     public int getVidaSollis() { return this.vidasollis; }
     public int getDoblonsSollis() { return this.doblonssollis; }
     public int getDefesaSollis() { return this.defesasollis; }
@@ -425,7 +425,7 @@ class Personagens
         this.doblonsvaelin = 100;
         this.defesavaelin = 100;
     }
-    public string getNomeVaelin() { return this.vaelin; }
+    public string? getNomeVaelin() { return this.vaelin; }
     public int getVidaVaelin() { return this.vidavaelin; }
     public int getDefesaVaelin() { return this.defesavaelin; }
     public int getDanoVaelin() { return this.danovaelin; }
@@ -464,8 +464,10 @@ class Principal
         Player jogador = new Player();
         Personagens sollis = new Personagens();
         Console.Write("Digite seu nome: ");
-        string nomeplayer = Console.ReadLine();
-        jogador.ObterDados(nomeplayer);
+        string? nomeplayer = Console.ReadLine();
+        #pragma warning disable CS8604            // Possível argumento de referência nula.
+        jogador.ObterDados(nomeplayer);           // Is argumentos acima e abaixo são uma solução para um aviso dado pelo Copilot
+        #pragma warning restore CS8604            // Possível argumento de referência nula.
 
         Console.Write("Digite 1 para iniciar o game: ");
         iniciogame = Console.ReadLine();
