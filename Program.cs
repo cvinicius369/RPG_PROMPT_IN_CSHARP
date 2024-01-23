@@ -4,6 +4,7 @@
 *E-mail:      vinicius182102@gmail.com
 */
 //---| Abaixo são as bibliotecas e outras importações para que o jogo funcione corretamente.
+using Battles;
 using System;
 /*
 *---| A Classe Dialogo abaixo será responsável pelo dialogo no jogo, onde em alguns casos como conversas entre os personagens
@@ -119,16 +120,15 @@ class Game
             Inicio(jogador, sollis);                                       //lançando os atributos para a função Inicio()
         }
         else
-        {
-            if (action == "2") { Inicio(jogador, sollis); }                //lançando os atributos para a função Inicio()
-            else { if (action == "3") { Console.WriteLine("Saindo . . ."); }
-                else
-                {
-                    Console.WriteLine("Comando não esperado!");
-                    Console.ReadKey();
-                    Starting(jogador, sollis);
-                }
+        { if (action == "2") { Inicio(jogador, sollis); }                //lançando os atributos para a função Inicio()
+          else { if (action == "3") { Console.WriteLine("Saindo . . ."); }
+            else
+            {
+                Console.WriteLine("Comando não esperado!");
+                Console.ReadKey();
+                Starting(jogador, sollis);
             }
+          }
         }
     }
     public static void Inicio(Player jogador, Personagens sollis)            //Função inicio recebendo os atributos

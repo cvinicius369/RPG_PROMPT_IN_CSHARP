@@ -1,4 +1,6 @@
 using RPG2;
+using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
 
 namespace Battles
 {
@@ -42,8 +44,10 @@ namespace Battles
 
         public static void Treinamento(Player jogador, Personagens vaelin)     //Funcao que é responsavel por fazer o treinamento do player
         {
+            Puzzles puzz = new Puzzles();                  //Instanciando funcao de puzzles para que seja impresso o mapa
             Impressoes print = new Impressoes();           //Instanciando função de impressão para que as palavras sejam impressas com atraso para dar impressao de escrita humanizada
             int decisao;                                   //Ação que o jogador toma durante as batalhas
+            string? destino;
 
             string[] texto1 = new string[]
             {
@@ -106,7 +110,15 @@ namespace Battles
             } else { Console.WriteLine("Comando invalido!\nTente novamente."); goto tournament1; }
 
             foreach (string letra in texto5 ) { print.ImprimirTextoComAtraso(letra, 50); }
+            mapa1:                                                                            // Marcacao onde caso o usuario erre o destino retorne para este local em vez de reiniciar o jogo
+            puzz.ImprimirMapa1();                                                             // Imprieme uma especie primitiva do mapa local
+            Console.Write("Digite a letra correspondente ao destino: ");
+            destino = Console.ReadLine();                                                     // Faz a leitura do destino escolhido
 
+            if ((destino == "E") || (destino == "e"))
+            {
+                // Executa a continuação do codigo
+            } else { Console.WriteLine($"Vaelin: Irmão {jogador.getName()}, este é o caminho errado!"); goto mapa1; }
         }
     }
 
@@ -117,5 +129,25 @@ namespace Battles
     class Puzzles
     {
        //Aqui é onde haverá puzzles para que o jogo nao vique muito monotono
+       public void ImprimirMapa1()
+        {
+            Impressoes print = new Impressoes();
+            string[] mapa1 = new string[]
+            {
+                "[______<A>-Confins do Norte_____________________________________________]\n",
+                "[_______________________________________________________________________]\n",
+                "[____________________________________________________<D>-Cidade Caida___]\n",
+                "[<B>-Torre Norte_______<c>-Grande Floresta do Norte_____________________]\n",
+                "[_______________________________________________________________________]\n",
+                "[_______________________________________________________________________]\n",
+                "[_________________________________________________<E>-Urlish Forest_____]\n",
+                "[______________________________________________________(Frentis)________]\n",
+                "[_______________________________________________________________________]\n",
+                "[_________________________________________________________<F>-Varinshold]\n",
+                "[________________________________________________________________(Você)_]\n",
+                "[_______________________________________________________________________]\n"
+            };
+            foreach (string mapa in mapa1) { print.ImprimirTextoComAtraso(mapa, 0); }
+        }
     }
 }
