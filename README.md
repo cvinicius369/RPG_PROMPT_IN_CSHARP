@@ -1,6 +1,10 @@
 # Jogo "A Sombra do Corvo"
 
-Este é um projeto de jogo de console baseado na trilogia "A Sombra do Corvo" de Anthony Ryan. O jogo é desenvolvido em C# e oferece uma experiência interativa inspirada no universo criado pelo autor. No jogo, você assume o papel de um personagem em um mundo de fantasia sombria e cheio de aventuras.
+Este é um projeto de jogo de console baseado na trilogia "A Sombra do Corvo" de Anthony Ryan. O jogo oferece uma experiência interativa inspirada no universo criado pelo autor. No jogo, você assume o papel de um personagem em um mundo de fantasia sombria e cheio de aventuras.
+
+## Tecnologias Usadas
+
+ <img src="https://img.shields.io/badge/Csharp-00599C?style=for-the-badge&logo=csharp&logoColor=purple&color=black"/> <img src="https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=641f5e&color=black"/>
 
 ## Visão Geral
 O jogo "A Sombra do Corvo" oferece uma narrativa envolvente e mecânicas de RPG simples. Os jogadores podem interagir com personagens, explorar ambientes e tomar decisões que afetam o desenvolvimento da história. O jogo inclui diálogos, combates e opções de compra de itens.
