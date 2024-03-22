@@ -1,0 +1,5 @@
+/workspaces/A-Sombra-Do-Corvo-RPGTEXT/obj/Debug/net6.0/RPG2.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/A-Sombra-Do-Corvo-RPGTEXT/obj/Debug/net6.0/RPG2.AssemblyInfoInputs.cache
+/workspaces/A-Sombra-Do-Corvo-RPGTEXT/obj/Debug/net6.0/RPG2.AssemblyInfo.cs
+/workspaces/A-Sombra-Do-Corvo-RPGTEXT/obj/Debug/net6.0/RPG2.csproj.CoreCompileInputs.cache
+/workspaces/A-Sombra-Do-Corvo-RPGTEXT/obj/Debug/net6.0/RPG2.sourcelink.json
