@@ -1,4 +1,4 @@
-/*By:         Caio Vinicius
+/*By:         Caio Vinicius & WhiteDragon3257
 * Project:    RPG in C# (C-Sharp)
 * Name Game:  A Sombra do Corvo
 *E-mail:      vinicius182102@gmail.com
