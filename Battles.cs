@@ -1,4 +1,5 @@
 using RPG2;
+using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 
@@ -18,7 +19,7 @@ namespace Battles
     class Battle_F1 //Classe que´principal que será responsavel pela execução de outras funções
     {
 
-        public static void Battle1(Player jogador)                    //funcao main que irá organizar cronologicamente os eventos do jogo
+        public static void Battle1(string id)                    //funcao main que irá organizar cronologicamente os eventos do jogo
         {
             BancoDialogos conversas = new BancoDialogos();            //instanciando as conversas
             Narrativa narrativa = new Narrativa();                    //instanciando as narrativas
@@ -27,22 +28,30 @@ namespace Battles
             Personagens vaelin = new Personagens();                   //instanciando o objeto vaelin
             vaelin.ObterDadosVaelin();                                //obtendo os dados do personagem vaelin
             Puzzles corrida = new Puzzles();                          //isntanciando ss puzzles que terão no jogo
+            string name = DataManagment.ObterValor(id, 1);
+            int level   = int.Parse(DataManagment.ObterValor(id, 2));
+            int hp      = int.Parse(DataManagment.ObterValor(id, 3));
+            int def     = int.Parse(DataManagment.ObterValor(id, 4));
+            int atk     = int.Parse(DataManagment.ObterValor(id, 5));
+            int doblons = int.Parse(DataManagment.ObterValor(id, 6));
+            int xp      = int.Parse(DataManagment.ObterValor(id, 7));
+            int power   = int.Parse(DataManagment.ObterValor(id, 8));
 
             //Imprimindo atributos atualizados
-            Console.WriteLine($"{jogador.getName()}, abaixo seguem seus atributos atualizados:");
-            Console.WriteLine($"Nivel: {jogador.getLevel()}"); Console.WriteLine($"Experiencia: {jogador.getXP()}");
-            Console.WriteLine($"Vida: {jogador.getHeath()}"); Console.WriteLine($"Defesa: {jogador.getDefesa()}");
-            Console.WriteLine($"Ataque: {jogador.getAtack()}"); Console.WriteLine($"Energia Vital: {jogador.getVitalEnergy()}");
-            Console.WriteLine($"Doblons: {jogador.getDoblons()}");
+            Console.WriteLine($"{name}, abaixo seguem seus atributos atualizados:");
+            Console.WriteLine($"Nivel:   {level}"); Console.WriteLine($"Experiencia: {xp}");
+            Console.WriteLine($"Vida:    {hp}");    Console.WriteLine($"Defesa:      {def}");
+            Console.WriteLine($"Ataque:  {atk}");   Console.WriteLine($"Poder:       {power}");
+            Console.WriteLine($"Doblons: {doblons}");
             Principal.Separador();
 
             //inicio da faze
             Console.WriteLine("Precione qualquer tecla para continuar.");
             Console.ReadKey(); Console.Clear(); Principal.Separador();
-            narrativa.dialogo1(); sherinfalas.dialogo1(jogador); narrativa.dialogo2(); vaelinfalas.dialogo1(); Principal.Separador();
-            Treinamento(jogador, vaelin);        }
+            narrativa.dialogo1(); sherinfalas.dialogo1(id); narrativa.dialogo2(); vaelinfalas.dialogo1(id); Principal.Separador();
+            Treinamento(id, vaelin);        }
 
-        public static void Treinamento(Player jogador, Personagens vaelin)     //Funcao que é responsavel por fazer o treinamento do player
+        public static void Treinamento(string id, Personagens vaelin)     //Funcao que é responsavel por fazer o treinamento do player
         {
             Puzzles puzz = new Puzzles();                  //Instanciando funcao de puzzles para que seja impresso o mapa
             Impressoes print = new Impressoes();           //Instanciando função de impressão para que as palavras sejam impressas com atraso para dar impressao de escrita humanizada
@@ -74,7 +83,7 @@ namespace Battles
                 };
 
                 Console.WriteLine($"--| Você atacou {vaelin.getNomeVaelin()}");
-                vaelin.AlteraVidaVaelin(vaelin.getVidaVaelin() - (jogador.getAtack()));
+                vaelin.AlteraVidaVaelin(vaelin.getVidaVaelin() - int.Parse(DataManagment.ObterValor(id, 5)));
                 Console.WriteLine($"--| {vaelin.getNomeVaelin()} ficou com {vaelin.getVidaVaelin()} de vida.");
                 foreach (string texto in texto2) { print.ImprimirTextoComAtraso(texto, 50); }
 
@@ -94,8 +103,10 @@ namespace Battles
                 }
                 else
                 {
-                    jogador.AlteraVida(jogador.getHeath() - (vaelin.getDanoVaelin() - jogador.getDefesa()));
-                    Console.WriteLine($"--| Defesa mal sucedida, você perdeu {vaelin.getDanoVaelin() - jogador.getDefesa()} de vida e ficou com {jogador.getHeath()} de vida.");
+                    int vida = int.Parse(DataManagment.ObterValor(id, 3));
+                    int defesa = int.Parse(DataManagment.ObterValor(id, 4));
+                    DataManagment.UpdateData(id, 3, (vida - (vaelin.getDanoVaelin() - defesa)).ToString());
+                    Console.WriteLine($"--| Defesa mal sucedida, você perdeu {vaelin.getDanoVaelin() - defesa} de vida e ficou com {int.Parse(DataManagment.ObterValor(id, 3))} de vida.");
                     foreach (string texto in texto4) { print.ImprimirTextoComAtraso(texto, 50); }
                 }
             }
@@ -106,7 +117,7 @@ namespace Battles
             else if (decisao == 4)
             {
                 Principal.Separador();
-                Compras.comprasplay(jogador);
+                Taverna.Compras(id);
             } else { Console.WriteLine("Comando invalido!\nTente novamente."); goto tournament1; }
 
             foreach (string letra in texto5 ) { print.ImprimirTextoComAtraso(letra, 50); }
@@ -118,7 +129,7 @@ namespace Battles
             if ((destino == "E") || (destino == "e"))
             {
                 // Executa a continuação do codigo
-            } else { Console.WriteLine($"Vaelin: Irmão {jogador.getName()}, este é o caminho errado!"); goto mapa1; }
+            } else { Console.WriteLine($"Vaelin: Irmão {DataManagment.ObterValor(id, 1)}, este é o caminho errado!"); goto mapa1; }
         }
     }
 

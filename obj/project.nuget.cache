@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "4vPtQ7a1FXjN9QEiyYyZxHnJJeUG8XV+AIjoHaE96YiSCWuZM5NNmL4xnJxscWRit2pEHPZh8a7xKzSc33bW8Q==",
+  "dgSpecHash": "3Gct4aFc6cg=",
   "success": true,
-  "projectFilePath": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/RPG2.csproj",
+  "projectFilePath": "/workspaces/RPG_PROMPT_IN_CSHARP/RPG2.csproj",
   "expectedPackageFiles": [
-    "/home/codespace/.nuget/packages/microsoft.netcore.app.ref/6.0.27/microsoft.netcore.app.ref.6.0.27.nupkg.sha512",
-    "/home/codespace/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.27/microsoft.aspnetcore.app.ref.6.0.27.nupkg.sha512",
-    "/home/codespace/.nuget/packages/microsoft.netcore.app.host.linux-x64/6.0.27/microsoft.netcore.app.host.linux-x64.6.0.27.nupkg.sha512"
+    "/home/codespace/.nuget/packages/microsoft.netcore.app.ref/6.0.33/microsoft.netcore.app.ref.6.0.33.nupkg.sha512",
+    "/home/codespace/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.33/microsoft.aspnetcore.app.ref.6.0.33.nupkg.sha512",
+    "/home/codespace/.nuget/packages/microsoft.netcore.app.host.linux-x64/6.0.33/microsoft.netcore.app.host.linux-x64.6.0.33.nupkg.sha512"
   ],
   "logs": []
 }

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/RPG2.csproj",
+      "projectUniqueName": "/workspaces/RPG_PROMPT_IN_CSHARP/RPG2.csproj",
       "projectName": "RPG2",
-      "projectPath": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/RPG2.csproj",
+      "projectPath": "/workspaces/RPG_PROMPT_IN_CSHARP/RPG2.csproj",
       "packagesPath": "/home/codespace/.nuget/packages/",
-      "outputPath": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/obj/",
+      "outputPath": "/workspaces/RPG_PROMPT_IN_CSHARP/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/codespace/.nuget/NuGet/NuGet.Config"
@@ -62,15 +62,15 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.27, 6.0.27]"
+            "version": "[6.0.33, 6.0.33]"
           },
           {
             "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[6.0.27, 6.0.27]"
+            "version": "[6.0.33, 6.0.33]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.27, 6.0.27]"
+            "version": "[6.0.33, 6.0.33]"
           }
         ],
         "frameworkReferences": {
@@ -78,7 +78,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.201/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.401/RuntimeIdentifierGraph.json"
       }
     }
   }
