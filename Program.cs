@@ -181,9 +181,13 @@ class Game
         int doblons = int.Parse(DataManagment.ObterValor(name, 6)); 
         int xp = int.Parse(DataManagment.ObterValor(name, 7));
         int power = int.Parse(DataManagment.ObterValor(name, 8));
+        int vitalEnergy = int.Parse(DataManagment.ObterValor(name, 9));
+        string skill = DataManagment.ObterValor(name, 10);
+        string ultimate = DataManagment.ObterValor(name, 11);
+        string typeUser = DataManagment.ObterValor(name, 12);
 
-        Entity user = new Entity(idUser, nameUser, level, hp, def, atk, doblons, xp, power);
-        Entity sollis = new Entity(0, "Sollis", "Mestre da 4a Ordem", 200, 10, 80, 20, 1000, 10000);
+        Entity user = new Entity(idUser, nameUser, level, hp, def, atk, doblons, xp, power, skill, ultimate, vitalEnergy, typeUser);
+        Entity sollis = new Entity(0, "Sollis", "Mestre da 4a Ordem", 200, 10, 80, 20, 1000, 10000, "Super Agilidade", "Super Forca", 10000, "Comum");
 
         Console.WriteLine("Jogo Iniciado");
         Console.WriteLine("Para apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
@@ -196,10 +200,15 @@ class Game
             Console.WriteLine("Dano: "          + user.getAtk());
             Console.WriteLine("Defesa: "        + user.getDef());
             Console.WriteLine("Doblons: "       + user.getDoblons());
-            Console.WriteLine("XP: " + user.getXp());
+            Console.WriteLine("XP: "            + user.getXp());
             Console.WriteLine("Poder Maximo: "  + user.getPower());
+            Console.WriteLine("Energia Vital: " + user.getVitalEnergy());
+            Console.WriteLine("Skill: "         + user.getSkill());
+            Console.WriteLine("Ultimate: "      + user.getUltimate());
             Principal.Separador();
             Console.ReadKey();
+            Dialogo.poem1();
+            Dialogo.presents1();
             PrincipalsBattles.Battle_Initial(user, sollis);
         }
         else{ 
@@ -209,7 +218,7 @@ class Game
                 Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
                 string? newaction = Console.ReadLine(); Principal.Separador();
                 if (newaction == "1") {
-                    Taverna.Compras(user);
+                    Taverna.ComprasInBattle(user);
                     PrincipalsBattles.Battle_Initial(user, sollis);
                 }
                 else{ 
@@ -233,7 +242,7 @@ class Game
     }
 }
 class Taverna{
-    public static void Compras(Entity user){
+    public static void ComprasInBattle(Entity user){
         Console.WriteLine("[1] - Elixir da Cura (+25 HP): 5 Doblons       | [2] - Espada Comum (+10 ATK): 20 Doblons");
         Console.WriteLine("[3] - Armadura de Couro (+10 DEF): 20 Doblons  | [0] - Voltar para a batalha");
         Console.Write("-> "); int compra = int.Parse(Console.ReadLine());
@@ -259,7 +268,7 @@ class Taverna{
             } else { Console.WriteLine("Doblons Insuficientes"); }
         } else { Console.WriteLine("Valor invalido saindo da taverna"); }
     }
-    public static void Vendas(Entity user){
+    public static void CompraOutsideBattle(Entity user){
         Console.WriteLine("Ainda em desenvolvimento");
     }
 }
@@ -326,7 +335,18 @@ class Principal
         if (DataManagment.existData(nomeplayer)){  Console.WriteLine($"Bem vindo de volta Mestre {nomeplayer}"); } 
         else {
             while (DataManagment.existID(novoId.ToString())){ novoId += 1; }
-            DataManagment.NewData(novoId.ToString(), nomeplayer, "Nenhum", "100", "0", "10", "25", "0", "0");
+            Console.WriteLine("Escolha seu dom: ");
+            Console.WriteLine("[1] - Canção do Sangue  | [2] - Conexão com Animais  | [3] - Manipulação do Fogo");
+            Console.WriteLine("[4] - Projeção Astral   | [5] - Super Força          | [6] - Controle Corporal");
+            int dote = int.Parse(Console.ReadLine());
+
+            if (dote == 1) { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "sexto sentido", "Danca Sangrenta", "Sangue"); }
+            else if (dote == 2){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Reforco Animal", "Controle Animal", "Animal"); }
+            else if(dote == 3){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Lanca Chamas", "Firestorm", "Fogo"); }
+            else if (dote == 4){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Analise Astral", "Morte Astral", "Alma"); }
+            else if (dote == 5){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Estrangulamento", "Martelo da Morte", "Forca"); }
+            else if (dote == 6){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Paralisacao", "Auto Destruicao", "Controle"); }
+            else { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "nenhum", "Furia de Soldado", "Comum"); }
             Console.WriteLine($"Dado criado para {nomeplayer} com sucesso.");
         }
         DataManagment.ReadData(novoId.ToString());

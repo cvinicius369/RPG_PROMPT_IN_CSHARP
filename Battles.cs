@@ -7,14 +7,14 @@ namespace Battles
 {
     class PrincipalsBattles{
         public static void Battle_Initial(Entity user, Entity oponent){
-             int dado = Principal.Jogadado();
+            int dado = Principal.Jogadado();
 
             while (user.getHp() > 0 && oponent.getHp() > 0) {
                 int dado1 = Principal.Jogadado(); string? option1;
                 if (dado1 > 50) {
                     oponent.setHp(oponent.getHp() - (user.getAtk() - oponent.getDef()));
                     Console.WriteLine("SORTE: Você ataca primneiro!");
-                    Console.WriteLine($"Oponente: {user.getName()} ficou com: {oponent.getHp()} de vida após o ataque de: {user.getName()} que teve: {user.getAtk()} de dano");
+                    Console.WriteLine($"Oponente: {oponent.getName()} ficou com: {oponent.getHp()} de vida após o ataque de: {user.getName()} que teve: {user.getAtk()} de dano");
                     Console.ReadKey();
                     Principal.Separador();
                 }
@@ -28,7 +28,7 @@ namespace Battles
                 Console.WriteLine("Digite 1 para ir á loja ou qualquer tecla para continuar o jogo: ");
                 option1 = Console.ReadLine();
 
-                if (option1 == "1") { Principal.Separador(); Taverna.Compras(user); }
+                if (option1 == "1") { Principal.Separador(); Taverna.ComprasInBattle(user); }
             }
             if (user.getHp() <= 0) {
                 Console.WriteLine("Você perdeu! O oponente venceu.\nGanhaste 5 xp");
@@ -60,6 +60,9 @@ namespace Battles
             
             Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa, 5 de ataque e 50 doblons!");
             Battle_F1.Battle1(user);
+        }
+        public static void Battle_Comun(Entity user, Entity oponent){
+            
         }
     }
     /*
@@ -166,7 +169,7 @@ namespace Battles
             else if (decisao == 4)
             {
                 Principal.Separador();
-                Taverna.Compras(user);
+                Taverna.ComprasInBattle(user);
             } else { Console.WriteLine("Comando invalido!\nTente novamente."); goto tournament1; }
 
             foreach (string letra in texto5 ) { print.ImprimirTextoComAtraso(letra, 50); }
