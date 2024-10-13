@@ -12,6 +12,8 @@
             - corrigir funções desnecessarias
             - reduzir redundancia
             - implementar mapa em pixel art
+            - alterar itens de compra (para separar itens que podem ser comprados durante batalhas e
+                itens que podem ser comprados foras das batalhas)
 */
 //---| Abaixo são as bibliotecas e outras importações para que o jogo funcione corretamente.
 using Battles;
