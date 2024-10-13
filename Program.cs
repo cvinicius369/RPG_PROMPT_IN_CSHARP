@@ -170,7 +170,7 @@ class Dialogo2 : Dialogo
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
-    public static void Starting(string name, Personagens sollis)//Método recebendo os atributos
+    public static void Starting(string name)//Método recebendo os atributos
     {
         int idUser = int.Parse(DataManagment.ObterValor(name, 0));  
         string nameUser = DataManagment.ObterValor(name, 1);
@@ -181,8 +181,9 @@ class Game
         int doblons = int.Parse(DataManagment.ObterValor(name, 6)); 
         int xp = int.Parse(DataManagment.ObterValor(name, 7));
         int power = int.Parse(DataManagment.ObterValor(name, 8));
-        Entity user = new Entity(idUser, nameUser, level, hp, def, atk, doblons, xp, power);
 
+        Entity user = new Entity(idUser, nameUser, level, hp, def, atk, doblons, xp, power);
+        Entity sollis = new Entity(0, "Sollis", "Mestre da 4a Ordem", 200, 10, 80, 20, 1000, 10000);
 
         Console.WriteLine("Jogo Iniciado");
         Console.WriteLine("Para apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
@@ -199,124 +200,37 @@ class Game
             Console.WriteLine("Poder Maximo: "  + user.getPower());
             Principal.Separador();
             Console.ReadKey();
-            Inicio(user, sollis);                                       //lançando os atributos para a função Inicio()
+            PrincipalsBattles.Battle_Initial(user, sollis);
         }
-        else
-        { if (action == "2") { Inicio(user, sollis); }                //lançando os atributos para a função Inicio()
-          else { if (action == "3") { Console.WriteLine("Saindo . . ."); }
-            else
-            {
-                Console.WriteLine("Comando não esperado!");
-                Console.ReadKey();
-                Starting(name, sollis);
-            }
-          }
-        }
-    }
-    public static void Inicio(Entity user, Personagens sollis)            //Função inicio recebendo os atributos
-    {
-        Dialogo.poem1();
-        Dialogo.presents1();
-
-        Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
-        string? newaction = Console.ReadLine();
-        Principal.Separador();
-
-        //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
-        if (newaction == "1")
-        {
-            Taverna.Compras(user);
-            BattleSollis1(user, sollis);
-        }
-        else
-        { if (newaction == "2") { BattleSollis1(user, sollis); }
-            else
-            {
-                Console.WriteLine("Acao Invalida!");
-                Console.ReadKey();
-                Console.Clear();
-                Inicio(user, sollis);
+        else{ 
+            if (action == "2") { 
+                Dialogo.poem1();
+                Dialogo.presents1();
+                Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
+                string? newaction = Console.ReadLine(); Principal.Separador();
+                if (newaction == "1") {
+                    Taverna.Compras(user);
+                    PrincipalsBattles.Battle_Initial(user, sollis);
+                }
+                else{ 
+                    if (newaction == "2") { PrincipalsBattles.Battle_Initial(user, sollis); }
+                    else {
+                        Console.WriteLine("Acao Invalida!");
+                        Console.ReadKey();
+                        Console.Clear();
+                        Starting(name);
+                    }
+               }
+            } else { 
+                if (action == "3") { Console.WriteLine("Saindo . . ."); }
+                else {
+                    Console.WriteLine("Comando não esperado!");
+                    Console.ReadKey();
+                    Starting(name);
+                }
             }
         }
     }
-    public static void BattleSollis1(Entity user, Personagens sollis)
-    {
-        string? nome = user.getName();    
-        string level = user.getLevel(); 
-        int xp = user.getXp();
-        sollis.ObterDadosSollis();                                   
-        string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
-
-        int dado = Principal.Jogadado();
-
-        while (user.getHp() > 0 && sollis.getVidaSollis() > 0) {
-            int dado1 = Principal.Jogadado(); string? option1;
-            if (dado1 > 50) {
-                sollis.AlteraVidaSollis(sollis.getVidaSollis() - user.getAtk()); //Alterando a vida do oponente usando o dano do usuario
-                Console.WriteLine("SORTE: Você ataca primneiro!");
-                Console.WriteLine($"Oponente: {nomesollis} ficou com: {sollis.getVidaSollis()} de vida após o ataque de: {nome} que teve: {user.getAtk()} de dano");
-                Console.ReadKey();
-                Principal.Separador();
-            }
-            else {
-                Console.WriteLine("Inimigo começa primeiro!");
-                user.setHp(user.getHp() - (sollis.getDanoSollis() - user.getDef()));
-                Console.WriteLine($"{nome} ficou com: {user.getHp()} De vida após o ataque de: {nomesollis} que teve: {sollis.getDanoSollis()} de dano");
-                Console.ReadKey();
-                Principal.Separador();
-            }
-            Console.WriteLine("Digite 1 para ir á loja ou qualquer tecla para continuar o jogo: ");
-            option1 = Console.ReadLine();
-
-            if (option1 == "1")
-            { Principal.Separador(); Taverna.Compras(user);
-            }
-        }
-        if (user.getHp() <= 0)
-        {
-            Console.WriteLine("Você perdeu! O oponente venceu.\nGanhaste 5 xp");
-            xp = 5;
-            DataManagment.UpdateData(user.getId().ToString(), 7, xp.ToString());
-            if (xp > 100) { 
-                user.setLevel("Abandonado");
-                user.setAtk(user.getAtk() + 2);
-                user.setDef(user.getDef() + 5);
-                DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel());
-             }
-            Fase_1(user);
-        }
-        else if (sollis.getVidaSollis() <= 0)
-        {
-            Console.WriteLine("Parabéns! Você venceu o oponente.\nGanhaste 50 xp");
-            xp = xp + 50;
-            if (xp > 100) { 
-                user.setAtk(user.getAtk() + 2);
-                user.setDef(user.getDef() + 5);
-                user.setLevel("Abandonado");
-                DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel()); 
-            }
-            Fase_1(user);
-        }
-    }
-    public static void Fase_1(Entity user)
-    {
-        /* 
-         + Aqui será a primeira fase onde o player irá realmente jogar uma batalha e se vencer poderá ir para a proxima fase
-         + Se perder, voltará para o inicio.
-         + Esse bloco de código será o último neste namespace, as proximas fases serão em outro namespace
-        */
-        Dialogo2.Presents3();
-
-        user.setHp(125); // reset da vida do usuario
-        user.setDef(user.getDef() + 25);
-        user.setDoblons(user.getDoblons() + 50);
-        user.setAtk(user.getAtk() + 5);
-        
-        Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa, 5 de ataque e 50 doblons!");
-
-        Battle_F1.Battle1(user); //Abrindo o namespace, em seguida a classe e só então a função
-    }
-
 }
 class Taverna{
     public static void Compras(Entity user){
@@ -356,26 +270,8 @@ class Taverna{
 */
 class Personagens
 {
-    private string? sollis, vaelin;
-    private int doblonssollis, danosollis, vidasollis, defesasollis, doblonsvaelin, vidavaelin, defesavaelin, danovaelin;
-    public void ObterDadosSollis()
-    {
-        this.sollis = "Mestre Sollis";
-        this.defesasollis = 10;
-        this.doblonssollis = 10;
-        this.vidasollis = 200;
-        this.danosollis = 80;
-    }
-    public string? getNomeSollis() { return this.sollis; }
-    public int getVidaSollis() { return this.vidasollis; }
-    public int getDoblonsSollis() { return this.doblonssollis; }
-    public int getDefesaSollis() { return this.defesasollis; }
-    public int getDanoSollis() { return this.danosollis; }
-    public int AlteraDanoSollis(int dnsol) { this.danosollis = dnsol; return this.danosollis; }
-    public int AlteraVidaSollis(int vd) { this.vidasollis = vd; return this.vidasollis; }
-    public int AlteraDefesaSollis(int defes) { this.defesasollis = defes; return this.defesasollis; }
-    public int AlteraDoblonsSollis(int dob) { this.doblonssollis = dob; return this.doblonssollis; }
-    public string AlteraNomeSollis(string nm) { this.sollis = nm; return this.sollis; }
+    private string? vaelin;
+    private int doblonsvaelin, vidavaelin, defesavaelin, danovaelin;
 
     //---------------------------------------------------------------------------------------------------------------------//
     public void ObterDadosVaelin()
@@ -443,7 +339,7 @@ class Principal
         //Em seguida a função Main() irá repetir, fazendo o usuário voltar ao inicio
 
         if (iniciogame == "1")
-        { Game.Starting(nomeplayer, sollis);//lançando os dados do player para a classe Game.Starting
+        { Game.Starting(nomeplayer);//lançando os dados do player para a classe Game.Starting
         }
         else
         {

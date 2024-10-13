@@ -5,6 +5,63 @@ using System.Runtime.InteropServices;
 
 namespace Battles
 {
+    class PrincipalsBattles{
+        public static void Battle_Initial(Entity user, Entity oponent){
+             int dado = Principal.Jogadado();
+
+            while (user.getHp() > 0 && oponent.getHp() > 0) {
+                int dado1 = Principal.Jogadado(); string? option1;
+                if (dado1 > 50) {
+                    oponent.setHp(oponent.getHp() - (user.getAtk() - oponent.getDef()));
+                    Console.WriteLine("SORTE: Você ataca primneiro!");
+                    Console.WriteLine($"Oponente: {user.getName()} ficou com: {oponent.getHp()} de vida após o ataque de: {user.getName()} que teve: {user.getAtk()} de dano");
+                    Console.ReadKey();
+                    Principal.Separador();
+                }
+                else {
+                    Console.WriteLine("Inimigo começa primeiro!");
+                    user.setHp(user.getHp() - (oponent.getAtk() - user.getDef()));
+                    Console.WriteLine($"{user.getName()} ficou com: {user.getHp()} De vida após o ataque de: {oponent.getName()} que teve: {oponent.getAtk()} de dano");
+                    Console.ReadKey();
+                    Principal.Separador();
+                }
+                Console.WriteLine("Digite 1 para ir á loja ou qualquer tecla para continuar o jogo: ");
+                option1 = Console.ReadLine();
+
+                if (option1 == "1") { Principal.Separador(); Taverna.Compras(user); }
+            }
+            if (user.getHp() <= 0) {
+                Console.WriteLine("Você perdeu! O oponente venceu.\nGanhaste 5 xp");
+                user.setXP(user.getXp() + 5);
+                if (user.getXp() > 100) { 
+                    user.setLevel("Abandonado");
+                    user.setAtk(user.getAtk() + 2);
+                    user.setDef(user.getDef() + 5);
+                    DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel());
+                }
+            }
+            else if (oponent.getHp() <= 0) {
+                Console.WriteLine("Parabéns! Você venceu o oponente.\nGanhaste 50 xp");
+                user.setXP(user.getXp() + 50);
+                if (user.getXp() > 100) { 
+                    user.setAtk(user.getAtk() + 2);
+                    user.setDef(user.getDef() + 5);
+                    user.setLevel("Abandonado");
+                    DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel()); 
+                }
+            }
+
+            Dialogo2.Presents3();
+
+            user.setHp(125); // reset da vida do usuario
+            user.setDef(user.getDef() + 25);
+            user.setDoblons(user.getDoblons() + 50);
+            user.setAtk(user.getAtk() + 5);
+            
+            Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa, 5 de ataque e 50 doblons!");
+            Battle_F1.Battle1(user);
+        }
+    }
     /*
             Informações do Jogo
 
