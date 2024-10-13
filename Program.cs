@@ -3,17 +3,21 @@
 * Name Game:  A Sombra do Corvo
 *E-mail:      vinicius182102@gmail.com
 
-* Notas: Ultima atualização oficial em: 29/9/2024 - status: em andamento
-        Está sendo implementada a persistencia de dados usando um arquivo csv como base de dados
+* Notas: Ultima atualização oficial em: 13/10/2024 - status: em andamento
+            Foi implementada a persistencia de dados e correção de bugs, permitindo agora que o
+                codigo use novos atributos como habilidades especiais e energia vital
         
 * Atividades: 
-    - Apos a manipulacao dos dados do objeto, a base de dados deve ser atualizada com os valores atuais do objeto
-    - Resolver o bug da busca de dados (as funcoes nao estao conseguindo puxar os dados, "Dado naoencontrado")
+            - Tornar o codigo limpo (clean code)
+            - corrigir funções desnecessarias
+            - reduzir redundancia
+            - implementar mapa em pixel art
 */
 //---| Abaixo são as bibliotecas e outras importações para que o jogo funcione corretamente.
 using Battles;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
@@ -77,16 +81,6 @@ public class DataManagment{
     }
     static void WriteFile(List<string[]> dados){
         using (StreamWriter sw = new StreamWriter(localFile)){ foreach(var dado in dados){ sw.WriteLine(string.Join(";", dado)); } }
-    }
-    static Entity CreateUser(string name){
-        int id = int.Parse(ObterValor(name, 0));  string nameUser = ObterValor(name, 1);
-        string level = ObterValor(name, 2); 
-        int hp = int.Parse(ObterValor(name, 3)); int def = int.Parse(ObterValor(name, 4));
-        int atk = int.Parse(ObterValor(name, 5));
-        int doblons = int.Parse(ObterValor(name, 6)); int xp = int.Parse(ObterValor(name, 7));
-        int power = int.Parse(ObterValor(name, 8));
-        Entity user = new Entity(id, nameUser, level, hp, def, atk, doblons, xp, power);
-        return user;
     }
 }
 class Dialogo
@@ -174,38 +168,50 @@ class Dialogo2 : Dialogo
 //------------------------------------------------------------------------------| Classe Game
 class Game
 {
-    public static void Starting(string id, Personagens sollis)//Método recebendo os atributos
+    public static void Starting(string name, Personagens sollis)//Método recebendo os atributos
     {
+        int idUser = int.Parse(DataManagment.ObterValor(name, 0));  
+        string nameUser = DataManagment.ObterValor(name, 1);
+        string level = DataManagment.ObterValor(name, 2); 
+        int hp = int.Parse(DataManagment.ObterValor(name, 3)); 
+        int def = int.Parse(DataManagment.ObterValor(name, 4));
+        int atk = int.Parse(DataManagment.ObterValor(name, 5));
+        int doblons = int.Parse(DataManagment.ObterValor(name, 6)); 
+        int xp = int.Parse(DataManagment.ObterValor(name, 7));
+        int power = int.Parse(DataManagment.ObterValor(name, 8));
+        Entity user = new Entity(idUser, nameUser, level, hp, def, atk, doblons, xp, power);
+
+
         Console.WriteLine("Jogo Iniciado");
         Console.WriteLine("Para apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
         Principal.Separador();
         string? action = Console.ReadLine();
         if (action == "1") {
-            Console.WriteLine("Nome: "          + DataManagment.ObterValor(id, 1));
-            Console.WriteLine("Nivel: "         + DataManagment.ObterValor(id, 2));
-            Console.WriteLine("Vida: "          + DataManagment.ObterValor(id, 3));
-            Console.WriteLine("Dano: "          + DataManagment.ObterValor(id, 4));
-            Console.WriteLine("Defesa: "        + DataManagment.ObterValor(id, 4));
-            Console.WriteLine("Doblons: "       + DataManagment.ObterValor(id, 5));
-            Console.WriteLine("Energia Vital: " + DataManagment.ObterValor(id, 6));
-            Console.WriteLine("Experiencia: "   + DataManagment.ObterValor(id, 7));
+            Console.WriteLine("Nome: "          + user.getName());
+            Console.WriteLine("Nivel: "         + user.getLevel());
+            Console.WriteLine("Vida: "          + user.getHp());
+            Console.WriteLine("Dano: "          + user.getAtk());
+            Console.WriteLine("Defesa: "        + user.getDef());
+            Console.WriteLine("Doblons: "       + user.getDoblons());
+            Console.WriteLine("XP: " + user.getXp());
+            Console.WriteLine("Poder Maximo: "  + user.getPower());
             Principal.Separador();
             Console.ReadKey();
-            Inicio(id, sollis);                                       //lançando os atributos para a função Inicio()
+            Inicio(user, sollis);                                       //lançando os atributos para a função Inicio()
         }
         else
-        { if (action == "2") { Inicio(id, sollis); }                //lançando os atributos para a função Inicio()
+        { if (action == "2") { Inicio(user, sollis); }                //lançando os atributos para a função Inicio()
           else { if (action == "3") { Console.WriteLine("Saindo . . ."); }
             else
             {
                 Console.WriteLine("Comando não esperado!");
                 Console.ReadKey();
-                Starting(id, sollis);
+                Starting(name, sollis);
             }
           }
         }
     }
-    public static void Inicio(string id, Personagens sollis)            //Função inicio recebendo os atributos
+    public static void Inicio(Entity user, Personagens sollis)            //Função inicio recebendo os atributos
     {
         Dialogo.poem1();
         Dialogo.presents1();
@@ -217,43 +223,43 @@ class Game
         //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
         if (newaction == "1")
         {
-            Taverna.Compras(id);
-            BattleSollis1(id, sollis);
+            Taverna.Compras(user);
+            BattleSollis1(user, sollis);
         }
         else
-        { if (newaction == "2") { BattleSollis1(id, sollis); }
+        { if (newaction == "2") { BattleSollis1(user, sollis); }
             else
             {
                 Console.WriteLine("Acao Invalida!");
                 Console.ReadKey();
                 Console.Clear();
-                Inicio(id, sollis);
+                Inicio(user, sollis);
             }
         }
     }
-    public static void BattleSollis1(String id, Personagens sollis)
+    public static void BattleSollis1(Entity user, Personagens sollis)
     {
-        string? nome = DataManagment.ObterValor(id, 1);    
-        int level = int.Parse(DataManagment.ObterValor(id, 2)); 
-        int hp = int.Parse(DataManagment.ObterValor(id, 3));                             
+        string? nome = user.getName();    
+        string level = user.getLevel(); 
+        int xp = user.getXp();
         sollis.ObterDadosSollis();                                   
         string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
 
         int dado = Principal.Jogadado();
 
-        while (int.Parse(DataManagment.ObterValor(id, 3)) > 0 && sollis.getVidaSollis() > 0) {
+        while (user.getHp() > 0 && sollis.getVidaSollis() > 0) {
             int dado1 = Principal.Jogadado(); string? option1;
             if (dado1 > 50) {
-                sollis.AlteraVidaSollis(sollis.getVidaSollis() - int.Parse(DataManagment.ObterValor(id, 5))); //Alterando a vida do oponente usando o dano do usuario
+                sollis.AlteraVidaSollis(sollis.getVidaSollis() - user.getAtk()); //Alterando a vida do oponente usando o dano do usuario
                 Console.WriteLine("SORTE: Você ataca primneiro!");
-                Console.WriteLine($"Oponente: {nomesollis} ficou com: {sollis.getVidaSollis()} de vida após o ataque de: {nome} que teve: {int.Parse(DataManagment.ObterValor(id, 5))} de dano");
+                Console.WriteLine($"Oponente: {nomesollis} ficou com: {sollis.getVidaSollis()} de vida após o ataque de: {nome} que teve: {user.getAtk()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
             else {
                 Console.WriteLine("Inimigo começa primeiro!");
-                DataManagment.UpdateData(id, 3, (hp - sollis.getDanoSollis()).ToString());
-                Console.WriteLine($"{nome} ficou com: {DataManagment.ObterValor(id, 3)} De vida após o ataque de: {nomesollis} que teve: {sollis.getDanoSollis()} de dano");
+                user.setHp(user.getHp() - (sollis.getDanoSollis() - user.getDef()));
+                Console.WriteLine($"{nome} ficou com: {user.getHp()} De vida após o ataque de: {nomesollis} que teve: {sollis.getDanoSollis()} de dano");
                 Console.ReadKey();
                 Principal.Separador();
             }
@@ -261,26 +267,36 @@ class Game
             option1 = Console.ReadLine();
 
             if (option1 == "1")
-            { Principal.Separador(); Taverna.Compras(id);
+            { Principal.Separador(); Taverna.Compras(user);
             }
         }
-        if (int.Parse(DataManagment.ObterValor(id, 3)) <= 0)
+        if (user.getHp() <= 0)
         {
             Console.WriteLine("Você perdeu! O oponente venceu.\nGanhaste 5 xp");
-            int xp = 5; int newLevel = level + 1;
-            DataManagment.UpdateData(id, 7, xp.ToString());
-            if (level > 100) { DataManagment.UpdateData(id, 2, newLevel.ToString()); }
-            Fase_1(id);
+            xp = 5;
+            DataManagment.UpdateData(user.getId().ToString(), 7, xp.ToString());
+            if (xp > 100) { 
+                user.setLevel("Abandonado");
+                user.setAtk(user.getAtk() + 2);
+                user.setDef(user.getDef() + 5);
+                DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel());
+             }
+            Fase_1(user);
         }
         else if (sollis.getVidaSollis() <= 0)
         {
             Console.WriteLine("Parabéns! Você venceu o oponente.\nGanhaste 50 xp");
-            int newLevel = level + 50;
-            if (level > 100) { DataManagment.UpdateData(id, 2, newLevel.ToString()); }
-            Fase_1(id);
+            xp = xp + 50;
+            if (xp > 100) { 
+                user.setAtk(user.getAtk() + 2);
+                user.setDef(user.getDef() + 5);
+                user.setLevel("Abandonado");
+                DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel()); 
+            }
+            Fase_1(user);
         }
     }
-    public static void Fase_1(string id)
+    public static void Fase_1(Entity user)
     {
         /* 
          + Aqui será a primeira fase onde o player irá realmente jogar uma batalha e se vencer poderá ir para a proxima fase
@@ -289,55 +305,45 @@ class Game
         */
         Dialogo2.Presents3();
 
-        DataManagment.UpdateData(id, 3, (int.Parse(DataManagment.ObterValor(id, 3)) + 25).ToString());
-        DataManagment.UpdateData(id, 3, (int.Parse(DataManagment.ObterValor(id, 4)) + 25).ToString());
-        DataManagment.UpdateData(id, 3, (int.Parse(DataManagment.ObterValor(id, 6)) + 50).ToString());
-        Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa e 50 doblons!");
+        user.setHp(125); // reset da vida do usuario
+        user.setDef(user.getDef() + 25);
+        user.setDoblons(user.getDoblons() + 50);
+        user.setAtk(user.getAtk() + 5);
+        
+        Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa, 5 de ataque e 50 doblons!");
 
-        Battles.Battle_F1.Battle1(id); //Abrindo o namespace, em seguida a classe e só então a função
+        Battle_F1.Battle1(user); //Abrindo o namespace, em seguida a classe e só então a função
     }
 
 }
 class Taverna{
-    public static void Compras(String id){
-        int doblons = int.Parse(DataManagment.ObterValor(id, 6));
-        int hp      = int.Parse(DataManagment.ObterValor(id, 3));
-        int atck    = int.Parse(DataManagment.ObterValor(id, 5));
-        int def     = int.Parse(DataManagment.ObterValor(id, 4));
-        int xp      = int.Parse(DataManagment.ObterValor(id, 7));
-        int payment, newAtribute;
+    public static void Compras(Entity user){
         Console.WriteLine("[1] - Elixir da Cura (+25 HP): 5 Doblons       | [2] - Espada Comum (+10 ATK): 20 Doblons");
         Console.WriteLine("[3] - Armadura de Couro (+10 DEF): 20 Doblons  | [0] - Voltar para a batalha");
-        Console.Write("-> "); int compra = Console.Read();
+        Console.Write("-> "); int compra = int.Parse(Console.ReadLine());
         
         if (compra == 0) { Console.WriteLine("Saindo da taverna"); }
         else if (compra == 1){
-            if (doblons >= 5){
-                payment = doblons-5;
-                newAtribute = hp + 25;
-                DataManagment.UpdateData(id, 6, payment.ToString());
-                DataManagment.UpdateData(id, 3, newAtribute.ToString());
+            if (user.getDoblons() >= 5){
+                user.setDoblons(user.getDoblons() - 5);
+                user.setHp(user.getHp() + 25);
                 Console.WriteLine("Compra Realizada, você ganhou +25 HP");
             } else { Console.WriteLine("Doblons Insuficientes"); }
         } else if (compra == 2){
-            if (doblons >= 20){
-                payment = doblons-20;
-                newAtribute = atck + 10;
-                DataManagment.UpdateData(id, 6, payment.ToString());
-                DataManagment.UpdateData(id, 5, newAtribute.ToString());
+            if (user.getDoblons() >= 20){
+                user.setDoblons(user.getDoblons() - 20);
+                user.setAtk(user.getAtk() + 10);
                 Console.WriteLine("Compra Realizada, você ganhou +10 ATK");
             } else { Console.WriteLine("Doblons Insuficientes"); }
         } else if (compra == 3){
-            if (doblons >= 20){
-                payment = doblons-20;
-                newAtribute = def + 10;
-                DataManagment.UpdateData(id, 6, payment.ToString());
-                DataManagment.UpdateData(id, 4, newAtribute.ToString());
+            if (user.getDoblons() >= 20){
+                user.setDoblons(user.getDoblons() - 20);
+                user.setDef(user.getDef() + 10);
                 Console.WriteLine("Compra Realizada, você ganhou +10 DEF");
             } else { Console.WriteLine("Doblons Insuficientes"); }
         } else { Console.WriteLine("Valor invalido saindo da taverna"); }
     }
-    public static void Vendas(string id){
+    public static void Vendas(Entity user){
         Console.WriteLine("Ainda em desenvolvimento");
     }
 }
@@ -422,7 +428,7 @@ class Principal
         if (DataManagment.existData(nomeplayer)){  Console.WriteLine($"Bem vindo de volta Mestre {nomeplayer}"); } 
         else {
             while (DataManagment.existID(novoId.ToString())){ novoId += 1; }
-            DataManagment.NewData(novoId.ToString(), nomeplayer, "A", "100", "50", "30", "200", "0", "100");
+            DataManagment.NewData(novoId.ToString(), nomeplayer, "Nenhum", "100", "0", "10", "25", "0", "0");
             Console.WriteLine($"Dado criado para {nomeplayer} com sucesso.");
         }
         DataManagment.ReadData(novoId.ToString());
@@ -435,7 +441,7 @@ class Principal
         //Em seguida a função Main() irá repetir, fazendo o usuário voltar ao inicio
 
         if (iniciogame == "1")
-        { Game.Starting(novoId.ToString(), sollis);//lançando os dados do player para a classe Game.Starting
+        { Game.Starting(nomeplayer, sollis);//lançando os dados do player para a classe Game.Starting
         }
         else
         {

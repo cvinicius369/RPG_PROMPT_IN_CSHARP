@@ -28,11 +28,11 @@ public class Entity{
     public int getPower(){ return this.power;}
 
     /* [ SETTERS ] */
-    public void setLevel(int id, string newLevel){ this.level = newLevel; }
-    public void setHp(int id, int newHP){ this.hp = newHP; }
-    public void setDef(int id, int def){ this.def = def; } 
-    public void setAtk(int id, int newAtk){ this.atk = newAtk; }
-    public void setXP(int id, int newXP){ this.xp = newXP; }
-    public void setDoblons(int id, int newDoblons){ this.doblons = newDoblons; }
-    public void setPower(int id, int newPower){ this.power = newPower; }    
+    public void setLevel(string newLevel){ this.level = newLevel; }
+    public void setHp(int newHP){ this.hp = newHP; }
+    public void setDef(int def){ this.def = def; } 
+    public void setAtk(int newAtk){ this.atk = newAtk; }
+    public void setXP(int newXP){ this.xp = newXP; }
+    public void setDoblons(int newDoblons){ this.doblons = newDoblons; }
+    public void setPower(int newPower){ this.power = newPower; }    
 }
