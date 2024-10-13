@@ -7,7 +7,6 @@
         Está sendo implementada a persistencia de dados usando um arquivo csv como base de dados
         
 * Atividades: 
-    - Criar objeto para manipular os valores antes de armazena-los na base de dados
     - Apos a manipulacao dos dados do objeto, a base de dados deve ser atualizada com os valores atuais do objeto
     - Resolver o bug da busca de dados (as funcoes nao estao conseguindo puxar os dados, "Dado naoencontrado")
 */
@@ -78,6 +77,16 @@ public class DataManagment{
     }
     static void WriteFile(List<string[]> dados){
         using (StreamWriter sw = new StreamWriter(localFile)){ foreach(var dado in dados){ sw.WriteLine(string.Join(";", dado)); } }
+    }
+    static Entity CreateUser(string name){
+        int id = int.Parse(ObterValor(name, 0));  string nameUser = ObterValor(name, 1);
+        string level = ObterValor(name, 2); 
+        int hp = int.Parse(ObterValor(name, 3)); int def = int.Parse(ObterValor(name, 4));
+        int atk = int.Parse(ObterValor(name, 5));
+        int doblons = int.Parse(ObterValor(name, 6)); int xp = int.Parse(ObterValor(name, 7));
+        int power = int.Parse(ObterValor(name, 8));
+        Entity user = new Entity(id, nameUser, level, hp, def, atk, doblons, xp, power);
+        return user;
     }
 }
 class Dialogo
