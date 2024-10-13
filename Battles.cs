@@ -25,7 +25,7 @@ namespace Battles
                     Console.ReadKey();
                     Principal.Separador();
                 }
-                Console.WriteLine("Digite 1 para ir á loja ou qualquer tecla para continuar o jogo: ");
+                Console.WriteLine("[0] - Continuar Batalha  | [1] - Taverna\n-> ");
                 option1 = Console.ReadLine();
 
                 if (option1 == "1") { Principal.Separador(); Taverna.ComprasInBattle(user); }
@@ -57,6 +57,8 @@ namespace Battles
             user.setDef(user.getDef() + 25);
             user.setDoblons(user.getDoblons() + 50);
             user.setAtk(user.getAtk() + 5);
+            user.setProgress(1);
+            DataManagment.saveData(user);
             
             Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa, 5 de ataque e 50 doblons!");
             Battle_F1.Battle1(user);
@@ -85,8 +87,6 @@ namespace Battles
             Narrativa narrativa = new Narrativa();                    //instanciando as narrativas
             SherinTalks sherinfalas = new SherinTalks();              //instanciando as falas da personagem sherin
             VaelinTalks vaelinfalas = new VaelinTalks();              //instanciando as falas do personagem vaelin
-            Personagens vaelin = new Personagens();                   //instanciando o objeto vaelin
-            vaelin.ObterDadosVaelin();                                //obtendo os dados do personagem vaelin
             Puzzles corrida = new Puzzles();                          //isntanciando ss puzzles que terão no jogo
 
             //Imprimindo atributos atualizados
@@ -101,9 +101,11 @@ namespace Battles
             Console.WriteLine("Precione qualquer tecla para continuar.");
             Console.ReadKey(); Console.Clear(); Principal.Separador();
             narrativa.dialogo1(); sherinfalas.dialogo1(user); narrativa.dialogo2(); vaelinfalas.dialogo1(user); Principal.Separador();
-            Treinamento(user, vaelin);        }
+            Entity vaelin = new Entity(0, "Vaelin", "Espada do rei", 275, 100, 80, 20, 1000, 10000, "sexto sentido", "Danca Sangrenta", 10000, "Sangue", 0);
+            Treinamento(user, vaelin); 
+        }
 
-        public static void Treinamento(Entity user, Personagens vaelin)     //Funcao que é responsavel por fazer o treinamento do player
+        public static void Treinamento(Entity user, Entity vaelin)     //Funcao que é responsavel por fazer o treinamento do player
         {
             Puzzles puzz = new Puzzles();                  //Instanciando funcao de puzzles para que seja impresso o mapa
             Impressoes print = new Impressoes();           //Instanciando função de impressão para que as palavras sejam impressas com atraso para dar impressao de escrita humanizada
@@ -134,9 +136,9 @@ namespace Battles
                     "Isso mesmo seu ataque foi muito bom. Melhore sua postura durante o ataque, poderá ajudar e muito.\n"
                 };
 
-                Console.WriteLine($"--| Você atacou {vaelin.getNomeVaelin()}");
-                vaelin.AlteraVidaVaelin(vaelin.getVidaVaelin() - user.getAtk());
-                Console.WriteLine($"--| {vaelin.getNomeVaelin()} ficou com {vaelin.getVidaVaelin()} de vida.");
+                Console.WriteLine($"--| Você atacou {vaelin.getName()}");
+                vaelin.setHp(vaelin.getHp() - user.getAtk());
+                Console.WriteLine($"--| {vaelin.getName()} ficou com {vaelin.getHp()} de vida.");
                 foreach (string texto in texto2) { print.ImprimirTextoComAtraso(texto, 50); }
 
             }
@@ -146,7 +148,7 @@ namespace Battles
                 string[] texto3 = new string[] { "Vaelin: Fique atento aos meus movimentos\n." };
                 string[] texto4 = new string[] { "Vaelin: Melhore sua defesa e conseguirá anular ou quase anular o dano do oponente.\n" };
 
-                Console.WriteLine($"--| {vaelin.getNomeVaelin()} te atacou.");
+                Console.WriteLine($"--| {vaelin.getName()} te atacou.");
 
                 if (dado > 50)
                 {
@@ -157,8 +159,8 @@ namespace Battles
                 {
                     int vida = user.getHp();
                     int defesa = user.getDef();
-                    user.setHp(vida - (vaelin.getDanoVaelin() - defesa));
-                    Console.WriteLine($"--| Defesa mal sucedida, você perdeu {vaelin.getDanoVaelin() - defesa} de vida e ficou com {user.getHp()} de vida.");
+                    user.setHp(vida - (vaelin.getAtk() - defesa));
+                    Console.WriteLine($"--| Defesa mal sucedida, você perdeu {vaelin.getAtk() - defesa} de vida e ficou com {user.getHp()} de vida.");
                     foreach (string texto in texto4) { print.ImprimirTextoComAtraso(texto, 50); }
                 }
             }
@@ -173,6 +175,9 @@ namespace Battles
             } else { Console.WriteLine("Comando invalido!\nTente novamente."); goto tournament1; }
 
             foreach (string letra in texto5 ) { print.ImprimirTextoComAtraso(letra, 50); }
+            user.setProgress(2);
+            DataManagment.saveData(user);
+
             mapa1:                                                                            // Marcacao onde caso o usuario erre o destino retorne para este local em vez de reiniciar o jogo
             puzz.ImprimirMapa1();                                                             // Imprieme uma especie primitiva do mapa local
             Console.Write("Digite a letra correspondente ao destino: ");
@@ -183,11 +188,6 @@ namespace Battles
                 // Executa a continuação do codigo
             } else { Console.WriteLine($"Vaelin: Irmão {user.getName()}, este é o caminho errado!"); goto mapa1; }
         }
-    }
-
-    class BatteActions
-    {
-        //Aqui será feita as batalhas gerais do player contra seus respectivos oponentes
     }
     class Puzzles
     {
