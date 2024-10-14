@@ -4,8 +4,7 @@ using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 
-namespace Battles
-{
+namespace Battles{
     class PrincipalsBattles{
         public static void Battle_Initial(Entity user, Entity oponent){
             int dado = Principal.Jogadado();

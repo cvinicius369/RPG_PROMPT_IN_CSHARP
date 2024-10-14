@@ -3,14 +3,13 @@
 * Name Game:  A Sombra do Corvo
 *E-mail:      vinicius182102@gmail.com
 
-* Notas: Ultima atualização oficial em: 13/10/2024 - status: em andamento
-            Foi implementada a persistencia de dados e correção de bugs, permitindo agora que o
-                codigo use novos atributos como habilidades especiais e energia vital
+* Notas: Ultima atualização oficial em: 14/10/2024 - status: em andamento
+            Foram feitas correções e implementação das praticas clean code, além de implementa
+                ção de novas funções deixando o jogo mais rico em detalhes.
         
 * Atividades: 
             - implementar mapa em pixel art
-            - alterar itens de compra (para separar itens que podem ser comprados durante batalhas e
-                itens que podem ser comprados foras das batalhas)
+            - implementar compras de atributos fora das batalhas
 */
 using Battles;
 using System;
@@ -19,6 +18,7 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
+/* [ GERENCIAMENTO DE DADOS ] */
 public class DataManagment{
     const string localFile = "./dataGamer.csv";
     public static bool existData(string? name){
@@ -109,6 +109,7 @@ public class DataManagment{
         else if (user.getXp() > 550){ user.setLevel("Novo Rei"); }
     }
 }
+/* [ PRINCIPAIS DIALOGOS ] */
 class Dialogo{
     public static string? nome;
     public static void poem1(){
@@ -157,6 +158,7 @@ class Dialogo2 : Dialogo{
         Console.ReadKey();
     }
 };
+/* [ INICIO DO GAME ] */
 class Game{
     public static void Starting(Entity user){
         Entity sollis = new Entity(0, "Sollis", "Mestre da 4a Ordem", 200, 10, 80, 20, 1000, 10000, "Super Agilidade", "Super Forca", 10000, "Comum", 0);
@@ -262,6 +264,7 @@ class Principal{
         int novoId = 1;
         string? nomeplayer = Console.ReadLine();
 
+        // Caso o usuario seja novo no jogo, o mesmo pode escolher uma classe de player
         if (DataManagment.existData(nomeplayer)){  Console.WriteLine($"Bem vindo de volta Mestre {nomeplayer}"); } 
         else {
             while (DataManagment.existID(novoId.ToString())){ novoId += 1; }
@@ -269,7 +272,6 @@ class Principal{
             Console.WriteLine("[1] - Canção do Sangue  | [2] - Conexão com Animais  | [3] - Manipulação do Fogo");
             Console.WriteLine("[4] - Projeção Astral   | [5] - Super Força          | [6] - Controle Corporal");
             int dote = int.Parse(Console.ReadLine());
-
             if (dote == 1) { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "sexto sentido", "Danca Sangrenta", "Sangue", "0"); }
             else if (dote == 2){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Reforco Animal", "Controle Animal", "Animal", "0"); }
             else if(dote == 3){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Lanca Chamas", "Firestorm", "Fogo", "0"); }
@@ -280,6 +282,7 @@ class Principal{
             Console.WriteLine("Novo player cadastrado!");
             Console.WriteLine($"Dado criado para {nomeplayer} com sucesso.");
         }
+        // Criação do objeto user para manipular os dados antes de salva-lo garantindo que eles sejam salvos APÓS o processamento deles
         int idUser      = int.Parse(DataManagment.ObterValor(nomeplayer, 0));  
         string nameUser = DataManagment.ObterValor(nomeplayer, 1);
         string level    = DataManagment.ObterValor(nomeplayer, 2); 
@@ -301,6 +304,7 @@ class Principal{
         iniciogame = Console.ReadLine();
 
         if (iniciogame == "1") { Game.Starting(user); } 
+        else if(iniciogame == "2"){ Taverna.CompraOutsideBattle(user); }
         else { Console.WriteLine("Tecla não esperada!"); Console.ReadKey(); Console.Clear(); Main(args); }
     }
 };
