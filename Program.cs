@@ -12,6 +12,8 @@
             - implementar mapa em pixel art
             - alterar itens de compra (para separar itens que podem ser comprados durante batalhas e
                 itens que podem ser comprados foras das batalhas)
+
+Teste de conexao com git na nova maquina
 */
 using Battles;
 using System;
