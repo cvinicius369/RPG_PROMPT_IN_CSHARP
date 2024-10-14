@@ -8,7 +8,6 @@
                 codigo use novos atributos como habilidades especiais e energia vital
         
 * Atividades: 
-            - Tornar o codigo limpo (clean code)
             - implementar mapa em pixel art
             - alterar itens de compra (para separar itens que podem ser comprados durante batalhas e
                 itens que podem ser comprados foras das batalhas)
@@ -20,7 +19,6 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
-
 public class DataManagment{
     const string localFile = "./dataGamer.csv";
     public static bool existData(string? name){
@@ -77,7 +75,6 @@ public class DataManagment{
     static void WriteFile(List<string[]> dados){
         using (StreamWriter sw = new StreamWriter(localFile)){ foreach(var dado in dados){ sw.WriteLine(string.Join(";", dado)); } }
     }
-
     public static void saveData(Entity user){
         string name = user.getName(); string level = user.getLevel();
         string skill = user.getSkill(); string ultimate = user.getUltimate();
@@ -112,8 +109,7 @@ public class DataManagment{
         else if (user.getXp() > 550){ user.setLevel("Novo Rei"); }
     }
 }
-class Dialogo
-{
+class Dialogo{
     public static string? nome;
     public static void poem1(){
         Console.WriteLine("              A sombra do corvo cobre meu coração, Cessa o jorro de minhas lagrimas");
@@ -123,27 +119,19 @@ class Dialogo
 
     public static void presents1(){
         Console.ReadKey();
-        string[] textos = new string[]
-        {
+        string[] textos = new string[]{
             "- Do que você se recorda? - Voz misteriosa\n",
             "- Ruas...Uma gangue de garotos...um caolho...\n",
             "- Você tem um nome? \n",
             "- Meu nome...\n"
         };
-
         foreach (string texto in textos) { ImprimirComAtraso(texto, 50); }
         Console.Write("Digite seu nome: ");
         nome = Console.ReadLine();
-
-        if (!string.IsNullOrEmpty(nome)){
-            string textonome = $"Meu nome é {nome}\n";
-            ImprimirComAtraso(textonome, 50);
-            Console.ReadKey();
-        } else { Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^"); }
-
+        if (!string.IsNullOrEmpty(nome)){ string textonome = $"Meu nome é {nome}\n"; ImprimirComAtraso(textonome, 50); Console.ReadKey(); } 
+        else { Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^"); }
         Principal.Separador();
-        string[] textos2 = new string[]
-        {
+        string[] textos2 = new string[]{
            "- Voce foi encontrado na rua, inconsciente devido a uma surra que a gangue do caolho lhe deu, Frentis te trouxe para cá, a casa da Sexta Ordem!\n",
            "- Além disso, Mestre Sollis deseja que você vá até ele para se apresentar.\n",
            "Chegando ao local mestre Sollis não disse nada além de uma ordem para que voce levantasse a espada de madeira e o atacasse.\n"
@@ -151,32 +139,21 @@ class Dialogo
         foreach (string texto in textos2) { ImprimirComAtraso(texto, 50); }
     }
     private static void ImprimirComAtraso(string texto, int atraso){
-        foreach (char c in texto){
-            Console.Write(c);
-            Thread.Sleep(atraso); // Atraso entre cada caractere
-        }
+        foreach (char c in texto){ Console.Write(c); Thread.Sleep(atraso); }
         Console.ReadKey();
     }
 }
 class Dialogo2 : Dialogo{
-    public static void Presents3()
-    {
-        string[] textos3 = new string[]
-        {
+    public static void Presents3() {
+        string[] textos3 = new string[] {
             "- Mestre Sollis te massacrou! - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n",
             "O rapaz entregou um frasco de flor rubra e um traje de couro\n"
         };
         foreach (string texto in textos3) { ImprimirComAtraso(texto, 50); }
-        Console.ReadKey();
-        Principal.Separador();
+        Console.ReadKey(); Principal.Separador();
     }
-    private static void ImprimirComAtraso(string texto, int atraso)
-    {
-        foreach (char c in texto)
-        {
-            Console.Write(c);
-            Thread.Sleep(atraso); // Atraso entre cada caractere
-        }
+    private static void ImprimirComAtraso(string texto, int atraso) {
+        foreach (char c in texto) { Console.Write(c); Thread.Sleep(atraso); }
         Console.ReadKey();
     }
 };
@@ -213,59 +190,60 @@ class Game{
                 Dialogo.presents1();
                 Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
                 string? newaction = Console.ReadLine(); Principal.Separador();
-                if (newaction == "1") {
-                    Taverna.ComprasInBattle(user);
-                    PrincipalsBattles.Battle_Initial(user, sollis);
-                }
+                if (newaction == "1") { Taverna.ComprasInBattle(user); PrincipalsBattles.Battle_Initial(user, sollis); }
                 else{ 
                     if (newaction == "2") { PrincipalsBattles.Battle_Initial(user, sollis); }
-                    else {
-                        Console.WriteLine("Acao Invalida!");
-                        Console.ReadKey();
-                        Console.Clear();
-                        Starting(user);
-                    }
+                    else { Console.WriteLine("Acao Invalida!"); Console.ReadKey(); Console.Clear(); Starting(user); }
                }
             } else { 
                 if (action == "3") { Console.WriteLine("Saindo . . ."); }
-                else {
-                    Console.WriteLine("Comando não esperado!");
-                    Console.ReadKey();
-                    Starting(user);
-                }
+                else { Console.WriteLine("Comando não esperado!"); Console.ReadKey(); Starting(user); }
             }
         }
     }
 }
 class Taverna{
     public static void ComprasInBattle(Entity user){
-        Console.WriteLine("[1] - Elixir da Cura (+25 HP): 5 Doblons       | [2] - Espada Comum (+10 ATK): 20 Doblons");
-        Console.WriteLine("[3] - Armadura de Couro (+10 DEF): 20 Doblons  | [0] - Voltar para a batalha");
-        Console.Write("-> "); int compra = int.Parse(Console.ReadLine());
+        Console.WriteLine("[1] - Elixir da Cura (+25 HP): 5 Doblons       | [2] - Anel de Sangue (+10 ATK): 20 Doblons");
+        Console.WriteLine("[3] - Colar Obscuro (+10 DEF): 25 Doblons      | [4] - Alma de Dotado (+10 VEN): 15 Doblons");
+        Console.WriteLine("[0] - Sair");
+        Console.Write("-> "); string? compra = Console.ReadLine();
         
-        if (compra == 0) { Console.WriteLine("Saindo da taverna"); }
-        else if (compra == 1){
-            if (user.getDoblons() >= 5){
-                user.setDoblons(user.getDoblons() - 5);
-                user.setHp(user.getHp() + 25);
-                Console.WriteLine("Compra Realizada, você ganhou +25 HP");
-            } else { Console.WriteLine("Doblons Insuficientes"); }
-        } else if (compra == 2){
-            if (user.getDoblons() >= 20){
-                user.setDoblons(user.getDoblons() - 20);
-                user.setAtk(user.getAtk() + 10);
-                Console.WriteLine("Compra Realizada, você ganhou +10 ATK");
-            } else { Console.WriteLine("Doblons Insuficientes"); }
-        } else if (compra == 3){
-            if (user.getDoblons() >= 20){
-                user.setDoblons(user.getDoblons() - 20);
-                user.setDef(user.getDef() + 10);
-                Console.WriteLine("Compra Realizada, você ganhou +10 DEF");
-            } else { Console.WriteLine("Doblons Insuficientes"); }
-        } else { Console.WriteLine("Valor invalido saindo da taverna"); }
+        if (compra == "0") { Console.WriteLine("Saindo da taverna"); }
+        else if (compra == "1"){ compraHp(user, 25, 5);           Console.WriteLine("Compra Realizada, você ganhou +25 HP"); } 
+        else if (compra == "2"){ compraAtk(user, 10, 20);         Console.WriteLine("Compra Realizada, você ganhou +10 ATK"); } 
+        else if (compra == "3"){ compraDef(user, 10, 25);         Console.WriteLine("Compra Realizada, você ganhou +10 DEF"); }
+        else if (compra == "4"){ compraVitalEnergy(user, 10, 15); Console.WriteLine("Compra Realizada, você ganhou +10 Energia Vital"); }
+        else { Console.WriteLine("Valor invalido saindo da taverna"); }
     }
     public static void CompraOutsideBattle(Entity user){
         Console.WriteLine("Ainda em desenvolvimento");
+        Console.WriteLine("[1] - Rubi de sangue (+25 HP): 15 Doblons            | [2] - Anel de Dragão (+10 ATK): 20 Doblons");
+        Console.WriteLine("[3] - Armadura de ferro velho (+10 DEF): 25 Doblons  | [4] - Elixir da Vitalidade (+10 VEN): 15 Doblons");
+        Console.WriteLine("[0] - Sair");
+        Console.Write("-> "); string? compra = Console.ReadLine();
+
+        if (compra == "1"){ compraHp(user, 25, 15); Console.WriteLine($"Agora você tem {user.getHp()} de vida."); }
+        else if(compra == "2"){ compraAtk(user, 10, 20); Console.WriteLine($"Agora voce tem {user.getAtk()} de vida"); }
+        else if(compra == "3"){ compraDef(user, 10, 25); Console.WriteLine($"Agora voce tem {user.getDef()} de defesa"); }
+        else if(compra == "4"){ compraVitalEnergy(user, 10, 15); Console.WriteLine($"Agora voce tem {user.getVitalEnergy()} de energia vital"); }
+        else { Console.WriteLine("Valor invalido saindo da taverna"); }
+    }
+    public static void compraAtk(Entity user, int aumento, int preco){ 
+        if(user.getDoblons() >= preco){ user.setAtk(user.getAtk() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
+    }
+    public static void compraHp(Entity user, int aumento, int preco){
+        if(user.getDoblons() >= preco){ user.setHp(user.getHp() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
+    }
+    public static void compraDef(Entity user, int aumento, int preco){
+        if(user.getDoblons() >= preco){ user.setDef(user.getDef() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
+    }
+    public static void compraVitalEnergy(Entity user, int aumento, int preco){
+        if(user.getVitalEnergy() >= preco){ user.setVitalEnergy(user.getVitalEnergy() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
     }
 }
 class Principal{
@@ -292,13 +270,13 @@ class Principal{
             Console.WriteLine("[4] - Projeção Astral   | [5] - Super Força          | [6] - Controle Corporal");
             int dote = int.Parse(Console.ReadLine());
 
-            if (dote == 1) { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "sexto sentido", "Danca Sangrenta", "Sangue", "0"); }
-            else if (dote == 2){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Reforco Animal", "Controle Animal", "Animal", "0"); }
-            else if(dote == 3){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Lanca Chamas", "Firestorm", "Fogo", "0"); }
-            else if (dote == 4){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Analise Astral", "Morte Astral", "Alma", "0"); }
-            else if (dote == 5){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Estrangulamento", "Martelo da Morte", "Forca", "0"); }
-            else if (dote == 6){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "Paralisacao", "Auto Destruicao", "Controle", "0"); }
-            else { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "nenhum", "Furia de Soldado", "Comum", "0"); }
+            if (dote == 1) { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "sexto sentido", "Danca Sangrenta", "Sangue", "0"); }
+            else if (dote == 2){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Reforco Animal", "Controle Animal", "Animal", "0"); }
+            else if(dote == 3){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Lanca Chamas", "Firestorm", "Fogo", "0"); }
+            else if (dote == 4){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Analise Astral", "Morte Astral", "Alma", "0"); }
+            else if (dote == 5){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Estrangulamento", "Martelo da Morte", "Forca", "0"); }
+            else if (dote == 6){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Paralisacao", "Auto Destruicao", "Controle", "0"); }
+            else { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "100", "Furia de Soldado", "Comum", "0"); }
             Console.WriteLine("Novo player cadastrado!");
             Console.WriteLine($"Dado criado para {nomeplayer} com sucesso.");
         }

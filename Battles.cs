@@ -26,9 +26,8 @@ namespace Battles
                     Console.ReadKey();
                     Principal.Separador();
                 }
-                Console.WriteLine("[0] - Continuar Batalha  | [1] - Taverna\n-> ");
+                Console.Write("[0] - Continuar Batalha  | [1] - Taverna\n-> ");
                 option1 = Console.ReadLine();
-
                 if (option1 == "1") { Principal.Separador(); Taverna.ComprasInBattle(user); }
             }
             if (user.getHp() <= 0) {
@@ -49,15 +48,18 @@ namespace Battles
                     user.setAtk(user.getAtk() + 2);
                     user.setDef(user.getDef() + 5);
                     DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel()); 
+                    DataManagment.UpdateData(user.getId().ToString(), 8, (user.getPower() + 10).ToString());
                 }
             }
 
             Dialogo2.Presents3();
 
-            user.setHp(125); // reset da vida do usuario
-            user.setDef(user.getDef() + 25);
+            // reset de dados pre-batalha
+            user.setHp(125);
+            user.setDef(int.Parse(DataManagment.ObterValor(user.getName(), 4)) + 25);
             user.setDoblons(user.getDoblons() + 50);
-            user.setAtk(user.getAtk() + 5);
+            user.setAtk(int.Parse(DataManagment.ObterValor(user.getName(), 5)) + 5);
+            user.setVitalEnergy(int.Parse(DataManagment.ObterValor(user.getName(), 9)));
             user.setProgress(1);
             DataManagment.saveData(user);
             
@@ -82,6 +84,9 @@ namespace Battles
                     Console.WriteLine("Inimigo começa primeiro!");
                     AttackOponent(oponent, user); Console.ReadKey(); Principal.Separador();
                 }
+                Console.Write("[0] - Continuar Batalha  | [1] - Taverna\n-> ");
+                string? option1 = Console.ReadLine();
+                if (option1 == "1") { Principal.Separador(); Taverna.ComprasInBattle(user); }
             }
             if (user.getHp() <= 0) {
                 Console.WriteLine("Você perdeu! O oponente venceu.\nGanhaste 5 xp");
@@ -99,6 +104,7 @@ namespace Battles
                     DataManagment.ElevateLevel(user);
                     user.setAtk(user.getAtk() + 2); user.setDef(user.getDef() + 5);
                     DataManagment.UpdateData(user.getId().ToString(), 2, user.getLevel()); 
+                    DataManagment.UpdateData(user.getId().ToString(), 8, (user.getPower() + 10.ToString()));
                 }
             }
         }
@@ -158,10 +164,8 @@ namespace Battles
             Entity vaelin = new Entity(0, "Vaelin", "Espada do rei", 275, 100, 80, 20, 1000, 10000, "sexto sentido", "Danca Sangrenta", 10000, "Sangue", 0);
             Treinamento(user, vaelin); 
         }
-
         public static void Treinamento(Entity user, Entity vaelin)  {
             Impressoes print = new Impressoes();           
-
             string[] texto1 = new string[]
             {
                 "Vaelin: Vamos do básico, você deve ter alguma habilidade mas você só vai descobrir com mais experiencia em batalha, até lá vamos começar com as atividades basicas.\n",
@@ -217,7 +221,6 @@ namespace Battles
             foreach (string letra in texto11) { print.ImprimirTextoComAtraso(letra, 50); }
             user.setProgress(2);
             DataManagment.saveData(user); 
-
             PrincipalsBattles.GenericBattles(user, vaelin);
         }
     }

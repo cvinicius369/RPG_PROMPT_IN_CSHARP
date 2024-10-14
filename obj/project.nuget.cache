@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3Gct4aFc6cg=",
+  "dgSpecHash": "MS0dyb7Whuw=",
   "success": true,
-  "projectFilePath": "/workspaces/RPG_PROMPT_IN_CSHARP/RPG2.csproj",
-  "expectedPackageFiles": [
-    "/home/codespace/.nuget/packages/microsoft.netcore.app.ref/6.0.33/microsoft.netcore.app.ref.6.0.33.nupkg.sha512",
-    "/home/codespace/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.33/microsoft.aspnetcore.app.ref.6.0.33.nupkg.sha512",
-    "/home/codespace/.nuget/packages/microsoft.netcore.app.host.linux-x64/6.0.33/microsoft.netcore.app.host.linux-x64.6.0.33.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

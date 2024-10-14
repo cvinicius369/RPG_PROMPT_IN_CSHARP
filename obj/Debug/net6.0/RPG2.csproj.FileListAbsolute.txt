@@ -18,3 +18,18 @@
 /workspaces/RPG_PROMPT_IN_CSHARP/obj/Debug/net6.0/RPG2.pdb
 /workspaces/RPG_PROMPT_IN_CSHARP/obj/Debug/net6.0/RPG2.genruntimeconfig.cache
 /workspaces/RPG_PROMPT_IN_CSHARP/obj/Debug/net6.0/ref/RPG2.dll
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\bin\Debug\net6.0\RPG2.exe
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\bin\Debug\net6.0\RPG2.deps.json
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\bin\Debug\net6.0\RPG2.runtimeconfig.json
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\bin\Debug\net6.0\RPG2.dll
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\bin\Debug\net6.0\RPG2.pdb
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.AssemblyInfoInputs.cache
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.AssemblyInfo.cs
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.csproj.CoreCompileInputs.cache
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.sourcelink.json
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.dll
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\refint\RPG2.dll
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.pdb
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\RPG2.genruntimeconfig.cache
+C:\Users\vinic\OneDrive\Área de Trabalho\GameRPG\RPG_PROMPT_IN_CSHARP\obj\Debug\net6.0\ref\RPG2.dll

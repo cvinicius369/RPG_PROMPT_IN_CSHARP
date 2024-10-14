@@ -4,22 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*
-    //Namespace que é responsável pelos dialogosntre os personagens durante o jogo
-    //O mesmo terá dois tipos de dialogos os com atraso na escrita e os que imprimem imediatamente
-    //O uso dos dialogos é da seguinte forma:
-        1- Cada personagem tem uma classe que tem varios dialogos diferentes para situações diferentes, como um chat bot
-        2- Dependendo da resposta do usuário o personagem age diferente
- */
-namespace RPG2
-{
+namespace RPG2{
     internal class BancoDialogos{ };
-    class Narrativa 
-    {
+    class Narrativa {
         Impressoes print = new Impressoes();
-
-        public void dialogo1()
-        {
+        public void dialogo1(){
             string[] textos1 = new string[]
             {
                 "- Venha, vou te apresentar para a nossa curandeira.\n",
@@ -39,11 +28,9 @@ namespace RPG2
         }
     }
 
-    class SherinTalks    //Uma das personagens que interage com o player
-    {
+    class SherinTalks{
         Impressoes print = new Impressoes();
-        public void dialogo1(Entity user)
-        {
+        public void dialogo1(Entity user){
             string[] textos1 = new string[] {
                 "Sherin: Prazer me chamo Sherin, qual seu nome? \n",
                 $"- O nome dele é {user.getName()}!\n",
@@ -54,14 +41,10 @@ namespace RPG2
             foreach (string texto in textos1) { print.ImprimirTextoComAtraso(texto, 50); }
         }
     }
-    class VaelinTalks
-    {
+    class VaelinTalks{
         Impressoes print = new Impressoes();
-
-        public void dialogo1(Entity user)
-        {
-            string[] textos = new string[]
-            {
+        public void dialogo1(Entity user){
+            string[] textos = new string[]{
                 "Vaelin: Eu conversei com o rei ontem a noite...Nós vamos para uma batalha.\n",
                 "Frentis: Mas isso já é nosso costume irmão, e você não se abala com esse tipo de coisa\n.",
                 "Vaelin: A batalha será contra os alpiranos.\n",
@@ -75,17 +58,9 @@ namespace RPG2
             foreach (string texto in textos) { print.ImprimirTextoComAtraso(texto, 50); }
         }
     }
-
-    public class Impressoes
-    {
-        public void ImprimirTextoComAtraso(string texto, int atraso)
-        {
-            foreach (char c in texto)
-            {
-                Console.Write(c);
-                Thread.Sleep(atraso); // Atraso entre cada caractere
-            }
-            Console.ReadKey();
+    public class Impressoes{
+        public void ImprimirTextoComAtraso(string texto, int atraso){
+            foreach (char c in texto){ Console.Write(c); Thread.Sleep(atraso); } Console.ReadKey();
         }
     }
 }

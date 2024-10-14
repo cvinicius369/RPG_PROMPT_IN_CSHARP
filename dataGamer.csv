@@ -1,2 +1,4 @@
 ID;Name;Level;HP;DEF;ATK;DOBLONS;XP;POWER;VITAL_ENERGY;SKILL;ULTIMATE;TYPEUSER;PROGRESS;
-1;Caio;nenhum;109;117;71;50;55;0;-154;sexto sentido;Danca Sangrenta;Sangue;2
+1;Caio;nenhum;100;0;10;25;0;0;100;sexto sentido;Danca Sangrenta;Sangue;0
+2;Joao;nenhum;100;0;10;25;0;0;100;Reforco Animal;Controle Animal;Animal;0
+3;Serjo;nenhum;70;27;28;65;5;0;25;Estrangulamento;Martelo da Morte;Forca;2
