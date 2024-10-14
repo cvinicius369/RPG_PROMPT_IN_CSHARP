@@ -99,6 +99,18 @@ public class DataManagment{
         UpdateData(idUser, 12, typeUser); UpdateData(idUser, 13, progress);
         Console.WriteLine("Dados Salvos com Sucesso.");
     }
+    public static void ElevateLevel(Entity user){
+        if (user.getXp() > 100){ user.setLevel("Abandonado"); }
+        else if (user.getXp() > 150){ user.setLevel("Irmao Novico"); }
+        else if (user.getXp() > 200){ user.setLevel("Irmao Veterano"); }
+        else if (user.getXp() > 250){ user.setLevel("Irmao Mercenario"); }
+        else if (user.getXp() > 300){ user.setLevel("Soldado do Reindo"); }
+        else if (user.getXp() > 350){ user.setLevel("Lider de Batalhao"); }
+        else if (user.getXp() > 400){ user.setLevel("Caçador de Dotados"); }
+        else if (user.getXp() > 450){ user.setLevel("Assassino Imperial"); }
+        else if (user.getXp() > 500){ user.setLevel("Espada do Rei"); }
+        else if (user.getXp() > 550){ user.setLevel("Novo Rei"); }
+    }
 }
 class Dialogo
 {
@@ -171,8 +183,7 @@ class Dialogo2 : Dialogo{
 class Game{
     public static void Starting(Entity user){
         Entity sollis = new Entity(0, "Sollis", "Mestre da 4a Ordem", 200, 10, 80, 20, 1000, 10000, "Super Agilidade", "Super Forca", 10000, "Comum", 0);
-        if (int.Parse(DataManagment.ObterValor(user.getName(), 13)) == 0){ Starting(user); }
-        else if (int.Parse(DataManagment.ObterValor(user.getName(), 13)) == 1){ Battle_F1.Battle1(user);}
+        if (int.Parse(DataManagment.ObterValor(user.getName(), 13)) == 1){ Arcos.ConhecendoPersnagens(user);}
 
         Console.WriteLine("Jogo Iniciado");
         Console.WriteLine("Para apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
@@ -308,17 +319,10 @@ class Principal{
         Entity user = new Entity(idUser, nameUser, level, hp, def, atk, doblons, xp, power, skill, ultimate, vitalEnergy, typeUser, 0);
         DataManagment.ReadData(novoId.ToString());
 
-        Console.Write("[0] - Taverna  | [1] - Iniciar Game");
+        Console.Write("[0] - Taverna  | [1] - Iniciar Game \n-> ");
         iniciogame = Console.ReadLine();
 
-        if (iniciogame == "1") { 
-            if (int.Parse(DataManagment.ObterValor(nomeplayer, 13)) == 0){ Game.Starting(user); }
-            else if (int.Parse(DataManagment.ObterValor(nomeplayer, 13)) == 1){ Battles.Battle_F1.Battle1(user);}
-        } else {
-            Console.WriteLine("Tecla não esperada!");
-            Console.ReadKey();
-            Console.Clear();
-            Main(args);
-        }
+        if (iniciogame == "1") { Game.Starting(user); } 
+        else { Console.WriteLine("Tecla não esperada!"); Console.ReadKey(); Console.Clear(); Main(args); }
     }
 };
