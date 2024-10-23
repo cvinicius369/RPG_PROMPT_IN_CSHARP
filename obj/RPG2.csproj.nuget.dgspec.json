@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj": {}
+    "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj": {
+    "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj",
+        "projectUniqueName": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj",
         "projectName": "RPG2",
-        "projectPath": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj",
+        "projectPath": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj",
         "packagesPath": "C:\\Users\\vinic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\GameRPG\\RPG_PROMPT_IN_CSHARP\\obj\\",
+        "outputPath": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\vinic\\AppData\\Roaming\\NuGet\\NuGet.Config"
