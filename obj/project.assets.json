@@ -1,36 +1,36 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net8.0": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net8.0": []
   },
   "packageFolders": {
-    "/home/codespace/.nuget/packages/": {}
+    "C:\\Users\\vinic\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/RPG2.csproj",
+      "projectUniqueName": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj",
       "projectName": "RPG2",
-      "projectPath": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/RPG2.csproj",
-      "packagesPath": "/home/codespace/.nuget/packages/",
-      "outputPath": "/workspaces/A-Sombra-Do-Corvo-RPGTEXT/obj/",
+      "projectPath": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\RPG2.csproj",
+      "packagesPath": "C:\\Users\\vinic\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\vinic\\OneDrive\\Área de Trabalho\\Projetos\\GameRPG\\RPG_PROMPT_IN_CSHARP\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/codespace/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\vinic\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
-        "net6.0"
+        "net8.0"
       ],
       "sources": {
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {}
         }
       },
@@ -38,11 +38,16 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
-      "net6.0": {
-        "targetAlias": "net6.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "imports": [
           "net461",
           "net462",
@@ -54,26 +59,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.20, 6.0.20]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[6.0.20, 6.0.20]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.20, 6.0.20]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/dotnet/7.0.306/sdk/7.0.306/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

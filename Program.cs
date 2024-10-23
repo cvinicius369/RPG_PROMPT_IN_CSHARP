@@ -2,460 +2,309 @@
 * Project:    RPG in C# (C-Sharp)
 * Name Game:  A Sombra do Corvo
 *E-mail:      vinicius182102@gmail.com
+
+* Notas: Ultima atualização oficial em: 14/10/2024 - status: em andamento
+            Foram feitas correções e implementação das praticas clean code, além de implementa
+                ção de novas funções deixando o jogo mais rico em detalhes.
+        
+* Atividades: 
+            - implementar mapa em pixel art
+            - implementar compras de atributos fora das batalhas
 */
-//---| Abaixo são as bibliotecas e outras importações para que o jogo funcione corretamente.
 using Battles;
 using System;
-/*
-*---| A Classe Dialogo abaixo será responsável pelo dialogo no jogo, onde em alguns casos como conversas entre os personagens
-*     os caracteres serão impressos um por um dando a impressão de dialogo real.
-*/
-class Dialogo
-{
-    //A classe dialogo foi feita exclusivamente para criar os primeiros dialogos ente o player e os personagens, cada função é uma fala diferente de um personagem diferente
-    //O jogo começa com a primeira função da classe, poem1() que eh onde será impresso o poema do inicio do livro
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.IO;
+using System.Linq;
+/* [ GERENCIAMENTO DE DADOS ] */
+public class DataManagment{
+    const string localFile = "./dataGamer.csv";
+    public static bool existData(string? name){
+        var dados = LerArquivo();
+        return dados.Any(d => d[1].Equals(name, StringComparison.OrdinalIgnoreCase));
+    }
+    public static bool existID(string? id){
+        var dados = LerArquivo();
+        return dados.Any(d => d[0].Equals(id, StringComparison.OrdinalIgnoreCase));
+    }
+    public static string ObterValor(string? nome, int coluna) {
+        var dados = LerArquivo();
+        var dado = dados.FirstOrDefault(d => d[1].Equals(nome, StringComparison.OrdinalIgnoreCase));
+        if (dado != null) { int index = coluna; return index != -1 ? dado[index] : "Coluna inválida.";
+        }
+        return "Dado não encontrado.";
+    }
+    public static void ReadData(string id){
+        var dados = LerArquivo();
+        var dado = dados.FirstOrDefault(d => d[0] == id);
+        if (dados != null){ Console.WriteLine(string.Join('\t', dado)); } 
+        else { Console.WriteLine("Dado nao encontrado!"); }
+    }
+    public static void UpdateData(string id, int column, string newData){
+        var dados = LerArquivo();
+        var dado = dados.FirstOrDefault(d => d[0] == id);
+        if (dado != null){
+            if (column > -1){
+                dado[column] = newData;
+                WriteFile(dados);
+                Console.WriteLine("Dado Alterado com sucesso");
+            } else { Console.WriteLine("Coluna Invalida"); }
+        } else { Console.WriteLine("Nenhum dado encontrado!"); }
+    }
+    public static void NewData(params string[] new_data){
+        using (StreamWriter sw = new StreamWriter(localFile, true)){ sw.WriteLine(string.Join(";", new_data)); }
+    }
+    public static void DeleteData(string id){
+        var dados = LerArquivo();
+        var dado = dados.FirstOrDefault(d => d[0] == id);
+        if(dado != null){
+            dados.Remove(dado);
+            WriteFile(dados);
+            Console.WriteLine("Dado deletado com sucesso!");
+        }
+    }
+    static List<string[]> LerArquivo(){
+        var dados = new List<string[]>();
+        if (File.Exists(localFile)){
+            using (StreamReader sr = new StreamReader(localFile)){ string line;
+                while ((line = sr.ReadLine()) != null){ dados.Add(line.Split(';')); }  
+            } } return dados;
+    }
+    static void WriteFile(List<string[]> dados){
+        using (StreamWriter sw = new StreamWriter(localFile)){ foreach(var dado in dados){ sw.WriteLine(string.Join(";", dado)); } }
+    }
+    public static void saveData(Entity user){
+        string name = user.getName(); string level = user.getLevel();
+        string skill = user.getSkill(); string ultimate = user.getUltimate();
+        string typeUser = user.getTypeUser(); 
+        string progress = Convert.ToString(user.getProgress());
+        string hp = Convert.ToString(user.getHp()); 
+        string def = Convert.ToString(user.getDef()); 
+        string atk = Convert.ToString(user.getAtk());
+        string doblons = Convert.ToString(user.getDoblons()); 
+        string xp = Convert.ToString(user.getXp());
+        string power = Convert.ToString(user.getPower()); 
+        string vitalEnergy = Convert.ToString(user.getVitalEnergy());
+        string idUser = Convert.ToString(user.getId());
+        UpdateData(idUser, 2, level);     UpdateData(idUser, 3, hp);
+        UpdateData(idUser, 4, def);       UpdateData(idUser, 5, atk);
+        UpdateData(idUser, 6, doblons);   UpdateData(idUser, 7, xp);
+        UpdateData(idUser, 8, power);     UpdateData(idUser, 9, vitalEnergy);
+        UpdateData(idUser, 10, skill);    UpdateData(idUser, 11, ultimate);
+        UpdateData(idUser, 12, typeUser); UpdateData(idUser, 13, progress);
+        Console.WriteLine("Dados Salvos com Sucesso.");
+    }
+    public static void ElevateLevel(Entity user){
+        if (user.getXp() > 100){ user.setLevel("Abandonado"); }
+        else if (user.getXp() > 150){ user.setLevel("Irmao Novico"); }
+        else if (user.getXp() > 200){ user.setLevel("Irmao Veterano"); }
+        else if (user.getXp() > 250){ user.setLevel("Irmao Mercenario"); }
+        else if (user.getXp() > 300){ user.setLevel("Soldado do Reindo"); }
+        else if (user.getXp() > 350){ user.setLevel("Lider de Batalhao"); }
+        else if (user.getXp() > 400){ user.setLevel("Caçador de Dotados"); }
+        else if (user.getXp() > 450){ user.setLevel("Assassino Imperial"); }
+        else if (user.getXp() > 500){ user.setLevel("Espada do Rei"); }
+        else if (user.getXp() > 550){ user.setLevel("Novo Rei"); }
+    }
+}
+/* [ PRINCIPAIS DIALOGOS ] */
+class Dialogo{
     public static string? nome;
-    public static void poem1()
-    {
+    public static void poem1(){
         Console.WriteLine("              A sombra do corvo cobre meu coração, Cessa o jorro de minhas lagrimas");
         Console.WriteLine("                                 - Poema Seordah, autor desconhecido.");
         Principal.Separador();
     }
 
-    public static void presents1()
-    {
+    public static void presents1(){
         Console.ReadKey();
-        string[] textos = new string[]
-        {
+        string[] textos = new string[]{
             "- Do que você se recorda? - Voz misteriosa\n",
             "- Ruas...Uma gangue de garotos...um caolho...\n",
             "- Você tem um nome? \n",
             "- Meu nome...\n"
         };
-
         foreach (string texto in textos) { ImprimirComAtraso(texto, 50); }
         Console.Write("Digite seu nome: ");
         nome = Console.ReadLine();
-
-        if (!string.IsNullOrEmpty(nome))
-        {
-            string textonome = $"Meu nome é {nome}\n";
-            ImprimirComAtraso(textonome, 50);
-            Console.ReadKey();
-        } else { Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^"); }
-
+        if (!string.IsNullOrEmpty(nome)){ string textonome = $"Meu nome é {nome}\n"; ImprimirComAtraso(textonome, 50); Console.ReadKey(); } 
+        else { Console.WriteLine("Nao sabia que alguem teria o nome de Null ou Vazio nesse jogo ^^"); }
         Principal.Separador();
-        string[] textos2 = new string[]
-        {
+        string[] textos2 = new string[]{
            "- Voce foi encontrado na rua, inconsciente devido a uma surra que a gangue do caolho lhe deu, Frentis te trouxe para cá, a casa da Sexta Ordem!\n",
            "- Além disso, Mestre Sollis deseja que você vá até ele para se apresentar.\n",
            "Chegando ao local mestre Sollis não disse nada além de uma ordem para que voce levantasse a espada de madeira e o atacasse.\n"
         };
         foreach (string texto in textos2) { ImprimirComAtraso(texto, 50); }
     }
-    //A função ImprimirComAtraso() serve para que o texto seja impresso com atraso dando a impressão que o personagem está falando realmente com o player, ao invés de algo robótico
-    //Essa impressão com artaso ocorre a partir da estrutura de repetição foreach() que pegará a fala do personagem e imprimir um caractere por vez
-    private static void ImprimirComAtraso(string texto, int atraso)
-    {
-        foreach (char c in texto)
-        {
-            Console.Write(c);
-            Thread.Sleep(atraso); // Atraso entre cada caractere
-        }
+    private static void ImprimirComAtraso(string texto, int atraso){
+        foreach (char c in texto){ Console.Write(c); Thread.Sleep(atraso); }
         Console.ReadKey();
     }
 }
-class Dialogo2 : Dialogo
-{
-    public static void Presents3()
-    {
-        string[] textos3 = new string[]
-        {
+class Dialogo2 : Dialogo{
+    public static void Presents3() {
+        string[] textos3 = new string[] {
             "- Mestre Sollis te massacrou! - Comentou o rapaz ruivo enquanto lhe entregava bandagens - Tome, vai te ajudar a se curar.\n",
             "O rapaz entregou um frasco de flor rubra e um traje de couro\n"
         };
         foreach (string texto in textos3) { ImprimirComAtraso(texto, 50); }
-        Console.ReadKey();
-        Principal.Separador();
+        Console.ReadKey(); Principal.Separador();
     }
-    private static void ImprimirComAtraso(string texto, int atraso)
-    {
-        foreach (char c in texto)
-        {
-            Console.Write(c);
-            Thread.Sleep(atraso); // Atraso entre cada caractere
-        }
+    private static void ImprimirComAtraso(string texto, int atraso) {
+        foreach (char c in texto) { Console.Write(c); Thread.Sleep(atraso); }
         Console.ReadKey();
     }
 };
-/*
-    + Nas classes acima são feitos os dialogos que criam a historia do game
-    + Alem de que o player pode interagir com os personagens
-*/
-//------------------------------------------------------------------------------| Classe Game
-class Game
-{
-    public static void Starting(Player jogador, Personagens sollis)//Método recebendo os atributos
-    {
+/* [ INICIO DO GAME ] */
+class Game{
+    public static void Starting(Entity user){
+        Entity sollis = new Entity(0, "Sollis", "Mestre da 4a Ordem", 200, 10, 80, 20, 1000, 10000, "Super Agilidade", "Super Forca", 10000, "Comum", 0);
+        if (int.Parse(DataManagment.ObterValor(user.getName(), 13)) == 1){ Arcos.ConhecendoPersnagens(user);}
 
         Console.WriteLine("Jogo Iniciado");
-
-        Console.WriteLine("Bem Vindo " + jogador.getName() + "\nPara apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
+        Console.WriteLine("Para apresentar seus atributos digite 1, 2 para iniciar o jogo ou 3 para sair");
         Principal.Separador();
-
         string? action = Console.ReadLine();
-
-        if (action == "1")
-        {
-            Console.WriteLine("Nome: " + jogador.getName());
-            Console.WriteLine("Nivel: " + jogador.getLevel());
-            Console.WriteLine("Vida: " + jogador.getHeath());
-            Console.WriteLine("Dano: " + jogador.getAtack());
-            Console.WriteLine("Defesa: " + jogador.getDefesa());
-            Console.WriteLine("Doblons: " + jogador.getDoblons());
-            Console.WriteLine("Energia Vital: " + jogador.getVitalEnergy());
-            Console.WriteLine("Experiencia: " + jogador.getXP());
+        if (action == "1") {
+            Console.WriteLine("Nome: "          + user.getName());
+            Console.WriteLine("Nivel: "         + user.getLevel());
+            Console.WriteLine("Vida: "          + user.getHp());
+            Console.WriteLine("Dano: "          + user.getAtk());
+            Console.WriteLine("Defesa: "        + user.getDef());
+            Console.WriteLine("Doblons: "       + user.getDoblons());
+            Console.WriteLine("XP: "            + user.getXp());
+            Console.WriteLine("Poder Maximo: "  + user.getPower());
+            Console.WriteLine("Energia Vital: " + user.getVitalEnergy());
+            Console.WriteLine("Skill: "         + user.getSkill());
+            Console.WriteLine("Ultimate: "      + user.getUltimate());
             Principal.Separador();
             Console.ReadKey();
-            Inicio(jogador, sollis);                                       //lançando os atributos para a função Inicio()
+            Dialogo.poem1();
+            Dialogo.presents1();
+            PrincipalsBattles.Battle_Initial(user, sollis);
         }
-        else
-        { if (action == "2") { Inicio(jogador, sollis); }                //lançando os atributos para a função Inicio()
-          else { if (action == "3") { Console.WriteLine("Saindo . . ."); }
-            else
-            {
-                Console.WriteLine("Comando não esperado!");
-                Console.ReadKey();
-                Starting(jogador, sollis);
-            }
-          }
-        }
-    }
-    public static void Inicio(Player jogador, Personagens sollis)            //Função inicio recebendo os atributos
-    {
-        Dialogo.poem1();
-        Dialogo.presents1();
-
-        Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
-        string? newaction = Console.ReadLine();
-        Principal.Separador();
-
-        //Cada classe ou função recebendo os atributos para que os dados sejam reutilizados
-        if (newaction == "1")
-        {
-            Compras.comprasplay(jogador);
-            BattleSollis1(jogador, sollis);
-        }
-        else
-        { if (newaction == "2") { BattleSollis1(jogador, sollis); }
-            else
-            {
-                Console.WriteLine("Acao Invalida!");
-                Console.ReadKey();
-                Console.Clear();
-                Inicio(jogador, sollis);
+        else{ 
+            if (action == "2") { 
+                Dialogo.poem1();
+                Dialogo.presents1();
+                Console.Write("Digite 1 para ir a casa da Ordem ou 2 para ir a batalha: ");
+                string? newaction = Console.ReadLine(); Principal.Separador();
+                if (newaction == "1") { Taverna.ComprasInBattle(user); PrincipalsBattles.Battle_Initial(user, sollis); }
+                else{ 
+                    if (newaction == "2") { PrincipalsBattles.Battle_Initial(user, sollis); }
+                    else { Console.WriteLine("Acao Invalida!"); Console.ReadKey(); Console.Clear(); Starting(user); }
+               }
+            } else { 
+                if (action == "3") { Console.WriteLine("Saindo . . ."); }
+                else { Console.WriteLine("Comando não esperado!"); Console.ReadKey(); Starting(user); }
             }
         }
     }
-    public static void BattleSollis1(Player jogador, Personagens sollis)
-    {
-        string? nome = jogador.getName();                                            //Instanciacao e atribuição de Player
-        sollis.ObterDadosSollis();                                                   //Instanciacao e atribuição de Sollis
-        string nomesollis = sollis.AlteraNomeSollis("Mestre Sollis");
-
-        int dado = Principal.Jogadado();
-
-        while (jogador.getHeath() > 0 && sollis.getVidaSollis() > 0)
-        {
-            int dado1 = Principal.Jogadado();
-            string? option1;
-            if (dado1 > 50)
-            {
-                sollis.AlteraVidaSollis(sollis.getVidaSollis() - jogador.getAtack()); //Alterando a vida do oponente usando o dano do usuario
-                Console.WriteLine("SORTE: Você ataca primneiro!");
-                Console.WriteLine($"Oponente: {nomesollis} ficou com: {sollis.getVidaSollis()} de vida após o ataque de: {nome} que teve: {jogador.getAtack()} de dano");
-                Console.ReadKey();
-                Principal.Separador();
-            }
-            else
-            {
-                Console.WriteLine("Inimigo começa primeiro!");
-                jogador.AlteraVida(jogador.getHeath() - sollis.getDanoSollis());       //Alterando a vida do jogador usando o dano do oponente
-                Console.WriteLine($"{nome} ficou com: {jogador.getHeath()} De vida após o ataque de: {nomesollis} que teve: {sollis.getDanoSollis()} de dano");
-                Console.ReadKey();
-                Principal.Separador();
-            }
-            Console.WriteLine("Digite 1 para ir á loja ou qualquer tecla para continuar o jogo: ");
-            option1 = Console.ReadLine();
-
-            if (option1 == "1")
-            { Principal.Separador(); Compras.comprasplay(jogador);
-            }
-        }
-        if (jogador.getHeath() <= 0)
-        {
-            Console.WriteLine("Você perdeu! O oponente venceu.\nGanhaste 25 xp");
-            jogador.AlteraXP(jogador.getXP() + 25);
-            if (jogador.getXP() > 100) { jogador.AlteraLevel(jogador.getLevel() + 1); }
-            Fase_1(jogador);
-        }
-        else if (sollis.getVidaSollis() <= 0)
-        {
-            Console.WriteLine("Parabéns! Você venceu o oponente.\nGanhaste 50 xp");
-            jogador.AlteraXP(jogador.getXP() + 50);
-            if (jogador.getXP() > 100) { jogador.AlteraLevel(jogador.getLevel() + 1); }
-            Fase_1(jogador);
-        }
-    }
-    public static void Fase_1(Player jogador)
-    {
-        /* 
-         + Aqui será a primeira fase onde o player irá realmente jogar uma batalha e se vencer poderá ir para a proxima fase
-         + Se perder, voltará para o inicio.
-         + Esse bloco de código será o último neste namespace, as proximas fases serão em outro namespace
-        */
-        Dialogo2.Presents3();
-
-        jogador.AlteraDefesa(jogador.getDefesa() - jogador.getDefesa() + 25);
-        jogador.AlteraVida(jogador.getHeath() - jogador.getHeath() + 125);
-        jogador.AlteraDoblons(jogador.getDoblons() + 50);
-        Console.WriteLine("Parabens! Voce ganhou +25 de vida, +25 de defesa e 50 doblons!");
-
-        Battles.Battle_F1.Battle1(jogador); //Abrindo o namespace, em seguida a classe e só então a função
-    }
-
 }
-class Player//-------------------------------------------------------------| Classe Player
-{
-    //Abaixo são os atributos do player
-    private string? name { get; set; }
-    private int doblons { get; set; }
-    private int defesa { get; set; }
-    private int atack { get; set; }
-    private int heath { get; set; }
-    private int energia_vital { get; set; }
-    private int level { get; set; }
-    private int xp { get; set; }
-
-    //Abaixo estão os metodos para que sejam retornados os valores contidos nos atributos
-    public void ObterDados(string nome)
-    {
-        this.name = nome;
-        this.doblons = 20;
-        this.defesa = 0;
-        this.atack = 5;
-        this.heath = 100;
-        this.energia_vital = 100;
-        this.level = 0;
-        this.xp = 0;
+class Taverna{
+    public static void ComprasInBattle(Entity user){
+        Console.WriteLine("[1] - Elixir da Cura (+25 HP): 5 Doblons       | [2] - Anel de Sangue (+10 ATK): 20 Doblons");
+        Console.WriteLine("[3] - Colar Obscuro (+10 DEF): 25 Doblons      | [4] - Alma de Dotado (+10 VEN): 15 Doblons");
+        Console.WriteLine("[0] - Sair");
+        Console.Write("-> "); string? compra = Console.ReadLine();
+        
+        if (compra == "0") { Console.WriteLine("Saindo da taverna"); }
+        else if (compra == "1"){ compraHp(user, 25, 5);           Console.WriteLine("Compra Realizada, você ganhou +25 HP"); } 
+        else if (compra == "2"){ compraAtk(user, 10, 20);         Console.WriteLine("Compra Realizada, você ganhou +10 ATK"); } 
+        else if (compra == "3"){ compraDef(user, 10, 25);         Console.WriteLine("Compra Realizada, você ganhou +10 DEF"); }
+        else if (compra == "4"){ compraVitalEnergy(user, 10, 15); Console.WriteLine("Compra Realizada, você ganhou +10 Energia Vital"); }
+        else { Console.WriteLine("Valor invalido saindo da taverna"); }
     }
-    public string? getName() { return this.name; }
-    public int getDoblons() { return this.doblons; }
-    public int getDefesa() { return this.defesa; }
-    public int getAtack() { return this.atack; }
-    public int getHeath() { return this.heath; }
-    public int getVitalEnergy() { return this.energia_vital; }
-    public int getLevel() { return this.level; }
-    public int getXP() { return this.xp; }
+    public static void CompraOutsideBattle(Entity user){
+        Console.WriteLine("Ainda em desenvolvimento");
+        Console.WriteLine("[1] - Rubi de sangue (+25 HP): 15 Doblons            | [2] - Anel de Dragão (+10 ATK): 20 Doblons");
+        Console.WriteLine("[3] - Armadura de ferro velho (+10 DEF): 25 Doblons  | [4] - Elixir da Vitalidade (+10 VEN): 15 Doblons");
+        Console.WriteLine("[0] - Sair");
+        Console.Write("-> "); string? compra = Console.ReadLine();
 
-    //Daqui para baixo são metodos para alterar os valores, defini como int e dei return para que os valores sejam salvos
-    //caso contrario retornarei para void e retirarei os returns
-    public int AlteraDoblons(int dob) { this.doblons = dob; return this.doblons; }
-    public int AlteraVida(int hp) { this.heath = hp; return this.heath; }
-    public int AlteraDano(int dn) { this.atack = dn; return this.atack; }
-    public int AlteraDefesa(int def) { this.defesa = def; return this.defesa; }
-    public int AlteraEnergiaVital(int vital) { this.energia_vital = vital; return this.energia_vital; }
-    public string AlteraNomePlayer(string nmp) { this.name = nmp; return this.name; }
-    public int AlteraLevel(int altera) { this.level = altera; return this.level; }
-    public int AlteraXP(int altera) { this.xp = altera; return this.xp; }
+        if (compra == "1"){ compraHp(user, 25, 15); Console.WriteLine($"Agora você tem {user.getHp()} de vida."); }
+        else if(compra == "2"){ compraAtk(user, 10, 20); Console.WriteLine($"Agora voce tem {user.getAtk()} de vida"); }
+        else if(compra == "3"){ compraDef(user, 10, 25); Console.WriteLine($"Agora voce tem {user.getDef()} de defesa"); }
+        else if(compra == "4"){ compraVitalEnergy(user, 10, 15); Console.WriteLine($"Agora voce tem {user.getVitalEnergy()} de energia vital"); }
+        else { Console.WriteLine("Valor invalido saindo da taverna"); }
+    }
+    public static void compraAtk(Entity user, int aumento, int preco){ 
+        if(user.getDoblons() >= preco){ user.setAtk(user.getAtk() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
+    }
+    public static void compraHp(Entity user, int aumento, int preco){
+        if(user.getDoblons() >= preco){ user.setHp(user.getHp() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
+    }
+    public static void compraDef(Entity user, int aumento, int preco){
+        if(user.getDoblons() >= preco){ user.setDef(user.getDef() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
+    }
+    public static void compraVitalEnergy(Entity user, int aumento, int preco){
+        if(user.getVitalEnergy() >= preco){ user.setVitalEnergy(user.getVitalEnergy() + aumento); user.setDoblons(user.getDoblons() - preco); }
+        else{ Console.WriteLine("Doblons insuficientes"); }
+    }
 }
-
-class Compras : Player
-{
-    public static void comprasplay(Player jogador)
-    {
-        int doblons, vida, dano, defesa;
-        Console.WriteLine("1. Espada\n2. Adaga\n3. Armadura Completa\n4. Peitoral de Couro\n5. Peitoral de Ferro\n6. Flor Rubra");
-        Console.Write("Produto: ");
-
-        if (int.TryParse(Console.ReadLine(), out int compra))
-        { if (compra == 1)
-            { if (jogador.getDoblons() >= 10)          // Verifica se há moedas suficientes
-                {
-                    doblons = jogador.getDoblons() - 10; // Subtrai as moedas gastas
-                    dano = jogador.getAtack() + 20;      // Aumenta o dano
-                    //Atualiza os valores
-                    jogador.AlteraDoblons(jogador.getDoblons() - 10);
-                    jogador.AlteraDano(jogador.getAtack() + 20);
-
-                    Console.WriteLine($"Você comprou uma Espada, gastou {doblons} Doblons e aumentou seu dano para {dano}");
-                } else { Console.WriteLine("Doblons Insuficientes"); }
-            }
-            else if (compra == 2)
-            { if (jogador.getDoblons() >= 3)
-                {
-                    doblons = jogador.getDoblons() - 3; //Subtrai os doblons
-                    dano = jogador.getAtack() + 10;     //Aumenta o dano
-                    //Atualiza os valores
-                    jogador.AlteraDoblons(jogador.getDoblons() - 3);
-                    jogador.AlteraDano(jogador.getAtack() + 10);
-
-                    Console.WriteLine($"Você comprou uma Adaga, gastou {doblons} Doblons e aumentou seu dano para {dano}");
-                } else { Console.WriteLine("Doblons Insuficientes"); }
-            }
-            else if (compra == 3)
-            { if (jogador.getDoblons() >= 25)
-                {
-                    doblons = jogador.getDoblons() - 25; //Subtrai os doblons
-                    defesa = jogador.getDefesa() + 100;  //Aumenta a defesa
-                    //Atualiza os valores
-                    jogador.AlteraDoblons(jogador.getDoblons() - 25);
-                    jogador.AlteraDefesa(jogador.getDefesa() + 100);
-
-                    Console.WriteLine("Você comprou um set de Armadura, gastou 25 Doblons e aumentou sua defesa para " + defesa);
-                } else { Console.WriteLine("Doblons Insuficientes"); }
-            }
-            else if (compra == 4)
-            { if (jogador.getDoblons() >= 5)
-                {
-                    doblons = jogador.getDoblons() - 5; //Subtrai os doblons
-                    defesa = jogador.getDefesa() + 25;  //Aumenta a defesa
-                    //Atualiza os valores
-                    jogador.AlteraDoblons(jogador.getDoblons() - 5);
-                    jogador.AlteraDefesa(jogador.getDefesa() + 25);
-
-                    Console.WriteLine($"Você comprou um peitoral de couro, gastou {doblons} Doblons e aumentou sua defesa para {defesa}");
-                } else { Console.WriteLine("Doblons Insuficientes"); }
-            }
-            else if (compra == 5)
-            { if (jogador.getDoblons() >= 10)
-                {
-                    doblons = jogador.getDoblons() - 10; //Subtrai os doblons
-                    defesa = jogador.getDefesa() + 50;   //Aumenta a defesa
-                    //Atualiza os valores
-                    jogador.AlteraDoblons(jogador.getDoblons() - 10);
-                    jogador.AlteraDefesa(jogador.getDefesa() + 50);
-
-                    Console.WriteLine($"Você comprou um peitoral de ferro, gastou {doblons} Doblons e aumentou sua defesa para {defesa}");
-                } else { Console.WriteLine("Doblons Insuficientes"); }
-            }
-            else if (compra == 6)
-            { if (jogador.getDoblons() >= 5)
-                {
-                    doblons = jogador.getDoblons() - 5; //Subtrai os doblons
-                    vida = jogador.getHeath() + 25;     //Aumenta a vida
-                    //Atualiza os valores
-                    jogador.AlteraDoblons(jogador.getDoblons() - 5);
-                    jogador.AlteraVida(jogador.getHeath() + 25);
-
-                    Console.WriteLine($"Você comprou uma flor rubra, gastou {doblons} Doblons e aumentou sua vida para {vida}");
-                } else { Console.WriteLine("Doblons Insuficientes"); }
-            }
-        } else { Console.WriteLine("Entrada inválida. Por favor, insira um número válido."); }
-        Principal.Separador();
-    }
-};
-/*
-    + Classe Compras : Player é hereditária e é focada somente para as compras que o usuário fizer durante o game
-    + A mesma ainda está em desenvolvimento para que não seja necessário a repetição de codigos.
-*/
-//------------------------------------------------------------------------------| Classe de Personangens
-/*
-    + Nessa classe será criada os atributos dos personagens que farão parte da jornada do player
-    + Mestre Sollis será o primeiro a entrar em combate com o personagem.
-*/
-class Personagens
-{
-    private string? sollis, vaelin;
-    private int doblonssollis, danosollis, vidasollis, defesasollis, doblonsvaelin, vidavaelin, defesavaelin, danovaelin;
-    public void ObterDadosSollis()
-    {
-        this.sollis = "Mestre Sollis";
-        this.defesasollis = 10;
-        this.doblonssollis = 10;
-        this.vidasollis = 200;
-        this.danosollis = 80;
-    }
-    public string? getNomeSollis() { return this.sollis; }
-    public int getVidaSollis() { return this.vidasollis; }
-    public int getDoblonsSollis() { return this.doblonssollis; }
-    public int getDefesaSollis() { return this.defesasollis; }
-    public int getDanoSollis() { return this.danosollis; }
-    public int AlteraDanoSollis(int dnsol) { this.danosollis = dnsol; return this.danosollis; }
-    public int AlteraVidaSollis(int vd) { this.vidasollis = vd; return this.vidasollis; }
-    public int AlteraDefesaSollis(int defes) { this.defesasollis = defes; return this.defesasollis; }
-    public int AlteraDoblonsSollis(int dob) { this.doblonssollis = dob; return this.doblonssollis; }
-    public string AlteraNomeSollis(string nm) { this.sollis = nm; return this.sollis; }
-
-    //---------------------------------------------------------------------------------------------------------------------//
-    public void ObterDadosVaelin()
-    {
-        this.vaelin = "Vaelin Al Sorna";
-        this.vidavaelin = 275;
-        this.danovaelin = 80;
-        this.doblonsvaelin = 100;
-        this.defesavaelin = 100;
-    }
-    public string? getNomeVaelin() { return this.vaelin; }
-    public int getVidaVaelin() { return this.vidavaelin; }
-    public int getDefesaVaelin() { return this.defesavaelin; }
-    public int getDanoVaelin() { return this.danovaelin; }
-    public int getDoblonsVaelin() { return this.doblonsvaelin; }
-    public int AlteraDanoVaelin(int altera) { this.danovaelin = altera; return this.danovaelin; }
-    public int AlteraVidaVaelin(int altera) { this.vidavaelin = altera; return this.vidavaelin; }
-    public int AlteraDefesaVaelin(int altera) { this.defesavaelin = altera; return this.defesavaelin; }
-    public int AlteraDoblonsVaelin(int altera) { this.doblonsvaelin = altera; return this.doblonsvaelin; }
-    public string AlteraNomeVaelin(string altera) { this.vaelin = altera; return this.vaelin; }
-}
-//------------------------------------------------------------------------------| Classe principal
-class Principal
-{
-    //Função para criar uma linha separadora
-    public static void Separador()
-    {
-        Console.WriteLine("----------------------------------------------------------------------------------------------------------------------");
-    }
-    //Função para gerar um valor aleatorio
-    public static int Jogadado()
-    {
-        int dado;
-        Random rdm = new Random();
-        dado = rdm.Next(100);
-        Console.WriteLine("[DADO LANCADO] -> " + dado);
+class Principal{
+    public static void Separador() { Console.WriteLine("----------------------------------------------------------------------------------------------------------------------"); }
+    public static int Jogadado(){
+        int dado; Random rdm = new Random();
+        dado = rdm.Next(100); Console.WriteLine("[DADO LANCADO] -> " + dado);
         return dado;
     }
-    //Função principal
-    public static void Main(string[] args)
-    {
+    public static void Main(string[] args){
         string? iniciogame;
         Console.WriteLine("                              A    S O M B R A    D O    C O R V O");
         Separador();
 
-        //Criacao do objeto jogador para que os atributos sejam reutilizados nas classes futuras
-        Player jogador = new Player();
-        Personagens sollis = new Personagens();
         Console.Write("Digite seu nome: ");
+        int novoId = 1;
         string? nomeplayer = Console.ReadLine();
-        #pragma warning disable CS8604            // Possível argumento de referência nula.
-        jogador.ObterDados(nomeplayer);           // Os argumentos acima e abaixo são uma solução para um aviso dado pelo Copilot
-        #pragma warning restore CS8604            // Possível argumento de referência nula.
 
-        Console.Write("Digite 1 para iniciar o game: ");
+        // Caso o usuario seja novo no jogo, o mesmo pode escolher uma classe de player
+        if (DataManagment.existData(nomeplayer)){  Console.WriteLine($"Bem vindo de volta Mestre {nomeplayer}"); } 
+        else {
+            while (DataManagment.existID(novoId.ToString())){ novoId += 1; }
+            Console.WriteLine("Escolha seu dom: ");
+            Console.WriteLine("[1] - Canção do Sangue  | [2] - Conexão com Animais  | [3] - Manipulação do Fogo");
+            Console.WriteLine("[4] - Projeção Astral   | [5] - Super Força          | [6] - Controle Corporal");
+            int dote = int.Parse(Console.ReadLine());
+            if (dote == 1) { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "sexto sentido", "Danca Sangrenta", "Sangue", "0"); }
+            else if (dote == 2){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Reforco Animal", "Controle Animal", "Animal", "0"); }
+            else if(dote == 3){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Lanca Chamas", "Firestorm", "Fogo", "0"); }
+            else if (dote == 4){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Analise Astral", "Morte Astral", "Alma", "0"); }
+            else if (dote == 5){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Estrangulamento", "Martelo da Morte", "Forca", "0"); }
+            else if (dote == 6){ DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "100", "Paralisacao", "Auto Destruicao", "Controle", "0"); }
+            else { DataManagment.NewData(novoId.ToString(), nomeplayer, "nenhum", "100", "0", "10", "25", "0", "0", "10", "100", "Furia de Soldado", "Comum", "0"); }
+            Console.WriteLine("Novo player cadastrado!");
+            Console.WriteLine($"Dado criado para {nomeplayer} com sucesso.");
+        }
+        // Criação do objeto user para manipular os dados antes de salva-lo garantindo que eles sejam salvos APÓS o processamento deles
+        int idUser      = int.Parse(DataManagment.ObterValor(nomeplayer, 0));  
+        string nameUser = DataManagment.ObterValor(nomeplayer, 1);
+        string level    = DataManagment.ObterValor(nomeplayer, 2); 
+        int hp          = int.Parse(DataManagment.ObterValor(nomeplayer, 3)); 
+        int def         = int.Parse(DataManagment.ObterValor(nomeplayer, 4));
+        int atk         = int.Parse(DataManagment.ObterValor(nomeplayer, 5));
+        int doblons     = int.Parse(DataManagment.ObterValor(nomeplayer, 6)); 
+        int xp          = int.Parse(DataManagment.ObterValor(nomeplayer, 7));
+        int power       = int.Parse(DataManagment.ObterValor(nomeplayer, 8));
+        int vitalEnergy = int.Parse(DataManagment.ObterValor(nomeplayer, 9));
+        string skill    = DataManagment.ObterValor(nomeplayer, 10);
+        string ultimate = DataManagment.ObterValor(nomeplayer, 11);
+        string typeUser = DataManagment.ObterValor(nomeplayer, 12);
+
+        Entity user = new Entity(idUser, nameUser, level, hp, def, atk, doblons, xp, power, skill, ultimate, vitalEnergy, typeUser, 0);
+        DataManagment.ReadData(novoId.ToString());
+
+        Console.Write("[0] - Taverna  | [1] - Iniciar Game \n-> ");
         iniciogame = Console.ReadLine();
 
-        //A estrutura condicional abaixo irá validar o dado que o usuário informou e se estiver correto o código irá para a classe game() onde o jogo de fato se inicia
-        //Caso nao seja um dado válido, o usuário será informado, e após clicar em qualquer tecla (função ReadKey()), a tela será limpa através da função (Clear())
-        //Em seguida a função Main() irá repetir, fazendo o usuário voltar ao inicio
-
-        if (iniciogame == "1")
-        { Game.Starting(jogador, sollis);//lançando os dados do player para a classe Game.Starting
-        }
-        else
-        {
-            Console.WriteLine("Tecla não esperada!");
-            Console.ReadKey();
-            Console.Clear();
-            Main(args);
-        }
+        if (iniciogame == "1") { Game.Starting(user); } 
+        else if(iniciogame == "2"){ Taverna.CompraOutsideBattle(user); }
+        else { Console.WriteLine("Tecla não esperada!"); Console.ReadKey(); Console.Clear(); Main(args); }
     }
 };
